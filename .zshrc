@@ -9,7 +9,7 @@ fi
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/gb/.oh-my-zsh"
+export ZSH="/home/gbassinello/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -79,11 +79,11 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 plugins=(
 git
 tmux
+fast-syntax-highlighting
 zsh-autosuggestions
 zsh-syntax-highlighting
 zsh-interactive-cd
 )
-
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -111,16 +111,18 @@ if [[ -n $SSH_CONNECTION ]]; then
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias cheat.sh="f(){curl cheat.sh/$1};f"
 alias sc="source $HOME/.zshrc"
+alias cheat.sh="f(){curl cheat.sh/$1};f"
 alias cp="cp -i"                          # confirm before overwriting something
 alias df="df -h"                          # human-readable sizes
 alias free="free -m"                      # show sizes in MB
-alias np="nano -w PKGBUILD"
-alias more=less
+alias glog="git log --pretty=oneline --abbrev-commit"
+alias listservices="systemctl list-unit-files --type=service | egrep 'enabled|disabled'"
+
+# Export temp directory for nvim
+export TMPDIR="/tmp"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-source /usr/share/nvm/init-nvm.sh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
