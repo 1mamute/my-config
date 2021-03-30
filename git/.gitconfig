@@ -1,0 +1,6 @@
+[user]
+	name = Gabriel Bassinello
+	email = gabrielbassinello@hotmail.com
+[core]
+	excludesfile = ~/.config/git/.global-gitignore
+	editor = nvim
