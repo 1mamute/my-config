@@ -10,7 +10,6 @@
   "editor.formatOnSave": true,
   "explorer.compactFolders": false,
   "workbench.colorTheme": "Nord",
-  "window.zoomLevel": 2,
   "editor.mouseWheelZoom": true,
   "editor.fontFamily": "'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
   "editor.minimap.maxColumn": 100,
@@ -23,4 +22,5 @@
   "terminal.external.linuxExec": "alacritty",
   "telemetry.enableCrashReporter": false,
   "telemetry.enableTelemetry": false,
+  "tabnine.experimentalAutoImports": true,
 }
