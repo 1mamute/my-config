@@ -46,6 +46,7 @@ Plug 'junegunn/fzf.vim'
 " Syntax Highlighting for NERDTree
 Plug 'preservim/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ryanoasis/vim-devicons'
 " Initialize plugin system
 call plug#end()
@@ -60,16 +61,17 @@ colorscheme nord                " Colorscheme
 set mouse+=a                    " Mouse support
 set hidden                      " TextEdit might fail if hidden is not set.
 set laststatus=2                " Always display statusline
-set incsearch                   " Highlight search terms
 set ignorecase                  " Search case insensitive
 set smartcase                   " Search case insensitive only if theres capital letters
 set number                      " Line numbers
 set ve+=onemore                 " Allow an extra space after end of line
-set backspace=indent,eol,start  " Backspace in insert mode
+"set selection=exclusive        " Newline character will not be include the selected character
+"set backspace=indent,eol,start " Backspace in insert mode
 set wildmenu                    " Visual autocomplete for command menu
+set incsearch                   " Highlight search terms
 set showmatch                   " Highlight matching brace
 set cursorline
-set encoding=utf-8              
+set encoding=utf-8
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
@@ -81,17 +83,21 @@ let g:nord_cursor_line_number_background=1
 let g:airline_powerline_fonts = 1
 syntax on
 
+" Move lines up or down with J-K
+nnoremap <A-j> :m .+1<CR>==
+nnoremap <A-k> :m .-2<CR>==
+inoremap <A-j> <Esc>:m .+1<CR>==gi
+inoremap <A-k> <Esc>:m .-2<CR>==gi
+vnoremap <A-j> :m '>+1<CR>gv=gv
+vnoremap <A-k> :m '<-2<CR>gv=gv
+
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Start NERDTree. If a file is specified, move the cursor to its window.
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
+"function! s:check_back_space() abort
+"  let col = col('.') - 1
+"  return !col || getline('.')[col - 1]  =~# '\s'
+"endfunction
 
 " Copy to system clipboard
 if has ('unnamedplus')
@@ -105,11 +111,16 @@ map <C-v> P
 " Remap for rename current word
 nmap <F2> <Plug>(coc-rename)
 
+" Start NERDTree. If a file is specified, move the cursor to its window.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
+
 " Nerdtree / devicons config
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeMinimalUI = 0
 let g:NERDTreeIgnore = []
 let g:NERDTreeStatusline = ''
+let g:NERDTreeGitStatusUseNerdFonts = 1 
 let g:webdevicons_enable_nerdtree = 1
 let g:webdevicons_enable_airline_tabline = 1
 let g:webdevicons_enable_airline_statusline = 1
