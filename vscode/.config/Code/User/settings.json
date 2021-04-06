@@ -33,6 +33,7 @@
         "editor.wordWrap": "on",
         "editor.quickSuggestions": false,
         "files.trimTrailingWhitespace": false
+
     },
     "editor.suggestSelection": "first",
     "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
@@ -44,5 +45,25 @@
         "--style",
         "{indent_width: 2}"
     ],
-    "window.zoomLevel": 2
+    "tabnine.experimentalAutoImports": true,
+    "window.titleBarStyle": "custom",
+    "window.enableMenuBarMnemonics": false,
+    "window.customMenuBarAltFocus": false,
+    "workbench.enableExperiments": false,
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact"
+    ],
+    "auto-rename-tag.activationOnLanguage": [
+        "html",
+        "xml",
+        "php",
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact"
+    ],
+    "editor.fontSize": 16
 }
