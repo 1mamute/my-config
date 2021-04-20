@@ -9,39 +9,13 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'neoclide/coc-yaml', {'branch': 'master'}
 Plug 'neoclide/coc-pairs', {'branch': 'master'}
-Plug 'neoclide/coc-tabnine', {'branch': 'master'}
-Plug 'neoclide/coc-snippets', {'branch': 'master'}
 Plug 'neoclide/coc-highlight', {'branch': 'master'}
 Plug 'neoclide/coc-git', {'branch': 'master'}
-Plug 'antoinemadec/coc-fzf'
-Plug 'neoclide/coc-eslint', {'branch': 'master'}
-Plug 'neoclide/coc-emmet', {'branch': 'master'}
-Plug 'antonk52/coc-cssmodules', {'branch': 'master'}
-Plug 'neoclide/coc-tsserver', {'branch': 'master'}
-Plug 'neoclide/coc-prettier', {'branch': 'master'}
-Plug 'neoclide/coc-git', {'branch': 'master'}
-Plug 'josa42/coc-sh'
 Plug 'neoclide/coc-lists', {'branch': 'master'}
-Plug 'fannheyward/coc-pyright', {'branch': 'master'}
-Plug 'fannheyward/coc-markdownlint', {'branch': 'master'}
-Plug 'neoclide/coc-json', {'branch': 'master'}
-Plug 'neoclide/coc-html', {'branch': 'master'}
-Plug 'neoclide/coc-css', {'branch': 'master'}
-Plug 'HerringtonDarkholme/yats.vim'
-Plug 'maxmellon/vim-jsx-pretty'
-Plug 'ekalinin/dockerfile.vim'
-Plug 'pangloss/vim-javascript'
-Plug 'hashivim/vim-terraform'
-Plug 'mitchellh/vagrant'
-Plug 'ervandew/supertab'
+Plug 'josa42/coc-sh'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'arcticicestudio/nord-vim'
-Plug 'tpope/vim-commentary'
-
-" Fuzzy finder for finding files
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
 
 " Syntax Highlighting for NERDTree
 Plug 'preservim/nerdtree'
@@ -65,8 +39,6 @@ set ignorecase                  " Search case insensitive
 set smartcase                   " Search case insensitive only if theres capital letters
 set number                      " Line numbers
 set ve+=onemore                 " Allow an extra space after end of line
-"set selection=exclusive        " Newline character will not be include the selected character
-"set backspace=indent,eol,start " Backspace in insert mode
 set wildmenu                    " Visual autocomplete for command menu
 set incsearch                   " Highlight search terms
 set showmatch                   " Highlight matching brace
@@ -93,11 +65,6 @@ vnoremap <A-k> :m '<-2<CR>gv=gv
 
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
-
-"function! s:check_back_space() abort
-"  let col = col('.') - 1
-"  return !col || getline('.')[col - 1]  =~# '\s'
-"endfunction
 
 " Copy to system clipboard
 if has ('unnamedplus')
@@ -128,11 +95,3 @@ let g:webdevicons_enable_airline_statusline = 1
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " Toggle
 nnoremap <silent> <C-b> :NERDTreeToggle<CR>
-
-" FZF config
-nnoremap <C-p> :FZF<CR>
-let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-s': 'split',
-  \ 'ctrl-v': 'vsplit'
-  \}

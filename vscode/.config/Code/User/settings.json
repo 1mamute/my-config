@@ -1,69 +1,87 @@
 {
-    "python.languageServer": "Pylance",
-    "editor.tabSize": 2,
-    "terminal.integrated.cursorStyle": "line",
-    "editor.minimap.enabled": true,
-    "git.autofetch": true,
-    "explorer.confirmDelete": false,
-    "explorer.confirmDragAndDrop": false,
-    "terminal.integrated.fontFamily": "FiraCode Nerd Font",
-    "editor.formatOnSave": true,
-    "explorer.compactFolders": false,
-    "workbench.colorTheme": "Nord",
-    "editor.mouseWheelZoom": true,
-    "editor.fontFamily": "'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
-    "editor.minimap.maxColumn": 100,
-    "editor.minimap.showSlider": "always",
-    "files.trimFinalNewlines": true,
-    "files.trimTrailingWhitespace": true,
-    "workbench.iconTheme": "material-icon-theme",
-    "workbench.editor.highlightModifiedTabs": true,
-    "search.smartCase": true,
-    "terminal.external.linuxExec": "alacritty",
-    "telemetry.enableCrashReporter": false,
-    "telemetry.enableTelemetry": false,
-    "workbench.editorAssociations": [
-        {
-            "viewType": "jupyter.notebook.ipynb",
-            "filenamePattern": "*.ipynb"
-        }
-    ],
-    "[markdown]": {
-        "editor.defaultFormatter": null,
-        "editor.wordWrap": "on",
-        "editor.quickSuggestions": false,
-        "files.trimTrailingWhitespace": false
-
+  "python.languageServer": "Pylance",
+  "editor.tabSize": 2,
+  "terminal.integrated.cursorStyle": "line",
+  "editor.minimap.enabled": false,
+  "git.autofetch": true,
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "terminal.integrated.fontFamily": "FiraCode Nerd Font",
+  "editor.formatOnSave": true,
+  "explorer.compactFolders": false,
+  "editor.mouseWheelZoom": true,
+  "editor.fontFamily": "'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+  "editor.minimap.maxColumn": 100,
+  "editor.minimap.showSlider": "always",
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.editor.highlightModifiedTabs": true,
+  "search.smartCase": true,
+  "terminal.external.linuxExec": "alacritty",
+  "telemetry.enableCrashReporter": false,
+  "telemetry.enableTelemetry": false,
+  "editor.suggestSelection": "first",
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.python"
+  },
+  "python.formatting.provider": "yapf",
+  "python.formatting.yapfArgs": [
+    "--style",
+    "{indent_width: 2}"
+  ],
+  "window.titleBarStyle": "custom",
+  "window.enableMenuBarMnemonics": false,
+  "window.customMenuBarAltFocus": false,
+  "auto-rename-tag.activationOnLanguage": [
+    "html",
+    "xml",
+    "php",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "editor.fontSize": 16,
+  "files.associations": {
+    "*.tf": "terraform"
+  },
+  "[javascript]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
     },
-    "editor.suggestSelection": "first",
-    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
-    "[python]": {
-        "editor.defaultFormatter": "ms-python.python"
-    },
-    "python.formatting.provider": "yapf",
-    "python.formatting.yapfArgs": [
-        "--style",
-        "{indent_width: 2}"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "workbench.colorTheme": "Nord",
+  "yaml.schemaStore.enable": false,
+  "window.zoomLevel": -1,
+  "vs-kubernetes": {
+    "vscode-kubernetes.helm-path.linux": "/home/gb/.vs-kubernetes/tools/helm/linux-amd64/helm",
+    "vscode-kubernetes.minikube-path.linux": "/home/gb/.vs-kubernetes/tools/minikube/linux-amd64/minikube",
+    "vs-kubernetes.knownKubeconfigs": [
+      "/home/gb/.kube/kind",
+      "/home/gb/.kube/kind"
     ],
-    "tabnine.experimentalAutoImports": true,
-    "window.titleBarStyle": "custom",
-    "window.enableMenuBarMnemonics": false,
-    "window.customMenuBarAltFocus": false,
-    "workbench.enableExperiments": false,
-    "eslint.validate": [
-        "javascript",
-        "javascriptreact",
-        "typescript",
-        "typescriptreact"
-    ],
-    "auto-rename-tag.activationOnLanguage": [
-        "html",
-        "xml",
-        "php",
-        "javascript",
-        "javascriptreact",
-        "typescript",
-        "typescriptreact"
-    ],
-    "editor.fontSize": 16
+    "vs-kubernetes.kubeconfig": "/home/gb/.kube/kind"
+  },
+  "editor.linkedEditing": true,
+  "terminal.integrated.enableBell": true,
+  "files.trimFinalNewlines": true,
+  "workbench.editorAssociations": [
+    {
+      "viewType": "jupyter.notebook.ipynb",
+      "filenamePattern": "*.ipynb"
+    }
+  ],
+  "elixirLS.dialyzerEnabled": false,
+  "elixirLS.suggestSpecs": false,
+  "elixir.credo.ignoreWarningMessages": true,
+  "elixir.credo.strictMode": true,
+  "elixir.credo.lintEverything": true,
 }

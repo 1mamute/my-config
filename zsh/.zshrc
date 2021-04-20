@@ -81,8 +81,8 @@ git
 tmux
 docker
 docker-compose
+kubectl
 zsh-completions
-fast-syntax-highlighting
 zsh-autosuggestions
 zsh-syntax-highlighting
 zsh-interactive-cd
