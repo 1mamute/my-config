@@ -53,6 +53,11 @@
       "source.fixAll.eslint": true
     },
   },
+  "[typescript]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    },
+  },
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
   },
@@ -60,7 +65,6 @@
   "typescript.updateImportsOnFileMove.enabled": "always",
   "workbench.colorTheme": "Nord",
   "yaml.schemaStore.enable": false,
-  "window.zoomLevel": -1,
   "vs-kubernetes": {
     "vscode-kubernetes.helm-path.linux": "/home/gb/.vs-kubernetes/tools/helm/linux-amd64/helm",
     "vscode-kubernetes.minikube-path.linux": "/home/gb/.vs-kubernetes/tools/minikube/linux-amd64/minikube",
@@ -72,16 +76,12 @@
   },
   "editor.linkedEditing": true,
   "terminal.integrated.enableBell": true,
-  "files.trimFinalNewlines": true,
   "workbench.editorAssociations": [
     {
       "viewType": "jupyter.notebook.ipynb",
       "filenamePattern": "*.ipynb"
     }
   ],
-  "elixirLS.dialyzerEnabled": false,
-  "elixirLS.suggestSpecs": false,
-  "elixir.credo.ignoreWarningMessages": true,
-  "elixir.credo.strictMode": true,
-  "elixir.credo.lintEverything": true,
+  "gitlens.codeLens.enabled": false,
+  "aws.telemetry": false,
 }
