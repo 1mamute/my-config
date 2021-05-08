@@ -78,7 +78,6 @@ map <C-v> P
 " Remap for rename current word
 nmap <F2> <Plug>(coc-rename)
 
-
 " Nerdtree / devicons config
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeMinimalUI = 0

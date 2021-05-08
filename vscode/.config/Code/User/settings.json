@@ -65,23 +65,7 @@
   "typescript.updateImportsOnFileMove.enabled": "always",
   "workbench.colorTheme": "Nord",
   "yaml.schemaStore.enable": false,
-  "vs-kubernetes": {
-    "vscode-kubernetes.helm-path.linux": "/home/gb/.vs-kubernetes/tools/helm/linux-amd64/helm",
-    "vscode-kubernetes.minikube-path.linux": "/home/gb/.vs-kubernetes/tools/minikube/linux-amd64/minikube",
-    "vs-kubernetes.knownKubeconfigs": [
-      "/home/gb/.kube/kind",
-      "/home/gb/.kube/kind"
-    ],
-    "vs-kubernetes.kubeconfig": "/home/gb/.kube/kind"
-  },
   "editor.linkedEditing": true,
-  "terminal.integrated.enableBell": true,
-  "workbench.editorAssociations": [
-    {
-      "viewType": "jupyter.notebook.ipynb",
-      "filenamePattern": "*.ipynb"
-    }
-  ],
   "gitlens.codeLens.enabled": false,
   "aws.telemetry": false,
 }
