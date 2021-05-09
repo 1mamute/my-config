@@ -80,6 +80,7 @@ plugins=(
 git
 tmux
 kubectl
+asdf
 zsh-autosuggestions
 zsh-syntax-highlighting
 zsh-interactive-cd
