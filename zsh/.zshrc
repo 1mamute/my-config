@@ -81,6 +81,7 @@ git
 tmux
 kubectl
 asdf
+direnv
 zsh-autosuggestions
 zsh-syntax-highlighting
 zsh-interactive-cd

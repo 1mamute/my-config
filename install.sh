@@ -2,7 +2,7 @@
 sudo pacman -Syyu curl git yay
 git clone https://gist.github.com/df977bbcd3685fc75bca52f1ccc8b398.git ~/gist
 cd ~/gist
-yay -S $(tr '\n' ' ' < manjaro.xfce.pacmanity)
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+yay -S $(tr '\n' ' ' < manjaro.xfce.pacmanity)
