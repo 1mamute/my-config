@@ -48,12 +48,13 @@
   "files.associations": {
     "*.tf": "terraform"
   },
-  "[javascript]": {
+  "eslint.format.enable": true,
+  "[javascript,javascriptreact]": {
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": true
     },
   },
-  "[typescript]": {
+  "[typescript,typescriptreact]": {
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": true
     },
@@ -63,16 +64,32 @@
   },
   "javascript.updateImportsOnFileMove.enabled": "always",
   "typescript.updateImportsOnFileMove.enabled": "always",
+  "javascript.suggest.autoImports": true,
+  "typescript.suggest.autoImports": true,
   "workbench.colorTheme": "Nord",
   "yaml.schemaStore.enable": false,
   "editor.linkedEditing": true,
   "gitlens.codeLens.enabled": false,
   "aws.telemetry": false,
   "redhat.telemetry.enabled": false,
-  "workbench.editorAssociations": [
-    {
-      "viewType": "jupyter.notebook.ipynb",
-      "filenamePattern": "*.ipynb"
-    }
-  ],
+  "workbench.editorAssociations": {
+    "*.ipynb": "jupyter.notebook.ipynb"
+  },
+  "terraform.languageServer": {
+    "pathToBinary": "/usr/bin/terraform-ls",
+    "external": true,
+    "args": [
+      "serve"
+    ]
+  },
+  "terraform-ls.experimentalFeatures": {
+    "validateOnSave": true
+  },
+  "gopls": {
+    "build.experimentalWorkspaceModule": true
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "jupyter.askForKernelRestart": false
 }

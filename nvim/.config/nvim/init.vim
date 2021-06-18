@@ -17,6 +17,8 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'arcticicestudio/nord-vim'
 
+Plug 'jabirali/vim-tmux-yank' "https://github.com/jabirali/vim-tmux-yank
+
 " Syntax Highlighting for NERDTree
 Plug 'preservim/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
@@ -66,14 +68,6 @@ vnoremap <A-k> :m '<-2<CR>gv=gv
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
-" Copy to system clipboard
-if has ('unnamedplus')
-  set clipboard=unnamedplus
-else
-  set clipboard=unnamed
-endif
-map <C-c> y
-map <C-v> P
 
 " Remap for rename current word
 nmap <F2> <Plug>(coc-rename)
