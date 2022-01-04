@@ -25,10 +25,6 @@
     "editor.defaultFormatter": "ms-python.python"
   },
   "python.formatting.provider": "yapf",
-  "python.formatting.yapfArgs": [
-    "--style",
-    "{indent_width: 2}"
-  ],
   "window.titleBarStyle": "custom",
   "window.enableMenuBarMnemonics": false,
   "window.customMenuBarAltFocus": false,
@@ -66,10 +62,8 @@
   "typescript.updateImportsOnFileMove.enabled": "always",
   "javascript.suggest.autoImports": true,
   "typescript.suggest.autoImports": true,
-  "workbench.colorTheme": "Nord",
   "yaml.schemaStore.enable": false,
   "editor.linkedEditing": true,
-  "gitlens.codeLens.enabled": false,
   "aws.telemetry": false,
   "redhat.telemetry.enabled": false,
   "workbench.editorAssociations": {
@@ -91,5 +85,78 @@
   "[javascriptreact]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
-  "jupyter.askForKernelRestart": false
+  "jupyter.askForKernelRestart": false,
+  "git.allowForcePush": true,
+  "diffEditor.ignoreTrimWhitespace": false,
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "discord.removeRemoteRepository": true,
+  "discord.lowerDetailsEditing": "Repository: {workspace}",
+  "discord.lowerDetailsNoWorkspaceFound": "No repository",
+  "discord.swapBigAndSmallImage": true,
+  "yaml.schemas": {},
+  "editor.tokenColorCustomizations": {
+    "[Nord]": {
+      "comments": "#909aad"
+    }
+  },
+  "workbench.colorTheme": "Nord",
+  "aws.profile": "profile:1mamute",
+  "vs-kubernetes": {
+    "vs-kubernetes.knownKubeconfigs": [
+      "/home/gb/repos/1mamute/1mamute-aws/terraform/kubeconfig_test-eks-1mamute"
+    ],
+    "vs-kubernetes.kubeconfig": "/home/gb/repos/1mamute/1mamute-aws/terraform/kubeconfig_test-eks-1mamute"
+  },
+  "indentRainbow.colors": [
+    "rgba(16,16,16,0.1)",
+    "rgba(16,16,16,0.2)",
+    "rgba(16,16,16,0.3)",
+    "rgba(16,16,16,0.4)",
+    "rgba(16,16,16,0.5)",
+    "rgba(16,16,16,0.6)",
+    "rgba(16,16,16,0.7)",
+    "rgba(16,16,16,0.8)",
+    "rgba(16,16,16,0.9)",
+    "rgba(16,16,16,1.0)"
+  ],
+  "yaml.customTags": [
+    "!And",
+    "!And sequence",
+    "!If",
+    "!If sequence",
+    "!Not",
+    "!Not sequence",
+    "!Equals",
+    "!Equals sequence",
+    "!Or",
+    "!Or sequence",
+    "!FindInMap",
+    "!FindInMap sequence",
+    "!Base64",
+    "!Join",
+    "!Join sequence",
+    "!Cidr",
+    "!Ref",
+    "!Sub",
+    "!Sub sequence",
+    "!GetAtt",
+    "!GetAZs",
+    "!ImportValue",
+    "!ImportValue sequence",
+    "!Select",
+    "!Select sequence",
+    "!Split",
+    "!Split sequence"
+  ],
+  "editor.bracketPairColorization.enabled": true,
+  "diffEditor.codeLens": true,
+  "gitlens.codeLens.includeSingleLineSymbols": true,
+  "python.linting.flake8Enabled": true,
+  "python.linting.flake8Args": [
+    "--max-line-length=120"
+  ],
+  "editor.codeLens": false,
+  "json.schemas": []
 }

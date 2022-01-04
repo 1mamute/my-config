@@ -77,10 +77,12 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
+zsh-completions
 git
 tmux
 kubectl
 asdf
+aws
 direnv
 zsh-autosuggestions
 zsh-syntax-highlighting
@@ -89,6 +91,9 @@ zsh-interactive-cd
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
+
+# Completions
+fpath=(~/.zsh/completion $fpath)
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -153,7 +158,7 @@ alias listservices="systemctl list-unit-files --type=service | egrep 'enabled|di
 export TMPDIR="/tmp"
 
 # NNN Configs
-export NNN_PLUG='f:finder;o:fzopen;p:preview-tui;v:imgview'
+export NNN_PLUG='p:preview-tui'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
