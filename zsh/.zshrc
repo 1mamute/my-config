@@ -8,6 +8,14 @@ fi
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+
+# Lines configured by zsh-newuser-install
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=1000
+bindkey -e
+# End of lines configured by zsh-newuser-install
+
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
@@ -81,7 +89,6 @@ zsh-completions
 git
 tmux
 kubectl
-asdf
 aws
 direnv
 zsh-autosuggestions
@@ -94,6 +101,13 @@ source $ZSH/oh-my-zsh.sh
 
 # Completions
 fpath=(~/.zsh/completion $fpath)
+# The following lines were added by compinstall
+zstyle :compinstall filename '/home/gb/.zshrc'
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
+
 
 # export MANPATH="/usr/local/man:$MANPATH"
 

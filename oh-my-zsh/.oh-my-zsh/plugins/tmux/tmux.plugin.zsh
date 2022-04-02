@@ -3,6 +3,33 @@ if ! (( $+commands[tmux] )); then
   return 1
 fi
 
+# CONFIGURATION VARIABLES
+# Automatically start tmux
+: ${ZSH_TMUX_AUTOSTART:=false}
+# Only autostart once. If set to false, tmux will attempt to
+# autostart every time your zsh configs are reloaded.
+: ${ZSH_TMUX_AUTOSTART_ONCE:=true}
+# Automatically connect to a previous session if it exists
+: ${ZSH_TMUX_AUTOCONNECT:=true}
+# Automatically close the terminal when tmux exits
+: ${ZSH_TMUX_AUTOQUIT:=$ZSH_TMUX_AUTOSTART}
+# Set term to screen or screen-256color based on current terminal support
+: ${ZSH_TMUX_FIXTERM:=true}
+# Set '-CC' option for iTerm2 tmux integration
+: ${ZSH_TMUX_ITERM2:=false}
+# The TERM to use for non-256 color terminals.
+# Tmux states this should be screen, but you may need to change it on
+# systems without the proper terminfo
+: ${ZSH_TMUX_FIXTERM_WITHOUT_256COLOR:=screen}
+# The TERM to use for 256 color terminals.
+# Tmux states this should be screen-256color, but you may need to change it on
+# systems without the proper terminfo
+: ${ZSH_TMUX_FIXTERM_WITH_256COLOR:=screen-256color}
+# Set the configuration path
+: ${ZSH_TMUX_CONFIG:=$HOME/.tmux.conf}
+# Set -u option to support unicode
+: ${ZSH_TMUX_UNICODE:=false}
+
 # ALIASES
 
 alias ta='tmux attach -t'
@@ -11,34 +38,7 @@ alias ts='tmux new-session -s'
 alias tl='tmux list-sessions'
 alias tksv='tmux kill-server'
 alias tkss='tmux kill-session -t'
-alias tan="tmux attach || tmux new-session"
-
-# CONFIGURATION VARIABLES
-# Automatically start tmux
-: ${ZSH_TMUX_AUTOSTART:=true}
-# Only autostart once. If set to false, tmux will attempt to
-# autostart every time your zsh configs are reloaded.
-: ${ZSH_TMUX_AUTOSTART_ONCE:=true}
-# Automatically connect to a previous session if it exists
-: ${ZSH_TMUX_AUTOCONNECT:=true}
-# Automatically close the terminal when tmux exits
-: ${ZSH_TMUX_AUTOQUIT:=false}
-# Set term to screen or screen-256color based on current terminal support
-: ${ZSH_TMUX_FIXTERM:=true}
-# Set '-CC' option for iTerm2 tmux integration
-: ${ZSH_TMUX_ITERM2:=false}
-# The TERM to use for non-256 color terminals.
-# Tmux states this should be screen, but you may need to change it on
-# systems without the proper terminfo
-: ${ZSH_TMUX_FIXTERM_WITHOUT_256COLOR:=xterm-color}
-# The TERM to use for 256 color terminals.
-# Tmux states this should be screen-256color, but you may need to change it on
-# systems without the proper terminfo
-: ${ZSH_TMUX_FIXTERM_WITH_256COLOR:=xterm-256color}
-# Set the configuration path
-: ${ZSH_TMUX_CONFIG:=$HOME/.tmux.conf}
-# Set -u option to support unicode
-: ${ZSH_TMUX_UNICODE:=false}
+alias tmuxconf='$EDITOR $ZSH_TMUX_CONFIG'
 
 # Determine if the terminal supports 256 colors
 if [[ $terminfo[colors] == 256 ]]; then
@@ -46,6 +46,11 @@ if [[ $terminfo[colors] == 256 ]]; then
 else
   export ZSH_TMUX_TERM=$ZSH_TMUX_FIXTERM_WITHOUT_256COLOR
 fi
+
+# Handle $0 according to the standard:
+# https://zdharma-continuum.github.io/Zsh-100-Commits-Club/Zsh-Plugin-Standard.html
+0="${${ZERO:-${0:#$ZSH_ARGZERO}}:-${(%):-%N}}"
+0="${${(M)0:#/*}:-$PWD/$0}"
 
 # Set the correct local config file to use.
 if [[ "$ZSH_TMUX_ITERM2" == "false" && -e "$ZSH_TMUX_CONFIG" ]]; then
@@ -77,7 +82,11 @@ function _zsh_tmux_plugin_run() {
     elif [[ -e "$ZSH_TMUX_CONFIG" ]]; then
       tmux_cmd+=(-f "$ZSH_TMUX_CONFIG")
     fi
-    $tmux_cmd new-session
+    if [[ -n "$ZSH_TMUX_DEFAULT_SESSION_NAME" ]]; then
+        $tmux_cmd new-session -s $ZSH_TMUX_DEFAULT_SESSION_NAME
+    else
+        $tmux_cmd new-session
+    fi
   fi
 
   if [[ "$ZSH_TMUX_AUTOQUIT" == "true" ]]; then
