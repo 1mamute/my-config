@@ -5,7 +5,7 @@
   "git.autofetch": true,
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
-  "terminal.integrated.fontFamily": "Fira Code",
+  "terminal.integrated.fontFamily": "Cascadia Code PL",
   "editor.formatOnSave": true,
   "explorer.compactFolders": false,
   "editor.mouseWheelZoom": true,
@@ -64,7 +64,7 @@
   "discord.swapBigAndSmallImage": true,
   "editor.tokenColorCustomizations": {
     "[Nord]": {
-      "comments": "#8f8f8f"
+      "comments": "#979797"
     }
   },
   "workbench.colorTheme": "Nord",
@@ -113,4 +113,5 @@
     "!Split",
     "!Split sequence"
   ],
+  "terminal.integrated.fontWeightBold": "normal"
 }
