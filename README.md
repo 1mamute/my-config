@@ -2,10 +2,10 @@
 Public repo for my dotfiles, IDE and general configuration files.
 Nord theme blue
 
-```stow -vSt ~ */ --no```  
+```stow -vSt ~ */ --simulate```  
 
 #### Undo
-```stow -vDt ~ */ --no```
+```stow -vDt ~ */ --simulate```
 
 # Rofi
 ```rofi -theme android_notifications -font "hack 12" -show drun -icon-theme "Papirus" -show-icons```

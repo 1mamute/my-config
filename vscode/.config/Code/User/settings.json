@@ -16,9 +16,7 @@
   "workbench.iconTheme": "material-icon-theme",
   "workbench.editor.highlightModifiedTabs": true,
   "search.smartCase": true,
-  "terminal.external.linuxExec": "alacritty",
-  "telemetry.enableCrashReporter": false,
-  "telemetry.enableTelemetry": false,
+  "telemetry.telemetryLevel": "off",
   "editor.suggestSelection": "first",
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
   "[python]": {
@@ -28,87 +26,16 @@
   "window.titleBarStyle": "custom",
   "window.enableMenuBarMnemonics": false,
   "window.customMenuBarAltFocus": false,
-  "auto-rename-tag.activationOnLanguage": [
-    "html",
-    "xml",
-    "php",
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact"
-  ],
   "editor.quickSuggestions": {
     "strings": true
   },
   "editor.fontSize": 16,
-  "files.associations": {
-    "*.tf": "terraform"
-  },
-  "eslint.format.enable": true,
-  "[javascript,javascriptreact]": {
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": true
-    },
-  },
-  "[typescript,typescriptreact]": {
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": true
-    },
-  },
-  "[json]": {
-    "editor.defaultFormatter": "vscode.json-language-features"
-  },
-  "javascript.updateImportsOnFileMove.enabled": "always",
-  "typescript.updateImportsOnFileMove.enabled": "always",
-  "javascript.suggest.autoImports": true,
-  "typescript.suggest.autoImports": true,
   "yaml.schemaStore.enable": false,
   "editor.linkedEditing": true,
   "aws.telemetry": false,
   "redhat.telemetry.enabled": false,
-  "workbench.editorAssociations": {
-    "*.ipynb": "jupyter.notebook.ipynb"
-  },
-  "terraform.languageServer": {
-    "pathToBinary": "/usr/bin/terraform-ls",
-    "external": true,
-    "args": [
-      "serve"
-    ]
-  },
-  "terraform-ls.experimentalFeatures": {
-    "validateOnSave": true
-  },
-  "gopls": {
-    "build.experimentalWorkspaceModule": true
-  },
-  "[javascriptreact]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  },
-  "jupyter.askForKernelRestart": false,
   "git.allowForcePush": true,
   "diffEditor.ignoreTrimWhitespace": false,
-  "[javascript]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  },
-  "discord.removeRemoteRepository": true,
-  "discord.lowerDetailsEditing": "Repository: {workspace}",
-  "discord.lowerDetailsNoWorkspaceFound": "No repository",
-  "discord.swapBigAndSmallImage": true,
-  "yaml.schemas": {},
-  "editor.tokenColorCustomizations": {
-    "[Nord]": {
-      "comments": "#909aad"
-    }
-  },
-  "workbench.colorTheme": "Nord",
-  "aws.profile": "profile:1mamute",
-  "vs-kubernetes": {
-    "vs-kubernetes.knownKubeconfigs": [
-      "/home/gb/repos/1mamute/1mamute-aws/terraform/kubeconfig_test-eks-1mamute"
-    ],
-    "vs-kubernetes.kubeconfig": "/home/gb/repos/1mamute/1mamute-aws/terraform/kubeconfig_test-eks-1mamute"
-  },
   "indentRainbow.colors": [
     "rgba(16,16,16,0.1)",
     "rgba(16,16,16,0.2)",
@@ -150,13 +77,11 @@
     "!Split",
     "!Split sequence"
   ],
-  "editor.bracketPairColorization.enabled": true,
   "diffEditor.codeLens": true,
   "gitlens.codeLens.includeSingleLineSymbols": true,
   "python.linting.flake8Enabled": true,
   "python.linting.flake8Args": [
     "--max-line-length=120"
   ],
-  "editor.codeLens": false,
-  "json.schemas": []
+  "editor.codeLens": false
 }

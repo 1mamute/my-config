@@ -81,7 +81,6 @@ zsh-completions
 git
 tmux
 kubectl
-asdf
 aws
 direnv
 zsh-autosuggestions
@@ -102,41 +101,10 @@ fpath=(~/.zsh/completion $fpath)
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-   export EDITOR='vim'
- else
-   export EDITOR='nvim'
- fi
- 
- n ()
- {
-   # Block nesting of nnn in subshells
-   if [ -n $NNNLVL ] && [ "${NNNLVL:-0}" -ge 1 ]; then
-     echo "nnn is already running"
-     return
-   fi
-
-    # The default behaviour is to cd on quit (nnn checks if NNN_TMPFILE is set)
-    # To cd on quit only on ^G, remove the "export" as in:
-    #     NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
-    # NOTE: NNN_TMPFILE is fixed, should not be modified
-    export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
-
-    # Unmask ^Q (, ^V etc.) (if required, see `stty -a`) to Quit nnn
-    # stty start undef
-    # stty stop undef
-    # stty lwrap undef
-    # stty lnext undef
-
-    nnn "$@" -adHUeP p
-
-    if [ -f "$NNN_TMPFILE" ]; then
-      . "$NNN_TMPFILE"
-      rm -f "$NNN_TMPFILE" > /dev/null
-    fi
- }
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+    export EDITOR='vim'
+  else
+    export EDITOR='nvim'
+  fi
 
 #  Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -147,7 +115,6 @@ if [[ -n $SSH_CONNECTION ]]; then
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias sc="source $HOME/.zshrc"
-alias cheat.sh="f(){curl cheat.sh/$1};f"
 alias cp="cp -i"                          # confirm before overwriting something
 alias df="df -h"                          # human-readable sizes
 alias free="free -m"                      # show sizes in MB
@@ -156,9 +123,6 @@ alias listservices="systemctl list-unit-files --type=service | egrep 'enabled|di
 
 # Export temp directory for nvim
 export TMPDIR="/tmp"
-
-# NNN Configs
-export NNN_PLUG='p:preview-tui'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
