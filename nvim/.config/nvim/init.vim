@@ -49,8 +49,6 @@ set shiftwidth=2
 set expandtab
 set autoindent
 set copyindent
-set guifont=FiraCode\ Nerd\ Font\ 14
-let g:nord_cursor_line_number_background=1
 let g:airline_powerline_fonts = 1
 syntax on
 
