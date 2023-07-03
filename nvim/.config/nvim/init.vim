@@ -15,9 +15,6 @@ Plug 'neoclide/coc-lists', {'branch': 'master'}
 Plug 'josa42/coc-sh'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'vim-airline/vim-airline'
-Plug 'arcticicestudio/nord-vim'
-
-Plug 'jabirali/vim-tmux-yank' "https://github.com/jabirali/vim-tmux-yank
 
 " Syntax Highlighting for NERDTree
 Plug 'preservim/nerdtree'
