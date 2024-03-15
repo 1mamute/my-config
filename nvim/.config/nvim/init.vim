@@ -16,6 +16,7 @@ Plug 'josa42/coc-sh'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'arcticicestudio/nord-vim'
+Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 
 Plug 'jabirali/vim-tmux-yank' "https://github.com/jabirali/vim-tmux-yank
 
@@ -33,7 +34,9 @@ autocmd VimEnter *
   \|   PlugInstall --sync | q
   \| endif
 
-colorscheme nord                " Colorscheme
+set termguicolors
+"colorscheme catppuccin-frappe " Colorscheme
+colorscheme nord " Colorscheme
 set mouse+=a                    " Mouse support
 set hidden                      " TextEdit might fail if hidden is not set.
 set laststatus=2                " Always display statusline

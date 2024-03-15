@@ -7,7 +7,6 @@
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
   "terminal.integrated.fontFamily": "FiraCode Nerd Font",
-  "editor.formatOnSave": true,
   "explorer.compactFolders": false,
   "editor.mouseWheelZoom": true,
   "editor.fontFamily": "'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
@@ -20,9 +19,9 @@
   "editor.suggestSelection": "first",
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
   "[python]": {
-    "editor.defaultFormatter": "ms-python.python"
+    "editor.defaultFormatter": "ms-python.black-formatter"
   },
-  "python.formatting.provider": "yapf",
+  "python.formatting.provider": "black",
   "window.titleBarStyle": "custom",
   "window.enableMenuBarMnemonics": false,
   "window.customMenuBarAltFocus": false,
@@ -79,9 +78,8 @@
   ],
   "diffEditor.codeLens": true,
   "gitlens.codeLens.includeSingleLineSymbols": true,
-  "python.linting.flake8Enabled": true,
-  "python.linting.flake8Args": [
-    "--max-line-length=120"
-  ],
-  "editor.codeLens": false
+  "editor.codeLens": false,
+  "workbench.colorTheme": "One Dark Pro Darker",
+  "ansible.ansible.useFullyQualifiedCollectionNames": false,
+  "pylint.importStrategy": "fromEnvironment"
 }

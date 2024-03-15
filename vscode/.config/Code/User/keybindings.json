@@ -27,10 +27,6 @@
     "when": "textInputFocus && !editorReadonly"
   },
   {
-    "key": "ctrl+n",
-    "command": "extension.advancedNewFile",
-  },
-  {
     "key": "ctrl+shift+n",
     "command": "explorer.newFolder"
   },
@@ -41,5 +37,33 @@
   {
     "key": "ctrl+tab",
     "command": "workbench.action.nextEditorInGroup"
+  },
+  {
+    "key": "ctrl+alt+left",
+    "command": "-workbench.action.moveEditorToPreviousGroup"
+  },
+  {
+    "key": "ctrl+alt+left",
+    "command": "cursorWordPartLeft",
+    "when": "textInputFocus"
+  },
+  {
+    "key": "ctrl+shift+alt+left",
+    "command": "cursorWordPartLeftSelect",
+    "when": "textInputFocus"
+  },
+  {
+    "key": "ctrl+alt+right",
+    "command": "-workbench.action.moveEditorToNextGroup"
+  },
+  {
+    "key": "ctrl+alt+right",
+    "command": "cursorWordPartRight",
+    "when": "textInputFocus"
+  },
+  {
+    "key": "ctrl+shift+alt+right",
+    "command": "cursorWordPartRightSelect",
+    "when": "textInputFocus"
   }
 ]
