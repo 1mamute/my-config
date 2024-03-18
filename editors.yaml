@@ -1,0 +1,62 @@
+# code: language=ansible
+---
+- name: Install zsh, Oh My Zsh, dependencies and configurations
+  hosts: localhost
+  vars:
+    # Mirror server for fetching the public keys and the Visual Studio Code
+    # installation package. The URL may include directories. The URL must not end
+    # with a trailing slash.
+    visual_studio_code_mirror: 'https://packages.microsoft.com'
+
+    # should the gpgcheck of the repo enabled?
+    # if true
+    # - for apt repo the option trusted=yes is NOT added
+    # - for dnf/yum the option gpgcheck is set to yes
+    # - for zypper the option gpgcheck is set to 1
+    # true is the default
+    # if false
+    # - for apt repo the option trusted=yes is added to repo definition
+    # - for dnf/yum the option gpgcheck is set to no
+    # - for zypper the option gpgcheck is set to 0
+    visual_studio_code_gpgcheck: true
+
+  tasks:
+    - name: Install dependencies (apt)
+      become: true
+      ansible.builtin.apt:
+        name:
+          - ca-certificates
+          - apt-transport-https
+        state: present
+
+    - name: Create APT keyrings dir
+      become: true
+      ansible.builtin.file:
+        path: "/etc/apt/keyrings"
+        state: directory
+        mode: "u=rwx,go=rx"
+
+    - name: Install key (apt)
+      become: true
+      ansible.builtin.get_url:
+        url: "{{ visual_studio_code_mirror }}/keys/microsoft.asc"
+        dest: "/etc/apt/keyrings/"
+        mode: "u=rw,go=r"
+        force: true
+
+    - name: Install VS Code repo (apt)
+      become: true
+      ansible.builtin.apt_repository:
+        repo: >-
+          deb [arch=amd64
+          {{ visual_studio_code_gpgcheck | ternary("", " trusted=true") }}
+          signed-by=/etc/apt/keyrings/microsoft.asc]
+          {{ visual_studio_code_mirror }}/repos/code stable main
+        filename: vscode
+        state: present
+
+    - name: Install VS Code (apt)
+      become: true
+      ansible.builtin.apt:
+        name: code
+        state: present

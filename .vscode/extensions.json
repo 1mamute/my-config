@@ -2,6 +2,7 @@
     "recommendations": [
         "rogalmic.bash-debug",
         "mads-hartmann.bash-ide-vscode",
-        "timonwong.shellcheck"
+        "timonwong.shellcheck",
+        "redhat.ansible"
     ]
 }

@@ -1,0 +1,66 @@
+# code: language=ansible
+---
+- name: Install zsh, Oh My Zsh, dependencies and configurations
+  hosts: localhost
+  tasks:
+    - name: Update package cache
+      ansible.builtin.package:
+        update_cache: true
+      become: true
+
+    - name: Ensure Zsh with dependencies are installed
+      ansible.builtin.package:
+        name:
+          - zsh
+          - wget
+          - curl
+          - fzf
+        state: present
+        update_cache: true
+      become: true
+
+    - name: Ensure zsh is the default shell
+      ansible.builtin.user:
+        name: "{{ ansible_user_id }}"
+        shell: "/usr/bin/zsh"
+      become: true
+
+    - name: Clone or update Oh My Zsh repo # noqa: latest
+      ansible.builtin.git:
+        repo: https://github.com/ohmyzsh/ohmyzsh.git
+        single_branch: true
+        dest: ~/.oh-my-zsh
+        depth: 1
+        # Prevent the cloned repository from having insecure permissions. Failing to do
+        # so causes compinit() calls to fail with "command not found: compdef" errors
+        # for users with insecure umasks (e.g., "002", allowing group writability).
+        # same as "g-w,o-w"
+        umask: "022"
+
+    - name: Clone or update p10k repo # noqa: latest
+      ansible.builtin.git:
+        repo: https://github.com/romkatv/powerlevel10k.git
+        single_branch: true
+        dest: ~/.oh-my-zsh/custom/themes/powerlevel10k
+        depth: 1
+
+    - name: Clone or update zsh-autosuggestions repo # noqa: latest
+      ansible.builtin.git:
+        repo: https://github.com/zsh-users/zsh-autosuggestions.git
+        single_branch: true
+        dest: ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+        depth: 1
+
+    - name: Clone or update zsh-syntax-highlighting repo # noqa: latest
+      ansible.builtin.git:
+        repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+        single_branch: true
+        dest: ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+        depth: 1
+
+    - name: Clone or update zsh-completions repo # noqa: latest
+      ansible.builtin.git:
+        repo: https://github.com/zsh-users/zsh-completions.git
+        single_branch: true
+        dest: ~/.oh-my-zsh/custom/plugins/zsh-completions
+        depth: 1
