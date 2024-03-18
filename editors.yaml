@@ -1,46 +1,71 @@
 # code: language=ansible
 ---
-- name: Install zsh, Oh My Zsh, dependencies and configurations
+- name: Install and configure text editors/IDEs
   hosts: localhost
   vars:
     # Mirror server for fetching the public keys and the Visual Studio Code
     # installation package. The URL may include directories. The URL must not end
     # with a trailing slash.
     visual_studio_code_mirror: 'https://packages.microsoft.com'
-
-    # should the gpgcheck of the repo enabled?
-    # if true
-    # - for apt repo the option trusted=yes is NOT added
-    # - for dnf/yum the option gpgcheck is set to yes
-    # - for zypper the option gpgcheck is set to 1
-    # true is the default
-    # if false
-    # - for apt repo the option trusted=yes is added to repo definition
-    # - for dnf/yum the option gpgcheck is set to no
-    # - for zypper the option gpgcheck is set to 0
-    visual_studio_code_gpgcheck: true
-
+    node_version: '20.x'
   tasks:
-    - name: Install dependencies (apt)
-      become: true
-      ansible.builtin.apt:
-        name:
-          - ca-certificates
-          - apt-transport-https
-        state: present
-
     - name: Create APT keyrings dir
       become: true
       ansible.builtin.file:
-        path: "/etc/apt/keyrings"
+        path: /etc/apt/keyrings
         state: directory
         mode: "u=rwx,go=rx"
 
-    - name: Install key (apt)
+    # NodeJS (necessário para neovim e vscode)
+    - name: Check node installed version
+      ansible.builtin.command: node --version
+      ignore_errors: true
+      changed_when: false
+      register: node_check_result
+
+    - name: Download nodesource key (apt)
+      become: true
+      when: node_check_result.rc != 0 or node_check_result.rc == 0 and node_check_result.stdout is version(node_version, 'le')
+      ansible.builtin.get_url:
+        url: "https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key"
+        dest: /etc/apt/keyrings/nodesource.gpg
+        mode: "u=rw,go=r"
+        force: true
+
+    - name: Install nodesource repo (apt)
+      become: true
+      when: node_check_result.rc != 0 or node_check_result.rc == 0 and node_check_result.stdout is version(node_version, 'le')
+      ansible.builtin.apt_repository:
+        repo: >-
+          deb [arch=amd64 trusted=true signed-by=/etc/apt/keyrings/nodesource.gpg]
+          https://deb.nodesource.com/node_{{ node_version }} nodistro main
+        filename: nodesource
+        state: present
+
+    - name: Configure NodeJS in apt preferences
+      when: node_check_result.rc != 0 or node_check_result.rc == 0 and node_check_result.stdout is version(node_version, 'le')
+      ansible.builtin.copy:
+        dest: /etc/apt/preferences.d/nodejs
+        mode: "u=rw,go=r"
+        content: |
+          Package: nodejs
+          Pin: origin deb.nodesource.com
+          Pin-Priority: 600
+
+    - name: Install node (apt)
+      become: true
+      when: node_check_result.rc != 0 or node_check_result.rc == 0 and node_check_result.stdout is version(node_version, 'le')
+      ansible.builtin.apt:
+        name: code
+        state: present
+        update_cache: true
+
+    # Visual Studio Code
+    - name: Download microsoft key (apt)
       become: true
       ansible.builtin.get_url:
         url: "{{ visual_studio_code_mirror }}/keys/microsoft.asc"
-        dest: "/etc/apt/keyrings/"
+        dest: /etc/apt/keyrings/microsoft.asc
         mode: "u=rw,go=r"
         force: true
 
@@ -48,9 +73,7 @@
       become: true
       ansible.builtin.apt_repository:
         repo: >-
-          deb [arch=amd64
-          {{ visual_studio_code_gpgcheck | ternary("", " trusted=true") }}
-          signed-by=/etc/apt/keyrings/microsoft.asc]
+          deb [arch=amd64 trusted=true signed-by=/etc/apt/keyrings/microsoft.asc]
           {{ visual_studio_code_mirror }}/repos/code stable main
         filename: vscode
         state: present
@@ -60,3 +83,77 @@
       ansible.builtin.apt:
         name: code
         state: present
+
+    # Neovim
+    - name: Install github3.py python package
+      # Necessário para rodar o community.general.github_release
+      ansible.builtin.pip:
+        name: github3.py
+        state: present
+
+    - name: Get latest release of neovim public repo
+      community.general.github_release:
+        user: neovim
+        repo: neovim
+        action: latest_release
+      register: nvim_latest_release
+
+    - name: Check nvim installed version
+      ansible.builtin.shell: nvim --version | head -1 | grep -o 'v[0-9]\.[0-9]\.[0-9]'
+      ignore_errors: true
+      changed_when: false
+      register: nvim_check_result
+
+    - name: Get latest nvim release tarball
+      become: true
+      when: nvim_check_result.stdout is version(nvim_latest_release.tag, "<")
+      ansible.builtin.get_url:
+        url: "https://github.com/neovim/neovim/releases/download/{{ nvim_latest_release.tag }}/nvim-linux64.tar.gz"
+        dest: /tmp/nvim-linux64.tar.gz
+        mode: "u=rw,go=r"
+
+    - name: Extract to path recommended by nvim git repo (/opt)
+      become: true
+      when: nvim_check_result.stdout is version(nvim_latest_release.tag, "<")
+      ansible.builtin.unarchive:
+        src: /tmp/nvim-linux64.tar.gz
+        dest: /opt
+
+    - name: Create a nvim symbolic link
+      when: nvim_check_result.stdout is version(nvim_latest_release.tag, "<")
+      become: true
+      ansible.builtin.file:
+        src: /opt/nvim-linux64/bin/nvim
+        dest: /usr/local/bin/nvim
+        state: link
+
+    - name: Install python3-neovim package (apt)
+      become: true
+      ansible.builtin.package:
+        name: python3-neovim
+        state: present
+
+    - name: Create vim-plug directory if it does not exist
+      ansible.builtin.file:
+        path: ~/.local/share/nvim/site/autoload
+        state: directory
+        mode: '0755'
+
+    - name: Get latest vim-plug release
+      ansible.builtin.get_url:
+        url: "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+        dest: "~/.local/share/nvim/site/autoload/plug.vim"
+        mode: "u=rw,go=r"
+
+# Setting VS Code as the default text editor
+# xdg-open
+# You can set the default text editor for text files (text/plain) that is used by xdg-open with the following command:
+
+# xdg-mime default code.desktop text/plain
+# Debian alternatives system
+# Debian-based distributions allow setting a default editor using the Debian alternatives system, without concern for the MIME type. You can set this by running the following and selecting code:
+
+# sudo update-alternatives --set editor /usr/bin/code
+# If Visual Studio Code doesn't show up as an alternative to editor, you need to register it:
+
+# sudo update-alternatives --install /usr/bin/editor editor $(which code) 10

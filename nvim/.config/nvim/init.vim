@@ -41,8 +41,7 @@ set ve+=onemore                 " Allow an extra space after end of line
 set wildmenu                    " Visual autocomplete for command menu
 set incsearch                   " Highlight search terms
 set showmatch                   " Highlight matching brace
-set cursorline
-set encoding=utf-8
+set encoding=UTF-8
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2

@@ -1,0 +1,4 @@
+# code: language=ansible
+---
+- name: Install and configure apps
+  hosts: localhost

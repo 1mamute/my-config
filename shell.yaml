@@ -12,8 +12,6 @@
       ansible.builtin.package:
         name:
           - zsh
-          - wget
-          - curl
           - fzf
         state: present
         update_cache: true
