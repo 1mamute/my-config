@@ -27,7 +27,7 @@
       ansible.builtin.git:
         repo: https://github.com/ohmyzsh/ohmyzsh.git
         single_branch: true
-        dest: ~/.oh-my-zsh
+        dest: "{{ ansible_env.HOME }}/.oh-my-zsh"
         depth: 1
         # Prevent the cloned repository from having insecure permissions. Failing to do
         # so causes compinit() calls to fail with "command not found: compdef" errors
@@ -39,26 +39,26 @@
       ansible.builtin.git:
         repo: https://github.com/romkatv/powerlevel10k.git
         single_branch: true
-        dest: ~/.oh-my-zsh/custom/themes/powerlevel10k
+        dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes/powerlevel10k"
         depth: 1
 
     - name: Clone or update zsh-autosuggestions repo # noqa: latest
       ansible.builtin.git:
         repo: https://github.com/zsh-users/zsh-autosuggestions.git
         single_branch: true
-        dest: ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+        dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
         depth: 1
 
     - name: Clone or update zsh-syntax-highlighting repo # noqa: latest
       ansible.builtin.git:
         repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
         single_branch: true
-        dest: ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+        dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
         depth: 1
 
     - name: Clone or update zsh-completions repo # noqa: latest
       ansible.builtin.git:
         repo: https://github.com/zsh-users/zsh-completions.git
         single_branch: true
-        dest: ~/.oh-my-zsh/custom/plugins/zsh-completions
+        dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-completions"
         depth: 1

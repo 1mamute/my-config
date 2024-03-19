@@ -1,0 +1,55 @@
+# Colors - https://github.com/olimorris/onedarkpro.nvim
+
+background #282c34
+
+# foreground #979eab
+foreground #abb2bf
+
+# cursor none
+cursor #cccccc
+
+color0 #282c34
+color1 #e06c75
+color2 #98c379
+color3 #e5c07b
+color4 #61afef
+
+# color5 #be5046
+color5 #c678dd
+
+color6 #56b6c2
+
+# color7 #979eab
+color7 #abb2bf
+
+# color8 #393e48
+color8 #5c6370
+
+# color9 #d19a66
+color9 #e9969d
+
+# color10 #56b6c2
+color10 #b3d39c
+
+# color11 #e5c07b
+color11 #edd4a6
+
+# color12 #61afef
+color12 #8fc6f4
+
+# color13 #be5046
+color13 #d7a1e7
+
+# color14 #56b6c2
+color14 #7bc6d0
+
+# color15 #abb2bf
+color15 #c8cdd5
+
+# Tab bar
+active_tab_foreground   #d7a1e7
+active_tab_background   #282c34
+inactive_tab_foreground #5c6370
+inactive_tab_background #3e4451
+selection_foreground #282c34
+selection_background #979eab

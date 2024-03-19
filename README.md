@@ -12,3 +12,10 @@ Nord theme blue
 
 # Flameshot
 ```flameshot gui```
+
+
+# inspiration
+https://github.com/pmorim/.dotfiles/tree/main
+https://github.com/r3tex/one-dark
+https://github.com/rmehri01/onenord.nvim
+https://github.com/gh0stzk/dotfiles

@@ -2,3 +2,5 @@
 ---
 - name: Install extensions and configure GNOME
   hosts: localhost
+
+# https://github.com/lonr/adwaita-one-dark
