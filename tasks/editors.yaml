@@ -47,7 +47,7 @@
       changed_when: "'already installed' not in nvm_install_response.stderr and nvm_install_response.rc == 0"
 
     # Test is there is a default already set
-    - name: Is there a default already set # noqa 305
+    - name: Is there a default already set # noqa: command-instead-of-shell
       ansible.builtin.shell: zsh -ic 'cat {{ ansible_env.HOME }}/.nvm/alias/default'
       register: mg_nvm_default_response
       changed_when: "mg_nvm_default_response.rc != 0"
@@ -130,6 +130,21 @@
         state: present
         extra_args: --upgrade
 
+    # para o coc-ansible
+    - name: Install ansible-lint,  yamllint package
+      ansible.builtin.pip:
+        name:
+          - yamllint
+          - ansible-lint
+        state: present
+
+    # para o coc-pyright
+    - name: Install ruff-lsp package
+      ansible.builtin.pip:
+        name: ruff-lsp
+        state: present
+
+    # confirmar mas acho que é requisito do coc
     - name: Install "neovim" node.js package globally.
       community.general.npm:
         name: neovim
@@ -137,7 +152,7 @@
 
     # Requisitos do telescope
     - name: Check if ripgrep installed
-      ansible.builtin.command: command -v rg
+      ansible.builtin.command: rg --version
       ignore_errors: true
       changed_when: false
       register: rg_check_result

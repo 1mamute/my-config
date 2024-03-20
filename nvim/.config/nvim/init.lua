@@ -6,146 +6,147 @@ if not vim.loop.fs_stat(lazypath) then
     "--filter=blob:none",
     "https://github.com/folke/lazy.nvim.git",
     "--branch=stable", -- latest stable release
-    lazypath,
+    lazypath, 
   })
 end
 vim.opt.rtp:prepend(lazypath)
 
-local highlight = {
-  "CursorColumn",
-  "Whitespace",
-}
+-- Set <space> as the leader key
+-- See `:help mapleader`
+--  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
 
 require("lazy").setup({
-  {
-    "olimorris/onedarkpro.nvim",
-    priority = 1000, -- Ensure it loads first
-    config = function()
-      require("onedarkpro").setup({
-        plugins = {
-          all = false,
-          gitsigns = true,
-          lsp_semantic_tokens = true,
-          nvim_cmp = true,
-          treesitter = true,
-          telescope = true,
-          indentline = true,
-        }
-      })
-    end
-  },
-  {
-    'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-    config = function()
-      require('lualine').setup()
-    end
-  },
-  { 
-    "lukas-reineke/indent-blankline.nvim",
-    main = "ibl",
-    opts = {},
-    branch = master,
-    config = function()
-      require("ibl").setup {
-        indent = { highlight = highlight, char = "" },
-        whitespace = {
-            highlight = highlight,
-            remove_blankline_trail = false,
-        },
-        scope = { enabled = false },
-      }
-    end
-  },
-  { "ryanoasis/vim-devicons", branch = "master" },
-  { "nvim-tree/nvim-web-devicons", branch = "master" },
-  { "neoclide/coc.nvim", branch = "release" },
-  { "neoclide/coc-yaml", branch = "master" },
-  { "neoclide/coc-pairs", branch = "master" },
-  { "neoclide/coc-highlight", branch = "master" },
-  { "neoclide/coc-git", branch = "master" },
-  { "neoclide/coc-lists", branch = "master" },
-  { "editorconfig/editorconfig-vim", branch = "master" },
-  { "preservim/nerdtree", branch = "master" },
-  { "tiagofumo/vim-nerdtree-syntax-highlight", branch = "master" },
-  { "Xuyuanp/nerdtree-git-plugin", branch = "master" },
-  { "airblade/vim-gitgutter", branch = "main" },
   { "nvim-lua/plenary.nvim", branch = "master" },
-  { 
-    "hrsh7th/nvim-cmp",
-    branch = "main",
-    config = function()
-      require("cmp").setup(
-        {
-          sources = {
-            { name = "codeium" }
-          }
-        }
-      )
-    end
-  },
-  { 
-    "lewis6991/gitsigns.nvim",
-    branch = "main",
-    config = function()
-      require("gitsigns").setup()
-    end
-  },
+  { import = 'custom.plugins.appearence' },
+  { import = 'custom.plugins.lsp' },
+  { import = 'custom.plugins.file_browser' },
+  -- { import = 'custom.plugins.completions' },
+  { import = 'custom.plugins.syntax_highlighting' },
+  { import = 'custom.plugins.fuzzy_finder' },
+  -- { 'akinsho/toggleterm.nvim', version = "*", config = true },
   {
-    "Exafunction/codeium.nvim",
-    dependencies = {
-        "nvim-lua/plenary.nvim",
-        "hrsh7th/nvim-cmp",
-    },
+    'numToStr/Comment.nvim',
+    opts = {},
+    lazy = false,
     config = function()
-        require("codeium").setup({
-        })
+      require('Comment').setup()
     end
+  },
+  { 
+    -- https://www.lazyvim.org/plugins/editor#which-keynvim
+    -- https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua
+    -- Useful plugin to show you pending keybinds.
+    'folke/which-key.nvim',
+    event = "VeryLazy",
+    opts = {
+      plugins = { spelling = true },
+      defaults = {
+        mode = { "n", "v" },
+        ["g"] = { name = "+goto" },
+        ["gs"] = { name = "+surround" },
+        ["z"] = { name = "+fold" },
+        ["]"] = { name = "+next" },
+        ["["] = { name = "+prev" },
+        ["<leader><tab>"] = { name = "+tabs" },
+        ["<leader>b"] = { name = "+buffer" },
+        ["<leader>c"] = { name = "+code" },
+        ["<leader>f"] = { name = "+file/find" },
+        ["<leader>g"] = { name = "+git" },
+        ["<leader>gh"] = { name = "+hunks" },
+        ["<leader>q"] = { name = "+quit/session" },
+        ["<leader>s"] = { name = "+search" },
+        ["<leader>u"] = { name = "+ui" },
+        ["<leader>w"] = { name = "+windows" },
+        ["<leader>x"] = { name = "+diagnostics/quickfix" },
+      },
+    },
+    config = function(_, opts) -- This is the function that runs, AFTER loading
+      require('which-key').setup(opts)
+      require('which-key').register(opts.defaults)
+
+      -- Document existing key chains
+      require('which-key').register {
+        ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
+        ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
+        ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
+        ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
+        ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
+      }
+    end,
   },
 })
 
 vim.cmd("colorscheme onedark")
 
+-- Set to true if you have a Nerd Font installed
+vim.g.have_nerd_font = true
 
-require'nvim-web-devicons'.setup {
-  -- your personnal icons can go here (to override)
-  -- you can specify color or cterm_color instead of specifying both of them
-  -- DevIcon will be appended to `name`
-  override = {
-    zsh = {
-      icon = "",
-      color = "#428850",
-      cterm_color = "65",
-      name = "Zsh"
-    }
-  };
-  -- globally enable different highlight colors per icon (default to true)
-  -- if set to false all icons will have the default icon's color
-  color_icons = true;
-  -- globally enable default icons (default to false)
-  -- will get overriden by `get_icons` option
-  default = true;
-  -- globally enable "strict" selection of icons - icon will be looked up in
-  -- different tables, first by filename, and if not found by extension; this
-  -- prevents cases when file doesn't have any extension but still gets some icon
-  -- because its name happened to match some extension (default to false)
-  strict = true;
-  -- same as `override` but specifically for overrides by filename
-  -- takes effect when `strict` is true
-  override_by_filename = {
-    [".gitignore"] = {
-      icon = "",
-      color = "#f1502f",
-      name = "Gitignore"
-    }
-  };
-  -- same as `override` but specifically for overrides by extension
-  -- takes effect when `strict` is true
-  override_by_extension = {
-    ["log"] = {
-      icon = "",
-      color = "#81e043",
-      name = "Log"
-    }
-  };
-}
+-- Make line numbers default
+vim.opt.number = true
+
+-- Enable mouse mode, can be useful for resizing splits for example!
+vim.opt.mouse = 'a'
+
+-- Don't show the mode, since it's already in the status line
+vim.opt.showmode = false
+
+-- Sync clipboard between OS and Neovim.
+--  Remove this option if you want your OS clipboard to remain independent.
+--  See `:help 'clipboard'`
+vim.opt.clipboard = 'unnamedplus'
+
+-- Enable break indent
+vim.opt.breakindent = true
+
+-- Save undo history
+vim.opt.undofile = true
+
+-- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+
+-- Keep signcolumn on by default
+vim.opt.signcolumn = 'yes'
+
+-- Decrease update time (default is 4000 ms = 4 s)
+vim.opt.updatetime = 250
+
+-- Decrease mapped sequence wait time
+-- Displays which-key popup sooner
+vim.opt.timeoutlen = 300
+
+-- Sets how neovim will display certain whitespace characters in the editor.
+--  See `:help 'list'`
+--  and `:help 'listchars'`
+vim.opt.list = true
+vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+
+-- Preview substitutions live, as you type!
+vim.opt.inccommand = 'split'
+
+-- Show which line your cursor is on
+vim.opt.cursorline = true
+
+-- Minimal number of screen lines to keep above and below the cursor.
+vim.opt.scrolloff = 10
+
+-- Set highlight on search, but clear on pressing <Esc> in normal mode
+vim.opt.hlsearch = true
+vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+
+-- [[ Basic Autocommands ]]
+--  See `:help lua-guide-autocommands`
+
+-- Highlight when yanking (copying) text
+--  Try it with `yap` in normal mode
+--  See `:help vim.highlight.on_yank()`
+vim.api.nvim_create_autocmd('TextYankPost', {
+  desc = 'Highlight when yanking (copying) text',
+  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+})
+

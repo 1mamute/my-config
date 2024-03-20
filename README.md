@@ -19,3 +19,5 @@ https://github.com/pmorim/.dotfiles/tree/main
 https://github.com/r3tex/one-dark
 https://github.com/rmehri01/onenord.nvim
 https://github.com/gh0stzk/dotfiles
+https://raw.githubusercontent.com/voquis/ubuntu-desktop-dev-setup/main/playbook.yaml
+https://github.com/Nismit/dotfiles/blob/bd007838e7a2a4493791f79e873817ffb6ded532/.config/nvim/after/plugin/coc.lua
