@@ -21,3 +21,7 @@ https://github.com/rmehri01/onenord.nvim
 https://github.com/gh0stzk/dotfiles
 https://raw.githubusercontent.com/voquis/ubuntu-desktop-dev-setup/main/playbook.yaml
 https://github.com/Nismit/dotfiles/blob/bd007838e7a2a4493791f79e873817ffb6ded532/.config/nvim/after/plugin/coc.lua
+https://github.com/tokiory/neovim-boilerplate/blob/main/lua/settings.lua
+https://github.com/josethz00/neovim-like-vscode/blob/main/init.vim
+https://github.com/mariuskimmina/ansible-role-dotfiles/blob/main/tasks/main.yml
+https://github.com/Sewdohe/NeoCode

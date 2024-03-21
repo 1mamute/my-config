@@ -1,3 +1,4 @@
+-- bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -16,69 +17,18 @@ vim.opt.rtp:prepend(lazypath)
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
-
 require("lazy").setup({
-  { "nvim-lua/plenary.nvim", branch = "master" },
-  { import = 'custom.plugins.appearence' },
-  { import = 'custom.plugins.lsp' },
-  { import = 'custom.plugins.file_browser' },
-  -- { import = 'custom.plugins.completions' },
-  { import = 'custom.plugins.syntax_highlighting' },
-  { import = 'custom.plugins.fuzzy_finder' },
-  -- { 'akinsho/toggleterm.nvim', version = "*", config = true },
-  {
-    'numToStr/Comment.nvim',
-    opts = {},
-    lazy = false,
-    config = function()
-      require('Comment').setup()
-    end
-  },
-  { 
-    -- https://www.lazyvim.org/plugins/editor#which-keynvim
-    -- https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua
-    -- Useful plugin to show you pending keybinds.
-    'folke/which-key.nvim',
-    event = "VeryLazy",
-    opts = {
-      plugins = { spelling = true },
-      defaults = {
-        mode = { "n", "v" },
-        ["g"] = { name = "+goto" },
-        ["gs"] = { name = "+surround" },
-        ["z"] = { name = "+fold" },
-        ["]"] = { name = "+next" },
-        ["["] = { name = "+prev" },
-        ["<leader><tab>"] = { name = "+tabs" },
-        ["<leader>b"] = { name = "+buffer" },
-        ["<leader>c"] = { name = "+code" },
-        ["<leader>f"] = { name = "+file/find" },
-        ["<leader>g"] = { name = "+git" },
-        ["<leader>gh"] = { name = "+hunks" },
-        ["<leader>q"] = { name = "+quit/session" },
-        ["<leader>s"] = { name = "+search" },
-        ["<leader>u"] = { name = "+ui" },
-        ["<leader>w"] = { name = "+windows" },
-        ["<leader>x"] = { name = "+diagnostics/quickfix" },
-      },
-    },
-    config = function(_, opts) -- This is the function that runs, AFTER loading
-      require('which-key').setup(opts)
-      require('which-key').register(opts.defaults)
-
-      -- Document existing key chains
-      require('which-key').register {
-        ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-        ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-        ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-        ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-        ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
-      }
-    end,
-  },
+  checker = { enabled = true }, -- automatically check for plugin updates and provide information for lualine
+  defaults = { lazy = true }, -- lazy load plugins by default
+  spec = {
+    { import = 'custom.plugins.ui' },
+    { import = 'custom.plugins.lsp' },
+    { import = 'custom.plugins.file_explorer' },
+    -- { import = 'custom.plugins.completions' },
+    { import = 'custom.plugins.syntax_highlighting' },
+    { import = 'custom.plugins.fuzzy_finder' },
+  }
 })
-
-vim.cmd("colorscheme onedark")
 
 -- Set to true if you have a Nerd Font installed
 vim.g.have_nerd_font = true
