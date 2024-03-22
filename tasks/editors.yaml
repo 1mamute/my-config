@@ -178,6 +178,12 @@
       ansible.builtin.apt:
         deb: "/tmp/ripgrep_{{ ripgrep_latest_release.tag }}_amd64.deb"
 
+    - name: Update ripgrep package (apt)
+      become: true
+      ansible.builtin.package:
+        name: ripgrep
+        state: present
+
     - name: Install fd-find package (apt) # para o telescope
       become: true
       ansible.builtin.package:

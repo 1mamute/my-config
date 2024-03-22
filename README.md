@@ -2,7 +2,7 @@
 Public repo for my dotfiles, IDE and general configuration files.
 Nord theme blue
 
-```stow -vSt ~ */ --no```  
+```stow -vSt ~ */ --no```   
 
 #### Undo
 ```stow -vDt ~ */ --no```
