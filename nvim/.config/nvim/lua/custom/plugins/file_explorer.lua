@@ -25,9 +25,17 @@ local neo_tree = {
     sources = { "filesystem", "buffers", "git_status", "document_symbols" },
     open_files_do_not_replace_types = { "terminal", "Trouble", "trouble", "qf", "Outline" },
     filesystem = {
-      bind_to_cwd = false,
+      bind_to_cwd = true,  -- creates a 2-way binding between vim's cwd and neo-tree's root
       follow_current_file = { enabled = true },
       use_libuv_file_watcher = true,
+      filtered_items = {
+        hide_dotfiles = false,
+        hide_hidden = false, -- only for windows
+        always_show = {
+          ".vscode",
+          ".env",
+        },
+      },
     },
     window = {
       mappings = {
@@ -50,37 +58,22 @@ local neo_tree = {
         expander_highlight = "NeoTreeExpander",
       },
     },
+    source_selector = {
+      winbar = true,
+      highlight_tab = "Normal",
+      highlight_tab_active = "NeoTreeTabActive",
+      highlight_background = "Normal",
+      highlight_separator = "Normal",
+      highlight_separator_active = "Normal",
+    },
   },
   keys = {
     {
-      "<leader>fe",
+      "<C-b>",
       function()
-        require("neo-tree.command").execute({ toggle = true, dir = require("lazyvim.util").root() })
+        require("neo-tree.command").execute({ toggle = true })
       end,
-      desc = "Explorer NeoTree (root dir)",
-    },
-    {
-      "<leader>fE",
-      function()
-        require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd() })
-      end,
-      desc = "Explorer NeoTree (cwd)",
-    },
-    { "<leader>e", "<leader>fe", desc = "Explorer NeoTree (root dir)", remap = true },
-    { "<leader>E", "<leader>fE", desc = "Explorer NeoTree (cwd)", remap = true },
-    {
-      "<leader>ge",
-      function()
-        require("neo-tree.command").execute({ source = "git_status", toggle = true })
-      end,
-      desc = "Git explorer",
-    },
-    {
-      "<leader>be",
-      function()
-        require("neo-tree.command").execute({ source = "buffers", toggle = true })
-      end,
-      desc = "Buffer explorer",
+      desc = "Show File Explorer",
     },
   },
 }
