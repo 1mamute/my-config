@@ -1,0 +1,9 @@
+---
+- name: Install dependencies
+  ansible.builtin.import_tasks: dependencies.yaml
+
+- name: Install and configure neovim
+  ansible.builtin.import_tasks: neovim.yaml
+
+- name: Install and configure vscode
+  ansible.builtin.import_tasks: vscode.yaml

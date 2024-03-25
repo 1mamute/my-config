@@ -18,8 +18,6 @@
     url: "https://github.com/neovim/neovim/releases/download/{{ nvim_latest_release.tag }}/nvim-linux64.tar.gz"
     dest: /tmp/nvim-linux64.tar.gz
     mode: "u=rw,go=r"
-  notify:
-    - Remove neovim tarball
 
 - name: Extract to path recommended by neovim git repo (/opt)
   become: true
@@ -27,6 +25,8 @@
   ansible.builtin.unarchive:
     src: /tmp/nvim-linux64.tar.gz
     dest: /opt
+  notify:
+    - Remove neovim tarball
 
 - name: Create a neovim symbolic link
   when: nvim_check_result.rc != 0 or (nvim_check_result.stdout is version(nvim_latest_release.tag, "<"))
@@ -63,6 +63,7 @@
 
 # coc requirements
 - name: Install "neovim" node.js package globally.
+  become: true
   community.general.npm:
     name: neovim
     global: true
@@ -101,14 +102,14 @@
     url: "https://github.com/BurntSushi/ripgrep/releases/download/{{ ripgrep_latest_release.tag }}/ripgrep_{{ ripgrep_latest_release.tag }}-1_amd64.deb"
     dest: "/tmp/ripgrep_amd64.deb"
     mode: "u=rw,go=r"
-  notify:
-    - Remove ripgrep .deb package
 
 - name: Install ripgrep .deb package
   when: rg_check_result.rc != 0 or (ripgrep_version is version(new_ripgrep_version, "<"))
   become: true
   ansible.builtin.apt:
     deb: "/tmp/ripgrep_amd64.deb"
+  notify:
+    - Remove ripgrep .deb package
 
 - name: Update ripgrep package
   become: true

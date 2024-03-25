@@ -1,9 +1,9 @@
-# code: language=ansible
 ---
 - name: Install general dependencies and configurations
   hosts: localhost
-  tasks:
+  pre_tasks:
     - name: Install dependencies
+      become: true
       ansible.builtin.package:
         name:
           - wget
@@ -13,18 +13,34 @@
           - ca-certificates
           - software-properties-common
           - gnupg
-          # - stow
+          - python3-apt
         state: present
+        update_cache: true
+
+    - name: Create APT keyrings dir if it doesn't exist
       become: true
+      ansible.builtin.file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: "u=rwx,go=rx"
 
-- name: Install zsh, Oh My Zsh, dependencies and configurations
-  import_playbook: shell.yaml
+    - name: Install github3.py python package
+      # Necessary to run the module community.general.github_release which is used several times during the playbook
+      ansible.builtin.pip:
+        name: github3.py
+        state: present
 
-- name: Install and configure text editors/IDEs
-  import_playbook: editors.yaml
+  roles:
+    - editors
 
-- name: Install and configure apps
-  import_playbook: apps.yaml
+    # - name: Install zsh, Oh My Zsh, dependencies and configurations
+    #   import_playbook: shell.yaml
 
-- name: Install extensions and configure GNOME
-  import_playbook: gnome.yaml
+    # - name: Install and configure text editors/IDEs
+    #   import_playbook: editors.yaml
+
+    # - name: Install and configure apps
+    #   import_playbook: apps.yaml
+
+    # - name: Install extensions and configure GNOME
+    #   import_playbook: gnome.yaml

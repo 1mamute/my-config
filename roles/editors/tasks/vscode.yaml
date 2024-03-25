@@ -1,5 +1,5 @@
 ---
-- name: Download microsoft key (apt)
+- name: Download microsoft gpg key
   become: true
   ansible.builtin.get_url:
     url: "{{ visual_studio_code_mirror }}/keys/microsoft.asc"
@@ -16,14 +16,14 @@
     filename: vscode
     state: present
 
-- name: Install VS Code (apt)
+- name: Install VS Code
   become: true
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name: code
     update_cache: true
     state: present
 
-- name: Set chrome as the default handler for text/plain
+- name: Set code as the default handler for text/plain
   community.general.gio_mime:
     mime_type: text/plain
     handler: code.desktop

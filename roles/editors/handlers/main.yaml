@@ -1,5 +1,5 @@
 ---
-- name: Remove volta install script
+- name: Remove nodesource install script
   ansible.builtin.file:
     path: /tmp/volta.sh
     state: absent
