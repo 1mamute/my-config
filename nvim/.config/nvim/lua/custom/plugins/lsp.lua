@@ -14,7 +14,6 @@ local coc_nvim = {
       'coc-yank',
       'coc-json',
       'coc-lua',
-      'coc-stylua',
       'coc-sh',
       'coc-pyright',
       'coc-toml',
