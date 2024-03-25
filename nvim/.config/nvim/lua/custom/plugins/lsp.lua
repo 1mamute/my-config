@@ -18,6 +18,7 @@ local coc_nvim = {
       'coc-pyright',
       'coc-toml',
       'coc-lightbulb',
+      'coc-symbol-line',
     }
 
     vim.g.coc_filetype_map = {
@@ -42,6 +43,16 @@ local coc_nvim = {
         vim.fn.CocActionAsync('highlight')
       end,
     })
+
+    -- show symbol line on winbar (bufferline.nvim)
+    function _G.symbol_line()
+      local curwin = vim.g.statusline_winid or 0
+      local curbuf = vim.api.nvim_win_get_buf(curwin)
+      local ok, line = pcall(vim.api.nvim_buf_get_var, curbuf, 'coc_symbol_line')
+      return ok and line or ''
+    end
+
+    vim.o.winbar = '%!v:lua.symbol_line()'
   end
 }
 
