@@ -1,0 +1,28 @@
+---
+- name: Checks if .editorconfig file exists
+  # For Windows targets, use the ansible.windows.win_stat module instead.
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.editorconfig"
+  register: editorconfig_file_check_result
+
+- name: Makes a backup of .editorconfig file
+  # For Windows targets, use the ansible.windows.win_copy module instead.
+  when: >-
+    editorconfig_file_check_result.stat.exists
+    and ((editorconfig_file_check_result.stat.islnk is defined and not editorconfig_file_check_result.stat.islnk)
+    or (editorconfig_file_check_result.stat.islnk is not defined))
+  ansible.builtin.copy:
+    src: "{{ ansible_env.HOME }}/.editorconfig"
+    dest: "{{ ansible_env.HOME }}/.editorconfig-backup"
+    mode: "u=rw,go=r"
+
+- name: Create a symbolic link to home from the .editorconfig file
+  when: >-
+    editorconfig_file_check_result.stat.exists
+    and ((editorconfig_file_check_result.stat.islnk is defined and not editorconfig_file_check_result.stat.islnk)
+    or (editorconfig_file_check_result.stat.islnk is not defined))
+  ansible.builtin.file:
+    src: "{{ playbook_dir }}/editorconfig/.editorconfig"
+    dest: "{{ ansible_env.HOME }}/.editorconfig"
+    state: link
+    force: true

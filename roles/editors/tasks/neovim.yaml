@@ -117,4 +117,44 @@
     name: ripgrep
     state: present
 
+- name: Checks if nvim config directory exists
+  # For Windows targets, use the ansible.windows.win_stat module instead.
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.config/nvim"
+  register: nvim_config_dir_check_result
+
+- name: Makes a backup of nvim config directory
+  # For Windows targets, use the ansible.windows.win_copy module instead.
+  when: >-
+    nvim_config_dir_check_result.stat.exists
+    and ((nvim_config_dir_check_result.stat.islnk is defined and not nvim_config_dir_check_result.stat.islnk)
+    or (nvim_config_dir_check_result.stat.islnk is not defined))
+  ansible.builtin.copy:
+    src: "{{ ansible_env.HOME }}/.config/nvim/"
+    dest: "{{ ansible_env.HOME }}/.config/nvim-backup"
+    mode: "u=rw,go=r"
+
+- name: Deletes nvim config directory
+  # For Windows targets, use the ansible.windows.win_file module instead.
+  when: >-
+    nvim_config_dir_check_result.stat.exists
+    and ((nvim_config_dir_check_result.stat.islnk is defined and not nvim_config_dir_check_result.stat.islnk)
+    or (nvim_config_dir_check_result.stat.islnk is not defined))
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/nvim"
+    state: absent
+
+- name: Create a symbolic link to home from the nvim config directory
+  # For Windows targets, use the ansible.windows.win_file module instead.
+  when: >-
+    nvim_config_dir_check_result.stat.exists
+    and ((nvim_config_dir_check_result.stat.islnk is defined and not nvim_config_dir_check_result.stat.islnk)
+    or (nvim_config_dir_check_result.stat.islnk is not defined))
+  ansible.builtin.file:
+    src: "{{ playbook_dir }}/nvim/.config/nvim"
+    dest: "{{ ansible_env.HOME }}/.config/nvim"
+    state: link
+    force: true
+
+
 # TODO: print report

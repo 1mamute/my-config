@@ -8,5 +8,5 @@
 - name: Install and configure vscode
   ansible.builtin.import_tasks: vscode.yaml
 
-- name: Symlink dotfiles
-  ansible.builtin.import_tasks: symlink.yaml
+- name: Editorconfig files
+  ansible.builtin.import_tasks: editorconfig.yaml
