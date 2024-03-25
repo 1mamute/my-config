@@ -89,7 +89,6 @@
 
   handlers:
     - name: Remove volta install script
-      when: volta_install_response.changed
       ansible.builtin.file:
         path: /tmp/volta.sh
         state: absent
