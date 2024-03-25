@@ -1,0 +1,119 @@
+---
+- name: Get latest release of neovim public repo
+  community.general.github_release:
+    user: neovim
+    repo: neovim
+    action: latest_release
+  register: nvim_latest_release
+
+- name: Check nvim installed version
+  ansible.builtin.shell: nvim --version | head -1 | grep -o 'v[0-9]\.[0-9]\.[0-9]'
+  ignore_errors: true
+  changed_when: false
+  register: nvim_check_result
+
+- name: Get latest neovim release tarball
+  when: nvim_check_result.rc != 0 or (nvim_check_result.stdout is version(nvim_latest_release.tag, "<"))
+  ansible.builtin.get_url:
+    url: "https://github.com/neovim/neovim/releases/download/{{ nvim_latest_release.tag }}/nvim-linux64.tar.gz"
+    dest: /tmp/nvim-linux64.tar.gz
+    mode: "u=rw,go=r"
+  notify:
+    - Remove neovim tarball
+
+- name: Extract to path recommended by neovim git repo (/opt)
+  become: true
+  when: nvim_check_result.rc != 0 or (nvim_check_result.stdout is version(nvim_latest_release.tag, "<"))
+  ansible.builtin.unarchive:
+    src: /tmp/nvim-linux64.tar.gz
+    dest: /opt
+
+- name: Create a neovim symbolic link
+  when: nvim_check_result.rc != 0 or (nvim_check_result.stdout is version(nvim_latest_release.tag, "<"))
+  become: true
+  ansible.builtin.file:
+    src: /opt/nvim-linux64/bin/nvim
+    dest: /usr/local/bin/nvim
+    state: link
+
+- name: Install python3-neovim package
+  ansible.builtin.package:
+    name: python3-neovim
+    state: present
+
+- name: Install pynvim python package
+  ansible.builtin.pip:
+    name: pynvim
+    state: present
+    extra_args: --upgrade
+
+# coc-ansible requirements
+- name: Install ansible-lint, yamllint package
+  ansible.builtin.pip:
+    name:
+      - yamllint
+      - ansible-lint
+    state: present
+
+# coc-pyright requirements
+- name: Install ruff-lsp package
+  ansible.builtin.pip:
+    name: ruff-lsp
+    state: present
+
+# coc requirements
+- name: Install "neovim" node.js package globally.
+  community.general.npm:
+    name: neovim
+    global: true
+
+# telescope requirements
+- name: Install fd-find package
+  become: true
+  ansible.builtin.package:
+    name: fd-find
+    state: present
+
+- name: Check if ripgrep installed
+  ansible.builtin.command: rg --version
+  ignore_errors: true
+  changed_when: false
+  register: rg_check_result
+
+- name: Set fact for installed ripgrep version
+  ansible.builtin.set_fact:
+    ripgrep_version: "{{ rg_check_result.stdout_lines | first | regex_search('ripgrep v?(\\d+\\.\\d+\\.\\d+)', '\\1') | first }}"
+
+- name: Get latest release of ripgrep public repo
+  community.general.github_release:
+    user: BurntSushi
+    repo: ripgrep
+    action: latest_release
+  register: ripgrep_latest_release
+
+- name: Set fact for latest ripgrep version
+  ansible.builtin.set_fact:
+    new_ripgrep_version: "{{ ripgrep_latest_release.tag | string }}"
+
+- name: Get ripgrep latest release .deb package
+  when: rg_check_result.rc != 0 or (ripgrep_version is version(new_ripgrep_version, "<"))
+  ansible.builtin.get_url:
+    url: "https://github.com/BurntSushi/ripgrep/releases/download/{{ ripgrep_latest_release.tag }}/ripgrep_{{ ripgrep_latest_release.tag }}-1_amd64.deb"
+    dest: "/tmp/ripgrep_amd64.deb"
+    mode: "u=rw,go=r"
+  notify:
+    - Remove ripgrep .deb package
+
+- name: Install ripgrep .deb package
+  when: rg_check_result.rc != 0 or (ripgrep_version is version(new_ripgrep_version, "<"))
+  become: true
+  ansible.builtin.apt:
+    deb: "/tmp/ripgrep_amd64.deb"
+
+- name: Update ripgrep package
+  become: true
+  ansible.builtin.package:
+    name: ripgrep
+    state: present
+
+# TODO: print report

@@ -1,0 +1,85 @@
+---
+# requires .zshrc already configured with OMZ volta plugins and volta environment variables configured
+# Install NodeJS with volta
+- name: Check if node is already installed
+  ansible.builtin.command: node --version
+  register: node_installed_response
+  ignore_errors: true
+  changed_when: false
+
+- name: Extrai a versão do Node.js da saída
+  when: node_installed_response.rc == 0
+  ansible.builtin.set_fact:
+    node_version: "{{ node_installed_response.stdout | regex_replace('^v', '') }}"
+
+- name: Check if npm is already installed
+  ansible.builtin.command: npm --version
+  register: npm_installed_response
+  ignore_errors: true
+  changed_when: false
+
+- name: Extrai a versão do npm da saída
+  when: npm_installed_response.rc == 0
+  ansible.builtin.set_fact:
+    npm_version: "{{ npm_installed_response.stdout | regex_replace('^v', '') }}"
+
+- name: Check if volta is already installed
+  ansible.builtin.command: volta --version
+  register: volta_installed_response
+  ignore_errors: true
+  changed_when: false
+
+- name: Download volta install script
+  when: volta_installed_response.rc != 0
+  ansible.builtin.get_url:
+    url: "https://get.volta.sh"
+    dest: /tmp/volta.sh
+    mode: "u=rw,go=r"
+    force: true
+
+- name: Install volta (node version manager) # noqa: command-instead-of-shell
+  when: volta_installed_response.rc != 0
+
+  ansible.builtin.shell: bash /tmp/volta.sh --skip-setup
+  register: volta_install_response
+  changed_when:
+    - "'already installed' not in volta_install_response.stdout"
+    - volta_install_response.rc == 0"
+  notify:
+    - Remove volta install script
+
+- name: Install and use latest node version
+  ansible.builtin.command: volta install --verbose node
+  register: volta_node_install_response
+  changed_when: false
+
+- name: Set fact for new versions from Volta install response
+  ansible.builtin.set_fact:
+    new_node_version: "{{ volta_node_install_response.stdout | regex_search('node@v?(\\d+\\.\\d+\\.\\d+)', '\\1') | first }}"
+    new_npm_version: "{{ volta_node_install_response.stdout | regex_search('npm@v?(\\d+\\.\\d+\\.\\d+)', '\\1') | first }}"
+
+- name: Node.js version changed
+  when: node_version != new_node_version
+  ansible.builtin.debug:
+    msg: "Node.js version changed from {{ node_version }} to {{ new_node_version }}"
+
+- name: New Node.js Version
+  when: node_version != new_node_version
+  ansible.builtin.set_fact:
+    node_version: "{{ new_node_version }}"
+
+- name: Npm version changed
+  when: npm_version != new_npm_version
+  ansible.builtin.debug:
+    msg: "npm version changed from {{ npm_version }} to {{ new_npm_version }}"
+
+- name: New npm Version
+  when: npm_version != new_npm_version
+  ansible.builtin.set_fact:
+    npm_version: "{{ new_npm_version }}"
+
+- name: Node.js version installed
+  ansible.builtin.debug:
+    msg:
+      - "Node.js version installed: {{ node_version }}"
+      - "npm version installed: {{ npm_version }}"

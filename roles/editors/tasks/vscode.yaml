@@ -1,0 +1,29 @@
+---
+- name: Download microsoft key (apt)
+  become: true
+  ansible.builtin.get_url:
+    url: "{{ visual_studio_code_mirror }}/keys/microsoft.asc"
+    dest: /etc/apt/keyrings/microsoft.asc
+    mode: "u=rw,go=r"
+    force: true
+
+- name: Install VS Code repo (apt)
+  become: true
+  ansible.builtin.apt_repository:
+    repo: >-
+      deb [arch=amd64 trusted=true signed-by=/etc/apt/keyrings/microsoft.asc]
+      {{ visual_studio_code_mirror }}/repos/code stable main
+    filename: vscode
+    state: present
+
+- name: Install VS Code (apt)
+  become: true
+  ansible.builtin.apt:
+    name: code
+    update_cache: true
+    state: present
+
+- name: Set chrome as the default handler for text/plain
+  community.general.gio_mime:
+    mime_type: text/plain
+    handler: code.desktop
