@@ -96,14 +96,6 @@ vim.opt.scrolloff = 10
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
--- Bindings to move lines up and down
-vim.keymap.set('n', '<M-j>', '<cmd>m +1<CR>')
-vim.keymap.set('n', '<M-Down>', '<cmd>m +1<CR>')
-vim.keymap.set('n', '<M-k>', '<cmd>m -2<CR>')
-vim.keymap.set('n', '<M-Up>', '<cmd>m -2<CR>')
-
-vim.keymap.set('n', '<F2>', "<cmd>CocCommand document.renameCurrentWord")
-vim.keymap.set('v', '<F2>', "<cmd>CocCommand document.renameCurrentWord")
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`

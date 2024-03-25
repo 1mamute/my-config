@@ -56,7 +56,7 @@ local nvim_treesitter = {
       -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
       --  If you are experiencing weird indenting issues, add the language to
       --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-      -- additional_vim_regex_highlighting = { 'ruby' },  
+      -- additional_vim_regex_highlighting = { 'ruby' },
     },
     indent = { enable = true, disable = { 'ruby' } },
     refactor = {
@@ -133,50 +133,10 @@ local nvim_treesitter_refactor = {
   event = { "BufReadPost", "BufWritePost", "BufNewFile", "VeryLazy" },
 }
 
-local vim_illuminate = {
-  -- https://www.lazyvim.org/plugins/editor#vim-illuminate
-  'RRethy/vim-illuminate', 
-  event = { "BufReadPost", "BufWritePost", "BufNewFile", "VeryLazy" },
-  branch = "master",
-  opts = {
-    delay = 100,
-    large_file_cutoff = 2000,
-    large_file_overrides = {
-      providers = { "lsp", "treesitter", "regex" },
-    },
-  },
-  config = function(_, opts)
-    require("illuminate").configure(opts)
-
-    local function map(key, dir, buffer)
-      vim.keymap.set("n", key, function()
-        require("illuminate")["goto_" .. dir .. "_reference"](false)
-      end, { desc = dir:sub(1, 1):upper() .. dir:sub(2) .. " Reference", buffer = buffer })
-    end
-
-    map("]]", "next")
-    map("[[", "prev")
-
-    -- also set it after loading ftplugins, since a lot overwrite [[ and ]]
-    vim.api.nvim_create_autocmd("FileType", {
-      callback = function()
-        local buffer = vim.api.nvim_get_current_buf()
-        map("]]", "next", buffer)
-        map("[[", "prev", buffer)
-      end,
-    })
-  end,
-  keys = {
-    { "]]", desc = "Next Reference" },
-    { "[[", desc = "Prev Reference" },
-  },
-}
-
 local plugins = {
   nvim_treesitter,
   nvim_treesitter_context,
   nvim_treesitter_refactor,
-  vim_illuminate,
 }
 
 return plugins
