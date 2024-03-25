@@ -15,7 +15,7 @@ local telescope_fzf_native = {
 
 local telescope = {
   'nvim-telescope/telescope.nvim',
-  event = 'VimEnter',
+  event = 'VeryLazy',
   branch = '0.1.x',
   dependencies = {
     telescope_fzf_native,

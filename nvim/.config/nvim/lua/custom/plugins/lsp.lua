@@ -60,7 +60,7 @@ local ansible_vim = {
 
 local comment = {
   'numToStr/Comment.nvim',
-  event = "VeryLazy",
+  event = { "BufReadPost", "BufWritePost", "BufNewFile" },
   opts = {},
 }
 

@@ -2,7 +2,7 @@ local nvim_treesitter = {
   -- https://www.lazyvim.org/plugins/treesitter#nvim-treesitter
   -- Highlight, edit, and navigate code
   'nvim-treesitter/nvim-treesitter',
-  event = { "BufReadPost", "BufWritePost", "BufNewFile", "VeryLazy" },
+  event = { "BufReadPost", "BufWritePost", "BufNewFile" },
   build = ':TSUpdate',
   cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
   init = function(plugin)
@@ -130,7 +130,7 @@ local nvim_treesitter_context = {
 
 local nvim_treesitter_refactor = {
   'nvim-treesitter/nvim-treesitter-refactor',
-  event = { "BufReadPost", "BufWritePost", "BufNewFile", "VeryLazy" },
+  event = { "BufReadPost", "BufWritePost", "BufNewFile" },
 }
 
 local plugins = {
