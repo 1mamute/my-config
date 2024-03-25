@@ -14,9 +14,14 @@ local onedarkpro = {
       neo_tree = true,
       -- nvim_cmp = true,
       -- trouble = true,
+    },
+    options = {
+      cursorline = true,
+      highlight_inactive_windows = true,
     }
   },
-  config = function()
+  config = function(_, opts)
+    require("onedarkpro").setup(opts)
     vim.cmd("colorscheme onedark")
   end
 }
@@ -176,43 +181,55 @@ local bufferline = {
     { "[b", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev buffer" },
     { "]b", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
   },
-  opts = {
-    options = {
-      close_command = function(n) require("mini.bufremove").delete(n, false) end,
-      right_mouse_command = false, -- remove right mouse button command
-      middle_mouse_command = function(n) require("mini.bufremove").delete(n, false) end, -- middle mouse delete
-      always_show_bufferline = true, -- bufferline always open
-      diagnostics = "coc", -- uses coc for diagnostics
-      separator_style = "padded_slant",
-      indicator = {
-        style = "underline", -- underline tab indicators
-      },
-      show_buffer_icons = false, -- disable filetype icons
-      offsets = {
-        {
-          filetype = "neo-tree",
-          text = "Neo-tree",
-          -- highlight = "Directory",
-          text_align = "center",
-          separator = true,
+  opts = function()
+    local bufferline = require('bufferline')
+
+    -- sets the offset separator with the Normal highlight
+    vim.api.nvim_set_hl(0, "BufferLineOffsetSeparator", { link = "Normal" })
+
+    return {
+      options = {
+        themable = true,
+        style_preset = {
+          bufferline.style_preset.no_italic,
+          bufferline.style_preset.minimal,
+        },
+        close_command = function(n) require("mini.bufremove").delete(n, false) end,
+        right_mouse_command = false, -- remove right mouse button command
+        middle_mouse_command = function(n) require("mini.bufremove").delete(n, false) end, -- middle mouse delete
+        always_show_bufferline = true, -- bufferline always open
+        diagnostics = "coc", -- uses coc for diagnostics
+        separator_style = "thin",
+        show_buffer_icons = false, -- disable filetype icons for buffers
+        show_buffer_close_icons = true,
+        show_close_icon = true,
+        indicator = {
+          style = "underline", -- underline tab indicators
+        },
+        offsets = {
+          {
+            filetype = "neo-tree",
+            text = "Neo-tree",
+            highlight = "Directory",
+            text_align = "center",
+            separator = " ",
+          },
         },
       },
-    },
-  },
-  config = function(_, opts)
-    -- já é configurado pelo tema onedarkpro mas vamos setar denovo para garantir
-    vim.opt.termguicolors = true
-
-    require("bufferline").setup(opts)
-    -- Fix bufferline when restoring a session
-    -- vim.api.nvim_create_autocmd("BufAdd", {
-    --   callback = function()
-    --     vim.schedule(function()
-    --       pcall(nvim_bufferline)
-    --     end)
-    --   end,
-    -- })
+    }
   end,
+  -- config = function(_, opts)
+
+  --   require("bufferline").setup(opts)
+  --   -- Fix bufferline when restoring a session
+  --   -- vim.api.nvim_create_autocmd("BufAdd", {
+  --   --   callback = function()
+  --   --     vim.schedule(function()
+  --   --       pcall(nvim_bufferline)
+  --   --     end)
+  --   --   end,
+  --   -- })
+  -- end,
 }
 
 local gitsigns = {
@@ -284,7 +301,7 @@ local todo_comments = {
   },
 }
 
-local trouble = {  
+local trouble = {
   -- https://www.lazyvim.org/plugins/editor#troublenvim
   "folke/trouble.nvim",
   cmd = { "TroubleToggle", "Trouble" },
@@ -330,7 +347,7 @@ local indent_blankline = {
   "lukas-reineke/indent-blankline.nvim",
   main = "ibl",
   event = { "BufReadPost", "BufWritePost", "BufNewFile" },
-  branch = master,
+  branch = "master",
   dependencies = {
     "TheGLander/indent-rainbowline.nvim",
   },
@@ -354,7 +371,7 @@ local plugins = {
   -- trouble,
   -- { 'akinsho/toggleterm.nvim', version = "*", config = true },
   -- https://github.com/utilyre/barbecue.nvim (https://github.com/navarasu/onedark.nvim/blob/master/lua/barbecue/theme/onedark.lua)
-  -- https://www.lazyvim.org/extras/ui/edgy 
+  -- https://www.lazyvim.org/extras/ui/edgy
 }
 
 return plugins
