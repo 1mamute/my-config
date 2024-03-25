@@ -50,6 +50,9 @@ vim.opt.clipboard = 'unnamedplus'
 -- Enable break indent
 vim.opt.breakindent = true
 
+-- Preserve indentation from existing structures
+vim.opt.copyindent = true
+
 -- Save undo history
 vim.opt.undofile = true
 
