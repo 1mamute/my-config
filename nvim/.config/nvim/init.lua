@@ -7,7 +7,7 @@ if not vim.loop.fs_stat(lazypath) then
     "--filter=blob:none",
     "https://github.com/folke/lazy.nvim.git",
     "--branch=stable", -- latest stable release
-    lazypath, 
+    lazypath,
   })
 end
 vim.opt.rtp:prepend(lazypath)
@@ -73,11 +73,18 @@ vim.opt.timeoutlen = 300
 vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
+-- Separator characters
+vim.opt.fillchars = {
+  vert = " ",
+  horizup = "─",
+  horizdown = "─",
+}
+
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = 'split'
 
 -- Show which line your cursor is on
-vim.opt.cursorline = true
+vim.opt.cursorline = false
 
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
@@ -85,6 +92,15 @@ vim.opt.scrolloff = 10
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+
+-- Bindings to move lines up and down
+vim.keymap.set('n', '<M-j>', '<cmd>m +1<CR>')
+vim.keymap.set('n', '<M-Down>', '<cmd>m +1<CR>')
+vim.keymap.set('n', '<M-k>', '<cmd>m -2<CR>')
+vim.keymap.set('n', '<M-Up>', '<cmd>m -2<CR>')
+
+vim.keymap.set('n', '<F2>', "<cmd>CocCommand document.renameCurrentWord")
+vim.keymap.set('v', '<F2>', "<cmd>CocCommand document.renameCurrentWord")
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -99,4 +115,3 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.highlight.on_yank()
   end,
 })
-
