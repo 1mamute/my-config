@@ -68,6 +68,12 @@
     name: neovim
     global: true
 
+# coc-ansible requirements
+- name: Install ansible-navigator package
+  ansible.builtin.pip:
+    name: ansible-navigator
+    state: present
+
 # telescope requirements
 - name: Install fd-find package
   become: true

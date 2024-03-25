@@ -21,11 +21,6 @@ local coc_nvim = {
       'coc-symbol-line',
     }
 
-    vim.g.coc_filetype_map = {
-      ['yaml.docker-compose'] = 'yaml',
-      ['yaml.ansible'] = 'ansible'
-    }
-
     -- Bindings to move lines up and down
     vim.keymap.set('n', '<M-j>', '<cmd>m +1<CR>')
     vim.keymap.set('n', '<M-Down>', '<cmd>m +1<CR>')
