@@ -106,28 +106,26 @@ local lualine = {
 
     return {
       options = {
-        sections = {
-          lualine_b = {
-            {
-              -- using gitsigns for branch and diff information
-              -- https://github.com/nvim-lualine/lualine.nvim/wiki/Component-snippets#using-external-source-for-branch
-              {'b:gitsigns_head', icon = ''},
-              { 'diff', source = diff_source },
-              'diagnostics',
-            },
-          },
-        },
         globalstatus = true,
         refresh = {
           statusline = 100, -- faster git diff refresh
         },
-        extensions = {
-          'neo-tree', -- add neo-tree filetype so lualine can ignore it correctly
-          -- 'trouble' -- trouble mode information
-          -- 'toggleterm' -- add toggleterm filetype so lualine can ignore it correctly
-          -- 'lazy', -- add lazy.nvim information in statusline
+      },
+      extensions = {
+        'neo-tree', -- add neo-tree filetype so lualine can ignore it correctly
+        'lazy', -- add lazy.nvim information in statusline
+        -- 'trouble' -- trouble mode information
+        -- 'toggleterm' -- add toggleterm filetype so lualine can ignore it correctly
+      },
+      sections = {
+        lualine_b = {
+          -- using gitsigns for branch and diff information
+          -- https://github.com/nvim-lualine/lualine.nvim/wiki/Component-snippets#using-external-source-for-branch
+          { 'b:gitsigns_head', icon = ''},
+          { 'diff', source = diff_source },
+          { 'diagnostics' },
         },
-      }
+      },
     }
   end,
   config = function(_, opts)
