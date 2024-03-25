@@ -31,6 +31,10 @@ config.font = wezterm.font_with_fallback {
   }
 }
 
+-- Underline
+config.underline_position = -3
+config.underline_thickness = 2
+
 -- Keymaps
 local act = wezterm.action
 config.keys = {
