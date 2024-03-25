@@ -1,0 +1,7 @@
+---
+- name: Create a symbolic link to the .editorconfig file
+  ansible.builtin.file:
+    src: "{{ playbook_dir }}/editorconfig/.editorconfig"
+    dest: "{{ ansible_env.HOME }}/.editorconfig"
+    state: link
+    force: true

@@ -7,3 +7,6 @@
 
 - name: Install and configure vscode
   ansible.builtin.import_tasks: vscode.yaml
+
+- name: Symlink dotfiles
+  ansible.builtin.import_tasks: symlink.yaml
