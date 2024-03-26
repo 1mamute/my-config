@@ -19,7 +19,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 require("lazy").setup({
   checker = { enabled = true }, -- automatically check for plugin updates and provide information for lualine
-  defaults = { lazy = true }, -- lazy load plugins by default
+  defaults = { lazy = true },   -- lazy load plugins by default
   spec = {
     { import = 'custom.plugins.ui' },
     { import = 'custom.plugins.lsp' },

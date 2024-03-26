@@ -1,7 +1,7 @@
 local onedarkpro = {
   "olimorris/onedarkpro.nvim",
   priority = 1000, -- Ensure it loads first
-  lazy = false, -- dont lazy load import ui elements
+  lazy = false,    -- dont lazy load import ui elements
   opts = {
     plugins = {
       all = false,
@@ -30,7 +30,7 @@ local nvim_web_devicons = {
   "nvim-tree/nvim-web-devicons",
   branch = "master",
   config = function()
-    require'nvim-web-devicons'.setup {
+    require 'nvim-web-devicons'.setup {
       -- your personnal icons can go here (to override)
       -- you can specify color or cterm_color instead of specifying both of them
       -- DevIcon will be appended to `name`
@@ -41,18 +41,18 @@ local nvim_web_devicons = {
           cterm_color = "65",
           name = "Zsh"
         }
-      };
+      },
       -- globally enable different highlight colors per icon (default to true)
       -- if set to false all icons will have the default icon's color
-      color_icons = true;
+      color_icons = true,
       -- globally enable default icons (default to false)
       -- will get overriden by `get_icons` option
-      default = true;
+      default = true,
       -- globally enable "strict" selection of icons - icon will be looked up in
       -- different tables, first by filename, and if not found by extension; this
       -- prevents cases when file doesn't have any extension but still gets some icon
       -- because its name happened to match some extension (default to false)
-      strict = true;
+      strict = true,
       -- same as `override` but specifically for overrides by filename
       -- takes effect when `strict` is true
       override_by_filename = {
@@ -61,7 +61,7 @@ local nvim_web_devicons = {
           color = "#f1502f",
           name = "Gitignore"
         }
-      };
+      },
       -- same as `override` but specifically for overrides by extension
       -- takes effect when `strict` is true
       override_by_extension = {
@@ -70,7 +70,7 @@ local nvim_web_devicons = {
           color = "#81e043",
           name = "Log"
         }
-      };
+      },
     }
   end
 }
@@ -113,7 +113,7 @@ local lualine = {
       },
       extensions = {
         'neo-tree', -- add neo-tree filetype so lualine can ignore it correctly
-        'lazy', -- add lazy.nvim information in statusline
+        'lazy',     -- add lazy.nvim information in statusline
         -- 'trouble' -- trouble mode information
         -- 'toggleterm' -- add toggleterm filetype so lualine can ignore it correctly
       },
@@ -121,7 +121,7 @@ local lualine = {
         lualine_b = {
           -- using gitsigns for branch and diff information
           -- https://github.com/nvim-lualine/lualine.nvim/wiki/Component-snippets#using-external-source-for-branch
-          { 'b:gitsigns_head', icon = ''},
+          { 'b:gitsigns_head', icon = '' },
           { 'diff', source = diff_source },
           { 'diagnostics' },
         },
@@ -169,15 +169,15 @@ local bufferline = {
     },
   },
   keys = {
-    { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle pin" },
+    { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>",            desc = "Toggle pin" },
     { "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete non-pinned buffers" },
-    { "<leader>bo", "<Cmd>BufferLineCloseOthers<CR>", desc = "Delete other buffers" },
-    { "<leader>br", "<Cmd>BufferLineCloseRight<CR>", desc = "Delete buffers to the right" },
-    { "<leader>bl", "<Cmd>BufferLineCloseLeft<CR>", desc = "Delete buffers to the left" },
-    { "<S-h>", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev buffer" },
-    { "<S-l>", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
-    { "[b", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev buffer" },
-    { "]b", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
+    { "<leader>bo", "<Cmd>BufferLineCloseOthers<CR>",          desc = "Delete other buffers" },
+    { "<leader>br", "<Cmd>BufferLineCloseRight<CR>",           desc = "Delete buffers to the right" },
+    { "<leader>bl", "<Cmd>BufferLineCloseLeft<CR>",            desc = "Delete buffers to the left" },
+    { "<S-h>",      "<cmd>BufferLineCyclePrev<cr>",            desc = "Prev buffer" },
+    { "<S-l>",      "<cmd>BufferLineCycleNext<cr>",            desc = "Next buffer" },
+    { "[b",         "<cmd>BufferLineCyclePrev<cr>",            desc = "Prev buffer" },
+    { "]b",         "<cmd>BufferLineCycleNext<cr>",            desc = "Next buffer" },
   },
   opts = function()
     local bufferline = require('bufferline')
@@ -193,12 +193,12 @@ local bufferline = {
           bufferline.style_preset.minimal,
         },
         close_command = function(n) require("mini.bufremove").delete(n, false) end,
-        right_mouse_command = false, -- remove right mouse button command
+        right_mouse_command = false,                                                       -- remove right mouse button command
         middle_mouse_command = function(n) require("mini.bufremove").delete(n, false) end, -- middle mouse delete
-        always_show_bufferline = true, -- bufferline always open
-        diagnostics = "coc", -- uses coc for diagnostics
+        always_show_bufferline = true,                                                     -- bufferline always open
+        diagnostics = "coc",                                                               -- uses coc for diagnostics
         separator_style = "thin",
-        show_buffer_icons = false, -- disable filetype icons for buffers
+        show_buffer_icons = false,                                                         -- disable filetype icons for buffers
         show_buffer_close_icons = true,
         show_close_icon = true,
         indicator = {
@@ -278,6 +278,20 @@ local which_key = {
     vim.o.timeout = true
     vim.o.timeoutlen = 300
   end,
+  opts = {
+    plugins = { spelling = true },
+    defaults = {
+      mode = { "n", "v" },
+      ["g"] = { name = "+goto" },
+      ["z"] = { name = "+fold" },
+      ["]"] = { name = "+next" },
+      ["["] = { name = "+prev" },
+      ["<leader>b"] = { name = "+[b]uffer" },
+      ["<leader>g"] = { name = "+[g]it" },
+      ["<leader>gh"] = { name = "+[h]unks" },
+      ["<leader>s"] = { name = "+search" },
+    },
+  },
   config = true
 }
 
@@ -290,12 +304,12 @@ local todo_comments = {
   config = true,
   opts = { signs = false },
   keys = {
-    { "]t", function() require("todo-comments").jump_next() end, desc = "Next todo comment" },
-    { "[t", function() require("todo-comments").jump_prev() end, desc = "Previous todo comment" },
-    { "<leader>xt", "<cmd>TodoTrouble<cr>", desc = "Todo (Trouble)" },
-    { "<leader>xT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme (Trouble)" },
-    { "<leader>st", "<cmd>TodoTelescope<cr>", desc = "Todo" },
-    { "<leader>sT", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme" },
+    { "]t",         function() require("todo-comments").jump_next() end, desc = "Next todo comment" },
+    { "[t",         function() require("todo-comments").jump_prev() end, desc = "Previous todo comment" },
+    { "<leader>xt", "<cmd>TodoTrouble<cr>",                              desc = "Todo (Trouble)" },
+    { "<leader>xT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>",      desc = "Todo/Fix/Fixme (Trouble)" },
+    { "<leader>st", "<cmd>TodoTelescope<cr>",                            desc = "Todo" },
+    { "<leader>sT", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>",    desc = "Todo/Fix/Fixme" },
   },
 }
 
@@ -306,10 +320,10 @@ local trouble = {
   dependencies = { "nvim-tree/nvim-web-devicons" },
   opts = { use_diagnostic_signs = true },
   keys = {
-    { "<leader>xx", "<cmd>TroubleToggle document_diagnostics<cr>", desc = "Document Diagnostics (Trouble)" },
+    { "<leader>xx", "<cmd>TroubleToggle document_diagnostics<cr>",  desc = "Document Diagnostics (Trouble)" },
     { "<leader>xX", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "Workspace Diagnostics (Trouble)" },
-    { "<leader>xL", "<cmd>TroubleToggle loclist<cr>", desc = "Location List (Trouble)" },
-    { "<leader>xQ", "<cmd>TroubleToggle quickfix<cr>", desc = "Quickfix List (Trouble)" },
+    { "<leader>xL", "<cmd>TroubleToggle loclist<cr>",               desc = "Location List (Trouble)" },
+    { "<leader>xQ", "<cmd>TroubleToggle quickfix<cr>",              desc = "Quickfix List (Trouble)" },
     {
       "[q",
       function()

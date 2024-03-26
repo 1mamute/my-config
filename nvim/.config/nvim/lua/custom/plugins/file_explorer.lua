@@ -8,7 +8,6 @@ local neo_tree = {
     "nvim-lua/plenary.nvim",
     "nvim-tree/nvim-web-devicons",
     "MunifTanjim/nui.nvim",
-    { "LazyVim/LazyVim" }, -- we'll use only the utils from lazyvim
   },
   init = function()
     if vim.fn.argc(-1) == 1 then
@@ -23,7 +22,7 @@ local neo_tree = {
   end,
   opts = {
     close_if_last_window = true,
-    enable_cursor_hijack = true, -- keep the cursor on the first letter of the filename when moving in the tree.
+    enable_cursor_hijack = false, -- keep the cursor on the first letter of the filename when moving in the tree. true was bugging in #8afbb06
     sources = { "filesystem", "buffers", "git_status", "document_symbols" },
     open_files_do_not_replace_types = { "terminal", "Trouble", "trouble", "qf", "Outline" },
     filesystem = {

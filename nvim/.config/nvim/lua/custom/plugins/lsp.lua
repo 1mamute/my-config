@@ -22,14 +22,17 @@ local coc_nvim = {
     }
 
     -- Bindings to move lines up and down
-    vim.keymap.set('n', '<M-j>', '<cmd>m +1<CR>')
-    vim.keymap.set('n', '<M-Down>', '<cmd>m +1<CR>')
-    vim.keymap.set('n', '<M-k>', '<cmd>m -2<CR>')
-    vim.keymap.set('n', '<M-Up>', '<cmd>m -2<CR>')
+    vim.keymap.set('n', '<M-j>', '<cmd>m +1<CR>', { noremap = true, desc = 'Move One Line Down' })
+    vim.keymap.set('n', '<M-Down>', '<cmd>m +1<CR>', { noremap = true, desc = 'Move One Line Down' })
+    vim.keymap.set('n', '<M-k>', '<cmd>m -2<CR>', { noremap = true, desc = 'Move One Line Up' })
+    vim.keymap.set('n', '<M-Up>', '<cmd>m -2<CR>', { noremap = true, desc = 'Move One Line Up' })
 
     -- Rename to F2
-    vim.keymap.set('n', '<F2>', "<Plug>(coc-rename)")
-    vim.keymap.set('v', '<F2>', "<Plug>(coc-rename)")
+    vim.keymap.set('n', '<F2>', "<Plug>(coc-rename)", { noremap = true, desc = 'Rename Symbol' })
+    vim.keymap.set('v', '<F2>', "<Plug>(coc-rename)", { noremap = true, desc = 'Rename Symbol' })
+
+    -- Format to Ctrl + Shift + I
+    vim.keymap.set('n', '<C-S-I>', "<Plug>(coc-format)", { noremap = true, desc = 'Format Document' })
 
     vim.api.nvim_create_autocmd('CursorHold', {
       desc = 'Highlight symbol under cursor on CursorHold',
