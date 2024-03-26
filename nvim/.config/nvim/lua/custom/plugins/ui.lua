@@ -104,6 +104,8 @@ local lualine = {
       end
     end
 
+    local icons = require("utils")
+
     return {
       options = {
         globalstatus = true,
@@ -122,8 +124,24 @@ local lualine = {
           -- using gitsigns for branch and diff information
           -- https://github.com/nvim-lualine/lualine.nvim/wiki/Component-snippets#using-external-source-for-branch
           { 'b:gitsigns_head', icon = '' },
-          { 'diff', source = diff_source },
-          { 'diagnostics' },
+          {
+            'diff',
+            source = diff_source,
+            symbols = {
+              added = icons.git.added,
+              modified = icons.git.modified,
+              removed = icons.git.removed,
+            },
+          },
+          {
+            "diagnostics",
+            symbols = {
+              error = icons.diagnostics.Error,
+              warn = icons.diagnostics.Warn,
+              info = icons.diagnostics.Info,
+              hint = icons.diagnostics.Hint,
+            },
+          },
         },
       },
     }
@@ -197,8 +215,14 @@ local bufferline = {
         middle_mouse_command = function(n) require("mini.bufremove").delete(n, false) end, -- middle mouse delete
         always_show_bufferline = true,                                                     -- bufferline always open
         diagnostics = "coc",                                                               -- uses coc for diagnostics
+        diagnostics_indicator = function(_, _, diag)
+          local icons = require("utils").diagnostics
+          local ret = (diag.error and icons.Error .. diag.error .. " " or "")
+              .. (diag.warning and icons.Warn .. diag.warning or "")
+          return vim.trim(ret)
+        end,
         separator_style = "thin",
-        show_buffer_icons = false,                                                         -- disable filetype icons for buffers
+        show_buffer_icons = false, -- disable filetype icons for buffers
         show_buffer_close_icons = true,
         show_close_icon = true,
         indicator = {
@@ -210,24 +234,12 @@ local bufferline = {
             text = "File Explorer",
             highlight = "Directory",
             text_align = "center",
-            separator = " ",
+            separator = " ", -- BufferLineOffsetSeparator
           },
         },
       },
     }
   end,
-  -- config = function(_, opts)
-
-  --   require("bufferline").setup(opts)
-  --   -- Fix bufferline when restoring a session
-  --   -- vim.api.nvim_create_autocmd("BufAdd", {
-  --   --   callback = function()
-  --   --     vim.schedule(function()
-  --   --       pcall(nvim_bufferline)
-  --   --     end)
-  --   --   end,
-  --   -- })
-  -- end,
 }
 
 local gitsigns = {
@@ -276,7 +288,6 @@ local which_key = {
   event = "VeryLazy",
   init = function()
     vim.o.timeout = true
-    vim.o.timeoutlen = 300
   end,
   opts = {
     plugins = { spelling = true },
@@ -367,6 +378,19 @@ local indent_blankline = {
     opts.indent = { char = "" }
     opts.whitespace = { highlight = { "CursorColumn", "Whitespace" }, remove_blankline_trail = false }
     opts.scope = { enabled = false }
+    opts.exclude = {
+      filetypes = {
+        "help",
+        "dashboard",
+        "neo-tree",
+        -- "Trouble",
+        -- "trouble",
+        "lazy",
+        "notify",
+        "toggleterm",
+        "lazyterm",
+      },
+    }
     return require("indent-rainbowline").make_opts(opts)
   end,
 }

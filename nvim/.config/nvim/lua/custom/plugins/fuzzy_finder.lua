@@ -13,12 +13,18 @@ local telescope_fzf_native = {
   end,
 }
 
+local telescope_coc = {
+  'fannheyward/telescope-coc.nvim',
+  event = 'VeryLazy',
+}
+
 local telescope = {
   'nvim-telescope/telescope.nvim',
   event = 'VeryLazy',
   branch = '0.1.x',
   dependencies = {
     telescope_fzf_native,
+    telescope_coc,
     'nvim-lua/plenary.nvim',
     'nvim-telescope/telescope-ui-select.nvim',
     'nvim-tree/nvim-web-devicons',
@@ -59,6 +65,9 @@ local telescope = {
         ['ui-select'] = {
           require('telescope.themes').get_dropdown(),
         },
+        coc = {
+          prefer_locations = true, -- always use Telescope locations to preview definitions/declarations/implementations etc
+        },
       },
     }
 
@@ -79,6 +88,8 @@ local telescope = {
     vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[s]earch Recent Files ("." for repeat)' })
     vim.keymap.set('n', '<leader>sH', builtin.highlights, { desc = '[s]earch [H]ighlights' })
     vim.keymap.set('n', '<leader>sb', builtin.buffers, { desc = '[s]earch [b]uffers' })
+    vim.keymap.set('n', '<leader>sC', builtin.command_history, { desc = '[s]earch recent [C]ommands' })
+    vim.keymap.set('n', '<leader>sc', builtin.commands, { desc = '[s]earch [c]ommands' })
 
     -- Slightly advanced example of overriding default behavior and theme
     vim.keymap.set('n', '<leader>/', function()
