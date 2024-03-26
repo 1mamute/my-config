@@ -408,6 +408,7 @@ local plugins = {
   -- { 'akinsho/toggleterm.nvim', version = "*", config = true },
   -- https://github.com/utilyre/barbecue.nvim (https://github.com/navarasu/onedark.nvim/blob/master/lua/barbecue/theme/onedark.lua)
   -- https://www.lazyvim.org/extras/ui/edgy
+  -- https://github.com/mrjones2014/legendary.nvim
 }
 
 return plugins

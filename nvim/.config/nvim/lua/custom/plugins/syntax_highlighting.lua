@@ -12,7 +12,7 @@ local nvim_treesitter_context = {
   -- https://www.lazyvim.org/plugins/treesitter#nvim-treesitter-context
   'nvim-treesitter/nvim-treesitter-context',
   event = { "BufReadPost", "BufWritePost", "BufNewFile" },
-  opts = { mode = "cursor", max_lines = 0 },
+  opts = { mode = "cursor", max_lines = 10 },
   keys = {
     {
       "<leader>tC",
