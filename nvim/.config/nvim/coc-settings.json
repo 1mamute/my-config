@@ -3,4 +3,13 @@
   "pyright.organizeimports.provider": "ruff",
   "python.formatting.provider": "ruff",
   "lightbulb.enableVirtualText": false,
+  "suggest.autoTrigger": "none",
+  "yaml.schemas": {
+    "https://raw.githubusercontent.com/ansible/schemas/main/f/ansible.json#/$defs/tasks": [
+      "tasks/*.yml",
+      "tasks/*.yaml",
+      "handlers/*.yml",
+      "handlers/*.yaml"
+    ]
+  },
 }

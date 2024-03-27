@@ -12,7 +12,7 @@ local nvim_treesitter_context = {
   -- https://www.lazyvim.org/plugins/treesitter#nvim-treesitter-context
   'nvim-treesitter/nvim-treesitter-context',
   event = { "BufReadPost", "BufWritePost", "BufNewFile" },
-  opts = { mode = "cursor", max_lines = 10 },
+  opts = { mode = "cursor", max_lines = 6 },
   keys = {
     {
       "<leader>tC",
@@ -20,7 +20,7 @@ local nvim_treesitter_context = {
         local tsc = require("treesitter-context")
         tsc.toggle()
       end,
-      desc = "[t]oggle Treesitter [C]ontext",
+      desc = "[t]oggle treesitter [C]ontext",
     },
     {
       "gC",
@@ -33,6 +33,15 @@ local nvim_treesitter_context = {
   },
 }
 
+local nvim_ts_context_commentstring = {
+  'JoosepAlviste/nvim-ts-context-commentstring',
+  event = { "VeryLazy" },
+  branch = 'main',
+  opts = {
+    enable_autocmd = false,
+  }
+}
+
 local nvim_treesitter = {
   -- https://www.lazyvim.org/plugins/treesitter#nvim-treesitter
   -- Highlight, edit, and navigate code
@@ -42,6 +51,7 @@ local nvim_treesitter = {
     nvim_treesitter_textobjects,
     nvim_treesitter_refactor,
     nvim_treesitter_context,
+    nvim_ts_context_commentstring,
   },
   build = ':TSUpdate',
   cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
@@ -58,7 +68,7 @@ local nvim_treesitter = {
     ensure_installed = {
       'bash',
       'lua',
-      'markdown',
+      'luadoc',
       'vim',
       'vimdoc',
       'comment',
@@ -69,12 +79,14 @@ local nvim_treesitter = {
       'gitcommit',
       'gitignore',
       'json',
+      'markdown',
       'markdown_inline',
       'python',
       'regex',
       'requirements',
       'toml',
       'rust',
+      'rasi',
       'yaml',
       'ssh_config',
       'hcl',
@@ -84,7 +96,7 @@ local nvim_treesitter = {
       enable = true,
       keymaps = {
         init_selection = "<C-space>",
-        node_incremental = "<C-space>",
+        node_incremental = "<C-S-space>",
         scope_incremental = false,
         node_decremental = "<bs>",
       },
@@ -93,12 +105,8 @@ local nvim_treesitter = {
     auto_install = true,
     highlight = {
       enable = true,
-      -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
-      --  If you are experiencing weird indenting issues, add the language to
-      --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-      -- additional_vim_regex_highlighting = { 'ruby' },
     },
-    indent = { enable = true, disable = { 'ruby' } },
+    indent = { enable = true },
     refactor = {
       highlight_definitions = {
         enable = true,
@@ -107,10 +115,10 @@ local nvim_treesitter = {
       },
       highlight_current_scope = { enable = true },
       smart_rename = {
-        enable = true,
+        enable = false,
         -- Assign keymaps to false to disable them, e.g. `smart_rename = false`.
         keymaps = {
-          smart_rename = "grr",
+          smart_rename = false, --"grr",
         },
       },
       navigation = {
@@ -132,14 +140,10 @@ local nvim_treesitter = {
         lookahead = true,
         keymaps = {
           -- You can use the capture groups defined in textobjects.scm
-          ["af"] = "@function.outer",
-          ["if"] = "@function.inner",
-          ["ac"] = "@class.outer",
-          -- You can optionally set descriptions to the mappings (used in the desc parameter of
-          -- nvim_buf_set_keymap) which plugins like which-key display
-          ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
-          -- You can also use captures from other query groups like `locals.scm`
-          ["as"] = { query = "@scope", query_group = "locals", desc = "Select language scope" },
+          ["af"] = { query = "@function.outer", desc = "select [a]round [f]unction" },
+          ["if"] = { query = "@function.inner", desc = "select [i]nside [f]unction" },
+          ["ac"] = { query = "@class.outer", desc = "select [a]round class" },
+          ["ic"] = { query = "@class.inner", desc = "select [i]nside class" },
         },
         -- You can choose the select mode (default is charwise 'v')
         --
@@ -149,9 +153,9 @@ local nvim_treesitter = {
         -- and should return the mode ('v', 'V', or '<c-v>') or a table
         -- mapping query_strings to modes.
         selection_modes = {
-          ['@parameter.outer'] = 'v',   -- charwise
-          ['@function.outer'] = 'V',    -- linewise
-          ['@class.outer'] = '<c-v>',   -- blockwise
+          ['@parameter.outer'] = 'v', -- charwise
+          ['@function.outer'] = 'V',  -- linewise
+          ['@class.outer'] = '<c-v>', -- blockwise
         },
         -- If you set this to `true` (default is `false`) then any textobject is
         -- extended to include preceding or succeeding whitespace. Succeeding
@@ -166,39 +170,39 @@ local nvim_treesitter = {
       },
       move = {
         enable = true,
-        set_jumps = true,   -- whether to set jumps in the jumplist
+        set_jumps = true, -- whether to set jumps in the jumplist
         goto_next_start = {
-          ["]f"] = { query = "@call.outer", desc = "Next function call start" },
-          ["]m"] = { query = "@function.outer", desc = "Next method/function def start" },
-          ["]c"] = { query = "@class.outer", desc = "Next class start" },
-          ["]i"] = { query = "@conditional.outer", desc = "Next conditional start" },
-          ["]l"] = { query = "@loop.outer", desc = "Next loop start" },
+          ["]f"] = { query = "@call.outer", desc = "next [f]unction call start" },
+          ["]m"] = { query = "@function.outer", desc = "next [m]ethod/function def start" },
+          ["]c"] = { query = "@class.outer", desc = "next [c]lass start" },
+          ["]i"] = { query = "@conditional.outer", desc = "next cond[i]tional start" },
+          ["]l"] = { query = "@loop.outer", desc = "next [l]oop start" },
 
           -- You can pass a query group to use query from `queries/<lang>/<query_group>.scm file in your runtime path.
           -- Below example nvim-treesitter's `locals.scm` and `folds.scm`. They also provide highlights.scm and indent.scm.
-          ["]s"] = { query = "@scope", query_group = "locals", desc = "Next scope" },
-          ["]z"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
+          ["]s"] = { query = "@scope", query_group = "locals", desc = "next [s]cope" },
+          ["]z"] = { query = "@fold", query_group = "folds", desc = "next [f]old" },
         },
         goto_next_end = {
-          ["]F"] = { query = "@call.outer", desc = "Next function call end" },
-          ["]M"] = { query = "@function.outer", desc = "Next method/function def end" },
-          ["]C"] = { query = "@class.outer", desc = "Next class end" },
-          ["]I"] = { query = "@conditional.outer", desc = "Next conditional end" },
-          ["]L"] = { query = "@loop.outer", desc = "Next loop end" },
+          ["]F"] = { query = "@call.outer", desc = "next [F]unction call end" },
+          ["]M"] = { query = "@function.outer", desc = "next [M]ethod/function def end" },
+          ["]C"] = { query = "@class.outer", desc = "next [C]lass end" },
+          ["]I"] = { query = "@conditional.outer", desc = "next cond[I]tional end" },
+          ["]L"] = { query = "@loop.outer", desc = "next [L]oop end" },
         },
         goto_previous_start = {
-          ["[f"] = { query = "@call.outer", desc = "Prev function call start" },
-          ["[m"] = { query = "@function.outer", desc = "Prev method/function def start" },
-          ["[c"] = { query = "@class.outer", desc = "Prev class start" },
-          ["[i"] = { query = "@conditional.outer", desc = "Prev conditional start" },
-          ["[l"] = { query = "@loop.outer", desc = "Prev loop start" },
+          ["[f"] = { query = "@call.outer", desc = "prev [f]unction call start" },
+          ["[m"] = { query = "@function.outer", desc = "prev [m]ethod/function def start" },
+          ["[c"] = { query = "@class.outer", desc = "prev [c]lass start" },
+          ["[i"] = { query = "@conditional.outer", desc = "prev cond[i]tional start" },
+          ["[l"] = { query = "@loop.outer", desc = "prev [l]oop start" },
         },
         goto_previous_end = {
-          ["[F"] = { query = "@call.outer", desc = "Prev function call end" },
-          ["[M"] = { query = "@function.outer", desc = "Prev method/function def end" },
-          ["[C"] = { query = "@class.outer", desc = "Prev class end" },
-          ["[I"] = { query = "@conditional.outer", desc = "Prev conditional end" },
-          ["[L"] = { query = "@loop.outer", desc = "Prev loop end" },
+          ["[F"] = { query = "@call.outer", desc = "prev [F]unction call end" },
+          ["[M"] = { query = "@function.outer", desc = "prev [M]ethod/function def end" },
+          ["[C"] = { query = "@class.outer", desc = "prev [C]lass end" },
+          ["[I"] = { query = "@conditional.outer", desc = "prev cond[I]tional end" },
+          ["[L"] = { query = "@loop.outer", desc = "prev [L]oop end" },
         },
       },
     },
@@ -209,6 +213,16 @@ local nvim_treesitter = {
     ---@diagnostic disable-next-line: missing-fields
     require('nvim-treesitter.configs').setup(opts)
 
+
+    -- skip backwards compatible routines to speed up plugin load
+    vim.g.skip_ts_context_commentstring_module = true
+
+    -- Treesitter based folding
+    -- https://github.com/nvim-treesitter/nvim-treesitter/?tab=readme-ov-file#folding
+    -- https://www.reddit.com/r/neovim/comments/vaimyr/how_to_set_folding_method_permanently/
+    vim.opt.foldmethod = "expr"
+    vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+    vim.opt.foldenable = false
     -- There are additional nvim-treesitter modules that you can use to interact
     -- with nvim-treesitter. You should go explore a few and see what interests you:
     --
@@ -223,6 +237,7 @@ local plugins = {
   nvim_treesitter_context,
   nvim_treesitter_refactor,
   nvim_treesitter_textobjects,
+  nvim_ts_context_commentstring,
 }
 
 return plugins

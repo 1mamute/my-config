@@ -12,8 +12,6 @@ local onedarkpro = {
       indentline = true,
       which_key = true,
       neo_tree = true,
-      -- nvim_cmp = true,
-      -- trouble = true,
     },
     options = {
       cursorline = true,
@@ -116,7 +114,6 @@ local lualine = {
       extensions = {
         'neo-tree', -- add neo-tree filetype so lualine can ignore it correctly
         'lazy',     -- add lazy.nvim information in statusline
-        -- 'trouble' -- trouble mode information
         -- 'toggleterm' -- add toggleterm filetype so lualine can ignore it correctly
       },
       sections = {
@@ -179,23 +176,23 @@ local bufferline = {
               bd(0)
             end
           end,
-          desc = "Delete Buffer",
+          desc = "[b]ufferline [d]elete buffer",
         },
         -- stylua: ignore
-        { "<leader>bD", function() require("mini.bufremove").delete(0, true) end, desc = "Delete Buffer (Force)" },
+        { "<leader>bD", function() require("mini.bufremove").delete(0, true) end, desc = "[b]ufferline [D]elete buffer (Force)" },
       },
     },
   },
   keys = {
-    { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>",            desc = "Toggle pin" },
-    { "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete non-pinned buffers" },
-    { "<leader>bo", "<Cmd>BufferLineCloseOthers<CR>",          desc = "Delete other buffers" },
-    { "<leader>br", "<Cmd>BufferLineCloseRight<CR>",           desc = "Delete buffers to the right" },
-    { "<leader>bl", "<Cmd>BufferLineCloseLeft<CR>",            desc = "Delete buffers to the left" },
-    { "<S-h>",      "<cmd>BufferLineCyclePrev<cr>",            desc = "Prev buffer" },
-    { "<S-l>",      "<cmd>BufferLineCycleNext<cr>",            desc = "Next buffer" },
-    { "[b",         "<cmd>BufferLineCyclePrev<cr>",            desc = "Prev buffer" },
-    { "]b",         "<cmd>BufferLineCycleNext<cr>",            desc = "Next buffer" },
+    { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>",            desc = "[b]ufferline toggle buffer [p]in" },
+    { "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "[b]ufferline closes non-[P]inned buffers" },
+    { "<leader>bo", "<Cmd>BufferLineCloseOthers<CR>",          desc = "[b]ufferline close [o]thers buffers" },
+    { "<leader>br", "<Cmd>BufferLineCloseRight<CR>",           desc = "[b]ufferline close buffers to the [r]ight" },
+    { "<leader>bl", "<Cmd>BufferLineCloseLeft<CR>",            desc = "[b]ufferline close buffers to the [l]eft" },
+    { "<S-h>",      "<cmd>BufferLineCyclePrev<cr>",            desc = "prev [b]uffer" },
+    { "<S-l>",      "<cmd>BufferLineCycleNext<cr>",            desc = "next [b]uffer" },
+    { "[b",         "<cmd>BufferLineCyclePrev<cr>",            desc = "prev [b]uffer" },
+    { "]b",         "<cmd>BufferLineCycleNext<cr>",            desc = "next [b]uffer" },
   },
   opts = function()
     local bufferline = require('bufferline')
@@ -208,7 +205,6 @@ local bufferline = {
         themable = true,
         style_preset = {
           bufferline.style_preset.no_italic,
-          bufferline.style_preset.minimal,
         },
         close_command = function(n) require("mini.bufremove").delete(n, false) end,
         right_mouse_command = false,                                                       -- remove right mouse button command
@@ -246,7 +242,7 @@ local gitsigns = {
   -- https://www.lazyvim.org/plugins/editor#gitsignsnvim
   -- https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua
   "lewis6991/gitsigns.nvim",
-  lazy = false, -- dont lazy load import ui elements
+  lazy = false, -- dont lazy load important ui elements
   branch = "main",
   opts = {
     signs = {
@@ -265,17 +261,17 @@ local gitsigns = {
       end
 
       -- stylua: ignore start
-      map("n", "]h", gs.next_hunk, "Next Hunk")
-      map("n", "[h", gs.prev_hunk, "Prev Hunk")
-      map({ "n", "v" }, "<leader>ghs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
-      map({ "n", "v" }, "<leader>ghr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
-      map("n", "<leader>ghS", gs.stage_buffer, "Stage Buffer")
-      map("n", "<leader>ghu", gs.undo_stage_hunk, "Undo Stage Hunk")
-      map("n", "<leader>ghR", gs.reset_buffer, "Reset Buffer")
-      map("n", "<leader>ghp", gs.preview_hunk_inline, "Preview Hunk Inline")
-      map("n", "<leader>ghb", function() gs.blame_line({ full = true }) end, "Blame Line")
-      map("n", "<leader>ghd", gs.diffthis, "Diff This")
-      map("n", "<leader>ghD", function() gs.diffthis("~") end, "Diff This ~")
+      map("n", "]h", gs.next_hunk, "next [h]unk")
+      map("n", "[h", gs.prev_hunk, "prev [h]unk")
+      map({ "n", "v" }, "<leader>ghs", ":Gitsigns stage_hunk<CR>", "[g]it [h]unk [s]tage hunk")
+      map({ "n", "v" }, "<leader>ghr", ":Gitsigns reset_hunk<CR>", "[g]it [h]unk [r]eset hunk")
+      map("n", "<leader>ghS", gs.stage_buffer, "[g]it [h]unks [S]tage buffer")
+      map("n", "<leader>ghu", gs.undo_stage_hunk, "[g]it [h]unks [u]ndo stage hunk")
+      map("n", "<leader>ghR", gs.reset_buffer, "[g]it [h]unk [R]eset buffer")
+      map("n", "<leader>ghp", gs.preview_hunk_inline, "[g]it [h]unk [p]review hunk inline")
+      map("n", "<leader>ghb", function() gs.blame_line({ full = true }) end, "[g]it [h]unk [b]lame line")
+      map("n", "<leader>ghd", gs.diffthis, "[g]it [h]unk [d]iff this")
+      map("n", "<leader>ghD", function() gs.diffthis("~") end, "[g]it [h]unk [D]iff this ~")
       map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
     end,
   },
@@ -289,21 +285,22 @@ local which_key = {
   init = function()
     vim.o.timeout = true
   end,
-  opts = {
-    plugins = { spelling = true },
-    defaults = {
-      mode = { "n", "v" },
-      ["g"] = { name = "+goto" },
+  config = function(_, opts) -- This is the function that runs, AFTER loading
+    require('which-key').setup(opts)
+
+    -- Document existing key chains
+    require('which-key').register {
       ["z"] = { name = "+fold" },
+      ["g"] = { name = "+[g]oto" },
       ["]"] = { name = "+next" },
       ["["] = { name = "+prev" },
       ["<leader>b"] = { name = "+[b]uffer" },
       ["<leader>g"] = { name = "+[g]it" },
       ["<leader>gh"] = { name = "+[h]unks" },
-      ["<leader>s"] = { name = "+search" },
-    },
-  },
-  config = true
+      ["<leader>s"] = { name = "+[s]earch" },
+      ["<leader>t"] = { name = "+[t]oggles" },
+    }
+  end,
 }
 
 local todo_comments = {
@@ -315,54 +312,10 @@ local todo_comments = {
   config = true,
   opts = { signs = false },
   keys = {
-    { "]t",         function() require("todo-comments").jump_next() end, desc = "Next todo comment" },
-    { "[t",         function() require("todo-comments").jump_prev() end, desc = "Previous todo comment" },
-    { "<leader>xt", "<cmd>TodoTrouble<cr>",                              desc = "Todo (Trouble)" },
-    { "<leader>xT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>",      desc = "Todo/Fix/Fixme (Trouble)" },
-    { "<leader>st", "<cmd>TodoTelescope<cr>",                            desc = "Todo" },
-    { "<leader>sT", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>",    desc = "Todo/Fix/Fixme" },
-  },
-}
-
-local trouble = {
-  -- https://www.lazyvim.org/plugins/editor#troublenvim
-  "folke/trouble.nvim",
-  cmd = { "TroubleToggle", "Trouble" },
-  dependencies = { "nvim-tree/nvim-web-devicons" },
-  opts = { use_diagnostic_signs = true },
-  keys = {
-    { "<leader>xx", "<cmd>TroubleToggle document_diagnostics<cr>",  desc = "Document Diagnostics (Trouble)" },
-    { "<leader>xX", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "Workspace Diagnostics (Trouble)" },
-    { "<leader>xL", "<cmd>TroubleToggle loclist<cr>",               desc = "Location List (Trouble)" },
-    { "<leader>xQ", "<cmd>TroubleToggle quickfix<cr>",              desc = "Quickfix List (Trouble)" },
-    {
-      "[q",
-      function()
-        if require("trouble").is_open() then
-          require("trouble").previous({ skip_groups = true, jump = true })
-        else
-          local ok, err = pcall(vim.cmd.cprev)
-          if not ok then
-            vim.notify(err, vim.log.levels.ERROR)
-          end
-        end
-      end,
-      desc = "Previous trouble/quickfix item",
-    },
-    {
-      "]q",
-      function()
-        if require("trouble").is_open() then
-          require("trouble").next({ skip_groups = true, jump = true })
-        else
-          local ok, err = pcall(vim.cmd.cnext)
-          if not ok then
-            vim.notify(err, vim.log.levels.ERROR)
-          end
-        end
-      end,
-      desc = "Next trouble/quickfix item",
-    },
+    { "]t",         function() require("todo-comments").jump_next() end, desc = "next [t]odo comment" },
+    { "[t",         function() require("todo-comments").jump_prev() end, desc = "previous [t]odo comment" },
+    { "<leader>st", "<cmd>TodoTelescope<cr>",                            desc = "[s]earch [t]odos" },
+    { "<leader>sT", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>",    desc = "[s]earch [T]odos/Fix/Fixme" },
   },
 }
 
@@ -383,12 +336,11 @@ local indent_blankline = {
         "help",
         "dashboard",
         "neo-tree",
-        -- "Trouble",
-        -- "trouble",
         "lazy",
         "notify",
         "toggleterm",
         "lazyterm",
+        "TelescopePrompt",
       },
     }
     return require("indent-rainbowline").make_opts(opts)
@@ -404,7 +356,6 @@ local plugins = {
   which_key,
   todo_comments,
   indent_blankline,
-  -- trouble,
   -- { 'akinsho/toggleterm.nvim', version = "*", config = true },
   -- https://github.com/utilyre/barbecue.nvim (https://github.com/navarasu/onedark.nvim/blob/master/lua/barbecue/theme/onedark.lua)
   -- https://www.lazyvim.org/extras/ui/edgy

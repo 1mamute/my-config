@@ -32,6 +32,18 @@ local telescope = {
   },
   config = function()
     require('telescope').setup {
+      pickers = {
+        find_files = {
+          find_command = {
+            'rg',
+            '--files',
+            '--hidden', -- show hidden files
+            '--follow', -- follow symlink
+            '-g',
+            '!.git' -- ignore .git folder
+          },
+        },
+      },
       defaults = {
         vimgrep_arguments = {
           "rg",
@@ -41,7 +53,9 @@ local telescope = {
           "--line-number",
           "--column",
           "--smart-case",
-          "--trim" -- ripgrep remove indentation
+          "--hidden", -- show hidden files
+          "--follow", -- follow symlink
+          "--trim"    -- ripgrep remove indentation
         },
         -- open files in the first window that is an actual file.
         -- use the current window if no other window is available.
@@ -109,10 +123,8 @@ local telescope = {
     vim.keymap.set('n', '<leader>sl', "<cmd>Telescope lazy<CR>", { desc = '[s]earch [l]azy.nvim plugins' })
     vim.keymap.set('n', 'gw', "<cmd>Telescope coc workspace_symbols<CR>", { desc = '[g]o to [w]orkspace symbols' })
     vim.keymap.set('n', 'gd', "<cmd>Telescope coc document_symbols<CR>", { desc = '[g]o to [d]ocument symbols' })
-    vim.keymap.set('n', 'gr', "<cmd>Telescope coc references<CR>", { desc = '[g]o to [r]eferences' })
 
-    -- Find references to Shift - F12 like VSCode
-    vim.keymap.set('n', '<F24>', function()
+    local coc_references = function()
       require('telescope').extensions.coc.references({
         layout_strategy = 'horizontal',
         layout_config = {
@@ -121,7 +133,12 @@ local telescope = {
           mirror = true
         }
       })
-    end, { desc = 'Find References' })
+    end
+
+    vim.keymap.set('n', 'gr', coc_references, { desc = '[g]o to [r]eferences' })
+
+    -- Find references to Shift - F12 like VSCode
+    vim.keymap.set('n', '<F24>', coc_references, { desc = 'Find References' })
 
     -- Slightly advanced example of overriding default behavior and theme
     vim.keymap.set('n', '<leader>/', function()
