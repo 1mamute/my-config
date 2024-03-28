@@ -4,6 +4,11 @@
   "python.formatting.provider": "ruff",
   "lightbulb.enableVirtualText": false,
   "suggest.autoTrigger": "none",
+  "sumneko-lua.enableNvimLuaDev": true,
+  "Lua.diagnostics.globals": ["vim"],
+  "Lua.workspace.library": [
+    "${3rd}/luv/library"
+  ],
   "yaml.schemas": {
     "https://raw.githubusercontent.com/ansible/schemas/main/f/ansible.json#/$defs/tasks": [
       "tasks/*.yml",

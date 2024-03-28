@@ -14,7 +14,8 @@ local coc_nvim = {
       'coc-yaml',
       'coc-yank',
       'coc-json',
-      'coc-lua',
+      -- 'coc-lua',
+      'coc-sumneko-lua',
       'coc-sh',
       'coc-pyright',
       'coc-toml',
@@ -34,9 +35,6 @@ local coc_nvim = {
 
     -- Format to Ctrl + Shift + I
     vim.keymap.set('n', '<C-S-I>', "<Plug>(coc-format)", { noremap = true, desc = 'Format Document' })
-
-
-
 
     -- Highlight the symbol and its references on a CursorHold event(cursor is idle)
     vim.api.nvim_create_augroup("CocGroup", {})
@@ -63,14 +61,14 @@ local coc_nvim = {
       desc = "Update signature help on jump placeholder"
     })
 
-    -- Show symbol documentation on CursorHold
-    -- Define o autocommand usando Lua
-    vim.api.nvim_create_autocmd("CursorHold", {
-      group = "CocGroup",
-      command = "silent call CocActionAsync('doHover')",
-      desc = "Show documentation for symbol under cursor on CursorHold"
-    })
-
+    -- -- Show symbol documentation on CursorHold
+    -- -- Define o autocommand usando Lua
+    -- vim.api.nvim_create_autocmd("CursorHold", {
+    --   group = "CocGroup",
+    --   command = "silent call CocActionAsync('doHover')",
+    --   desc = "Show documentation for symbol under cursor on CursorHold"
+    -- })
+    --
     -- show symbol line on winbar (bufferline.nvim)
     function _G.symbol_line()
       local curwin = vim.g.statusline_winid or 0

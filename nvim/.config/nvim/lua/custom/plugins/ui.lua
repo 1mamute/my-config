@@ -102,7 +102,7 @@ local lualine = {
       end
     end
 
-    local icons = require("utils")
+    local icons = require("config/utils")
 
     return {
       options = {
@@ -114,7 +114,6 @@ local lualine = {
       extensions = {
         'neo-tree', -- add neo-tree filetype so lualine can ignore it correctly
         'lazy',     -- add lazy.nvim information in statusline
-        -- 'toggleterm' -- add toggleterm filetype so lualine can ignore it correctly
       },
       sections = {
         lualine_b = {
@@ -149,39 +148,41 @@ local lualine = {
   end,
 }
 
+local mini_bufremove = {
+  -- https://www.lazyvim.org/plugins/editor#minibufremove
+  "echasnovski/mini.bufremove",
+  version = false,
+  keys = {
+    {
+      "<leader>bd",
+      function()
+        local bd = require("mini.bufremove").delete
+        if vim.bo.modified then
+          local choice = vim.fn.confirm(("Save changes to %q?"):format(vim.fn.bufname()), "&Yes\n&No\n&Cancel")
+          if choice == 1 then -- Yes
+            vim.cmd.write()
+            bd(0)
+          elseif choice == 2 then -- No
+            bd(0, true)
+          end
+        else
+          bd(0)
+        end
+      end,
+      desc = "[b]ufferline [d]elete buffer",
+    },
+    -- stylua: ignore
+    { "<leader>bD", function() require("mini.bufremove").delete(0, true) end, desc = "[b]ufferline [D]elete buffer (Force)" },
+  },
+}
+
 local bufferline = {
   -- https://www.lazyvim.org/plugins/ui#bufferlinenvim
   "akinsho/bufferline.nvim",
   lazy = false, -- dont lazy load import ui elements
   dependencies = {
     'nvim-tree/nvim-web-devicons',
-    {
-      -- https://www.lazyvim.org/plugins/editor#minibufremove
-      "echasnovski/mini.bufremove",
-      version = false,
-      keys = {
-        {
-          "<leader>bd",
-          function()
-            local bd = require("mini.bufremove").delete
-            if vim.bo.modified then
-              local choice = vim.fn.confirm(("Save changes to %q?"):format(vim.fn.bufname()), "&Yes\n&No\n&Cancel")
-              if choice == 1 then -- Yes
-                vim.cmd.write()
-                bd(0)
-              elseif choice == 2 then -- No
-                bd(0, true)
-              end
-            else
-              bd(0)
-            end
-          end,
-          desc = "[b]ufferline [d]elete buffer",
-        },
-        -- stylua: ignore
-        { "<leader>bD", function() require("mini.bufremove").delete(0, true) end, desc = "[b]ufferline [D]elete buffer (Force)" },
-      },
-    },
+    mini_bufremove
   },
   keys = {
     { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>",            desc = "[b]ufferline toggle buffer [p]in" },
@@ -212,7 +213,7 @@ local bufferline = {
         always_show_bufferline = true,                                                     -- bufferline always open
         diagnostics = "coc",                                                               -- uses coc for diagnostics
         diagnostics_indicator = function(_, _, diag)
-          local icons = require("utils").diagnostics
+          local icons = require("config/utils").diagnostics
           local ret = (diag.error and icons.Error .. diag.error .. " " or "")
               .. (diag.warning and icons.Warn .. diag.warning or "")
           return vim.trim(ret)
@@ -238,44 +239,6 @@ local bufferline = {
   end,
 }
 
-local gitsigns = {
-  -- https://www.lazyvim.org/plugins/editor#gitsignsnvim
-  -- https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua
-  "lewis6991/gitsigns.nvim",
-  lazy = false, -- dont lazy load important ui elements
-  branch = "main",
-  opts = {
-    signs = {
-      add          = { text = '│' },
-      change       = { text = '│' },
-      delete       = { text = '│' },
-      topdelete    = { text = '‾' },
-      changedelete = { text = '~' },
-    },
-    numhl = true, -- highlight changed lines numbers
-    on_attach = function(buffer)
-      local gs = package.loaded.gitsigns
-
-      local function map(mode, l, r, desc)
-        vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc })
-      end
-
-      -- stylua: ignore start
-      map("n", "]h", gs.next_hunk, "next [h]unk")
-      map("n", "[h", gs.prev_hunk, "prev [h]unk")
-      map({ "n", "v" }, "<leader>ghs", ":Gitsigns stage_hunk<CR>", "[g]it [h]unk [s]tage hunk")
-      map({ "n", "v" }, "<leader>ghr", ":Gitsigns reset_hunk<CR>", "[g]it [h]unk [r]eset hunk")
-      map("n", "<leader>ghS", gs.stage_buffer, "[g]it [h]unks [S]tage buffer")
-      map("n", "<leader>ghu", gs.undo_stage_hunk, "[g]it [h]unks [u]ndo stage hunk")
-      map("n", "<leader>ghR", gs.reset_buffer, "[g]it [h]unk [R]eset buffer")
-      map("n", "<leader>ghp", gs.preview_hunk_inline, "[g]it [h]unk [p]review hunk inline")
-      map("n", "<leader>ghb", function() gs.blame_line({ full = true }) end, "[g]it [h]unk [b]lame line")
-      map("n", "<leader>ghd", gs.diffthis, "[g]it [h]unk [d]iff this")
-      map("n", "<leader>ghD", function() gs.diffthis("~") end, "[g]it [h]unk [D]iff this ~")
-      map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
-    end,
-  },
-}
 
 local which_key = {
   -- https://www.lazyvim.org/plugins/editor#which-keynvim
@@ -285,21 +248,24 @@ local which_key = {
   init = function()
     vim.o.timeout = true
   end,
+  opts = {
+
+  },
   config = function(_, opts) -- This is the function that runs, AFTER loading
     require('which-key').setup(opts)
 
     -- Document existing key chains
-    require('which-key').register {
+    require('which-key').register({
       ["z"] = { name = "+fold" },
       ["g"] = { name = "+[g]oto" },
       ["]"] = { name = "+next" },
       ["["] = { name = "+prev" },
       ["<leader>b"] = { name = "+[b]uffer" },
       ["<leader>g"] = { name = "+[g]it" },
-      ["<leader>gh"] = { name = "+[h]unks" },
+      ["<leader>h"] = { name = "+[h]unks" },
       ["<leader>s"] = { name = "+[s]earch" },
       ["<leader>t"] = { name = "+[t]oggles" },
-    }
+    })
   end,
 }
 
@@ -329,7 +295,7 @@ local indent_blankline = {
   },
   opts = function(_, opts)
     opts.indent = { char = "" }
-    opts.whitespace = { highlight = { "CursorColumn", "Whitespace" }, remove_blankline_trail = false }
+    opts.whitespace = { highlight = { "CursorColumn", "Whitespace" } }
     opts.scope = { enabled = false }
     opts.exclude = {
       filetypes = {
@@ -352,7 +318,6 @@ local plugins = {
   nvim_web_devicons,
   lualine,
   bufferline,
-  gitsigns,
   which_key,
   todo_comments,
   indent_blankline,

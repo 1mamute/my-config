@@ -40,7 +40,7 @@ local telescope = {
             '--hidden', -- show hidden files
             '--follow', -- follow symlink
             '-g',
-            '!.git' -- ignore .git folder
+            '!.git'     -- ignore .git folder
           },
         },
       },
@@ -208,6 +208,58 @@ local telescope = {
     vim.keymap.set('n', '<leader>sn', function()
       builtin.find_files { cwd = vim.fn.stdpath 'config' }
     end, { desc = '[s]earch [n]eovim files' })
+
+    -- vim.keymap.set('n', '<leader>sp', function()
+    --     local plugins = require("lazy.core.config").plugins
+    --     local plugin_names = {}
+    --
+    --     -- Extrai os nomes dos plugins para a lista
+    --     for _, plugin_spec in pairs(plugins) do
+    --       table.insert(plugin_names, plugin_spec[1])
+    --     end
+    --
+    --     -- Função auxiliar para escapar caracteres especiais para expressões regulares
+    --     local function escape_special_chars(s)
+    --       return s:gsub('([%.])', '\\%1')
+    --     end
+    --
+    --     -- Função para converter a lista de nomes de plugins em uma string para a busca
+    --     local function list_to_grep_string(list)
+    --       local grep_str = ""
+    --       for i, name in ipairs(list) do
+    --         local escaped_name = escape_special_chars(name)
+    --         grep_str = grep_str .. escaped_name
+    --         if i < #list then
+    --           grep_str = grep_str .. '\|'
+    --         end
+    --       end
+    --       return grep_str
+    --     end
+    --
+    --     local grep_str = list_to_grep_string(plugin_names)
+    --
+    --     print(vim.inspect(grep_str))
+    --     local files = {} ---@type table<string, string>
+    --     for _, plugin in pairs(plugins) do
+    --       repeat
+    --         if plugin._.module then
+    --           local info = vim.loader.find(plugin._.module)[1]
+    --           if info then
+    --             files[info.modpath] = info.modpath
+    --           end
+    --         end
+    --         plugin = plugin._.super
+    --       until not plugin
+    --     end
+    --
+    --     -- Chama o Telescope para buscar pela string construída
+    --     require('telescope.builtin').grep_string({
+    --       search = grep_str,
+    --       prompt_title = "Lazy Plugins Specs",
+    --       search_dirs = vim.tbl_values(files),
+    --     })
+    --   end,
+    --   { desc = "Find Lazy Plugin Spec" })
   end,
 }
 
