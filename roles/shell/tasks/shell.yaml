@@ -1,13 +1,7 @@
-# code: language=ansible
 ---
 - name: Install zsh, Oh My Zsh, dependencies and configurations
   hosts: localhost
   tasks:
-    - name: Update package cache
-      ansible.builtin.package:
-        update_cache: true
-      become: true
-
     - name: Ensure Zsh with dependencies are installed
       ansible.builtin.package:
         name:
@@ -49,11 +43,11 @@
         dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
         depth: 1
 
-    - name: Clone or update zsh-syntax-highlighting repo # noqa: latest
+    - name: Clone or update fast-syntax-highlighting repo # noqa: latest
       ansible.builtin.git:
-        repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+        repo: https://github.com/zdharma-continuum/fast-syntax-highlighting.git
         single_branch: true
-        dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+        dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/fast-syntax-highlighting"
         depth: 1
 
     - name: Clone or update zsh-completions repo # noqa: latest
