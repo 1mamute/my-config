@@ -142,6 +142,7 @@
 
 - name: Deletes nvim config directory
   # For Windows targets, use the ansible.windows.win_file module instead.
+  # Only run if the file exists and is not a symlink
   when: >-
     nvim_config_dir_check_result.stat.exists
     and ((nvim_config_dir_check_result.stat.islnk is defined and not nvim_config_dir_check_result.stat.islnk)
@@ -152,9 +153,11 @@
 
 - name: Create a symbolic link to home from the nvim config directory
   # For Windows targets, use the ansible.windows.win_file module instead.
+  # Only run if the file doesn't exist or exists and is not a symlink
   when: >-
-    nvim_config_dir_check_result.stat.exists
-    and ((nvim_config_dir_check_result.stat.islnk is defined and not nvim_config_dir_check_result.stat.islnk)
+    not nvim_config_dir_check_result.stat.exists
+    or nvim_config_dir_check_result.stat.exists and
+    ((nvim_config_dir_check_result.stat.islnk is defined and not nvim_config_dir_check_result.stat.islnk)
     or (nvim_config_dir_check_result.stat.islnk is not defined))
   ansible.builtin.file:
     src: "{{ playbook_dir }}/nvim/.config/nvim"

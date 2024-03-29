@@ -1,5 +1,6 @@
 ---
 - name: Get NodeJS LTS install script from nodesource
+  changed_when: false
   ansible.builtin.get_url:
     url: "https://deb.nodesource.com/setup_lts.x"
     dest: /tmp/setup_lts.x

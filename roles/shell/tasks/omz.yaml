@@ -1,0 +1,33 @@
+---
+- name: Clone or update Oh My Zsh repo # noqa: latest
+  ansible.builtin.git:
+    repo: https://github.com/ohmyzsh/ohmyzsh.git
+    single_branch: true
+    dest: "{{ ansible_env.HOME }}/.oh-my-zsh"
+    depth: 1
+    # Prevent the cloned repository from having insecure permissions. Failing to do
+    # so causes compinit() calls to fail with "command not found: compdef" errors
+    # for users with insecure umasks (e.g., "002", allowing group writability).
+    # same as "g-w,o-w"
+    umask: "022"
+
+- name: Clone or update zsh-autosuggestions repo # noqa: latest
+  ansible.builtin.git:
+    repo: https://github.com/zsh-users/zsh-autosuggestions.git
+    single_branch: true
+    dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+    depth: 1
+
+- name: Clone or update fast-syntax-highlighting repo # noqa: latest
+  ansible.builtin.git:
+    repo: https://github.com/zdharma-continuum/fast-syntax-highlighting.git
+    single_branch: true
+    dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/fast-syntax-highlighting"
+    depth: 1
+
+- name: Clone or update zsh-completions repo # noqa: latest
+  ansible.builtin.git:
+    repo: https://github.com/zsh-users/zsh-completions.git
+    single_branch: true
+    dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-completions"
+    depth: 1

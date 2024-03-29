@@ -2,7 +2,7 @@
 - name: Download microsoft gpg key
   become: true
   ansible.builtin.get_url:
-    url: "{{ visual_studio_code_mirror }}/keys/microsoft.asc"
+    url: "https://packages.microsoft.com/keys/microsoft.asc"
     dest: /etc/apt/keyrings/microsoft.asc
     mode: "u=rw,go=r"
     force: true
@@ -12,7 +12,7 @@
   ansible.builtin.apt_repository:
     repo: >-
       deb [arch=amd64 trusted=true signed-by=/etc/apt/keyrings/microsoft.asc]
-      {{ visual_studio_code_mirror }}/repos/code stable main
+      https://packages.microsoft.com/repos/code stable main
     filename: vscode
     state: present
 

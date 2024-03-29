@@ -32,6 +32,7 @@
 
   roles:
     - editors
+    - shell
 
     # - name: Install zsh, Oh My Zsh, dependencies and configurations
     #   import_playbook: shell.yaml

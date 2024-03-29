@@ -49,7 +49,6 @@ typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
     vcs                     # git status
     command_execution_time  # duration of the last command
     background_jobs         # presence of background jobs
-    direnv                  # direnv status (https://direnv.net/)
     kubecontext             # current kubernetes context (https://kubernetes.io/)
     terraform               # terraform workspace (https://www.terraform.io)
     terraform_version       # terraform version (https://www.terraform.io)

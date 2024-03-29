@@ -80,11 +80,6 @@ plugins+=(kubectl)
 # kubectx prompt info
 plugins+=(kubectx)
 
-# volta (node version manager) completions and path
-plugins+=(volta)
-export VOLTA_HOME=$HOME/.volta
-export PATH=$VOLTA_HOME/bin:$PATH
-
 # systemd aliases and prompt info
 plugins+=(systemd)
 
@@ -112,13 +107,8 @@ plugins+=(command-not-found)
 # apt aliases and helper functions
 plugins+=(debian)
 
-# automagically hook direnv
-plugins+=(direnv)
-
 # docker compose completions and aliases
 plugins+=(docker-compose)
-
-# plugins+=(zoxide)
 
 # interactive cd
 plugins+=(zsh-interactive-cd)
@@ -134,6 +124,8 @@ ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 plugins+=(fast-syntax-highlighting)
 
 # zsh completions
+# dont add it to the OMZ plugin's list but it must be setted before sourcing OMZ
+# https://github.com/zsh-users/zsh-completions/issues/603
 fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 
 source $ZSH/oh-my-zsh.sh
