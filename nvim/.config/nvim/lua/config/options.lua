@@ -3,6 +3,9 @@ if vim.env.VSCODE then
   vim.g.vscode = true
 end
 
+-- Set to true to print relevant debug information
+vim.g.debug_neovim_config = false
+
 -- Set to true if you have a Nerd Font installed
 vim.g.have_nerd_font = true
 
@@ -69,7 +72,7 @@ vim.opt.inccommand = 'split'
 vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 4 --10
+vim.opt.scrolloff = 5 -- is the VSCode default
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true

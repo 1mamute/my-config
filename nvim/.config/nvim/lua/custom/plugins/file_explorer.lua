@@ -10,10 +10,10 @@ local neo_tree = {
     "MunifTanjim/nui.nvim",
   },
   init = function()
-    if vim.fn.argc(-1) == 1 then
-      local stat = vim.loop.fs_stat(vim.fn.argv(0))
+    if vim.fn.argc(-1) == 1 then -- gets the global arguments list (-1) and check if exactly one argument was provided
+      local stat = vim.loop.fs_stat(vim.fn.argv(0)) -- gets information about the file/directory that was provided
       if stat and stat.type == "directory" then
-        require("neo-tree")
+        require("neo-tree") -- loads the plugin only if it was a directory
       end
     end
   end,
@@ -90,8 +90,29 @@ local neo_tree = {
   },
 }
 
+local vim_symlink = {
+  'aymericbeaumet/vim-symlink',
+  dependencies = { 'moll/vim-bbye' },
+  event = { "VeryLazy " },
+  lazy = false,
+  cond = function()
+    -- Only load the plugin if the current opened file in the buffer is a symlink
+    local current_file = vim.api.nvim_buf_get_name(0)   -- Gets the path of the opened buffer file
+    local stat = vim.loop.fs_lstat(current_file)        -- Gets informations about the file/link
+
+    if stat and stat.type == "link" then
+      if vim.g.debug_neovim_config then print("The opened file in the buffer is a symbolic link.") end
+      return true
+    else
+      if vim.g.debug_neovim_config then print("The opened file in the buffer isn't a symbolic link.") end
+      return false
+    end
+  end
+}
+
 local plugins = {
   neo_tree,
+  vim_symlink,
 }
 
 return plugins
