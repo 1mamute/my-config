@@ -1,0 +1,40 @@
+---
+- name: Check awscliv2 installed version
+  ansible.builtin.shell: "aws --version"
+  ignore_errors: true
+  changed_when: false
+  register: awscliv2_check_result
+
+- name: Get aswcliv2 archive
+  ansible.builtin.get_url:
+    url: "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
+    dest: /tmp/awscliv2.zip
+    mode: "u=rw,go=r"
+
+- name: Create temporary awscliv2 folder
+  ansible.builtin.file:
+    path: /tmp/awscliv2/
+    state: directory
+    mode: "u=rwx,go=rx"
+
+- name: Extract to temporary path
+  become: true
+  ansible.builtin.unarchive:
+    src: /tmp/awscliv2.zip
+    dest: /tmp/awscliv2/
+  notify:
+    - Remove awscliv2 archive
+
+- name: Install awscliv2
+  when: awscliv2_check_result.rc != 0
+  ignore_errors: true
+  ansible.builtin.shell: "/tmp/awscliv2/aws/install --install-dir {{ ansible_env.HOME }}/.local/share/aws-cli --bin-dir {{ ansible_env.HOME }}/.local/bin"
+  notify:
+    - Remove awscliv2 temporary folder
+
+#TODO: only update if it's not latest version
+- name: Update awscliv2 if it is already installed
+  when: awscliv2_check_result.rc == 0
+  ansible.builtin.shell: "/tmp/awscliv2/aws/install --install-dir {{ ansible_env.HOME }}/.local/share/aws-cli --bin-dir {{ ansible_env.HOME }}/.local/bin --update"
+  notify:
+    - Remove awscliv2 temporary folder
