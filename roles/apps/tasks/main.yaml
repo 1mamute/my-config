@@ -1,0 +1,4 @@
+---
+- name: Install and configuring wezterm
+  ansible.builtin.import_tasks: wezterm.yaml
+
