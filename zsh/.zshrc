@@ -79,6 +79,7 @@ plugins+=(kubectl)
 
 # kubectx prompt info
 plugins+=(kubectx)
+fpath+=($HOME/.local/share/kubectx/completion) # make PR to oh my zsh
 
 # systemd aliases and prompt info
 plugins+=(systemd)

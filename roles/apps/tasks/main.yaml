@@ -8,10 +8,9 @@
 - name: Install and configure kubectl
   ansible.builtin.import_tasks: kubectl.yaml
 
-# kubectl
-# kubectx
-# kubens
-# helm
+- name: Install and configure kubectx
+  ansible.builtin.import_tasks: kubectx.yaml
+
 # k9s
 # terraform
 # awscliv2

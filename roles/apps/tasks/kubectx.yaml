@@ -1,0 +1,23 @@
+---
+- name: Clone or update kubectx repo # noqa: latest
+  ansible.builtin.git:
+    repo: https://github.com/ahmetb/kubectx
+    single_branch: true
+    dest: "{{ ansible_env.HOME }}/.local/share/kubectx"
+    depth: 1
+
+- name: Create a symbolic link for kubectx
+  # For Windows targets, use the ansible.windows.win_file module instead.
+  ansible.builtin.file:
+    src: "{{ ansible_env.HOME }}/.local/share/kubectx/kubectx"
+    dest: "{{ ansible_env.HOME }}/.local/bin/kubectx"
+    state: link
+    force: true
+
+- name: Create a symbolic link for kubens
+  # For Windows targets, use the ansible.windows.win_file module instead.
+  ansible.builtin.file:
+    src: "{{ ansible_env.HOME }}/.local/share/kubectx/kubens"
+    dest: "{{ ansible_env.HOME }}/.local/bin/kubens"
+    state: link
+    force: true
