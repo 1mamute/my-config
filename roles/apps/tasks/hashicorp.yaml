@@ -1,0 +1,65 @@
+---
+- name: Checks if hashicorp repo source list exists
+  become: true
+  # For Windows targets, use the ansible.windows.win_stat module instead.
+  ansible.builtin.stat:
+    path: "/etc/apt/sources.list.d/hashicorp.list"
+  register: hashicorp_repo_source_list_check_result
+
+- name: Makes a backup of hashicorp repo source list file
+  become: true
+  # For Windows targets, use the ansible.windows.win_copy module instead.
+  # Only run if the file exists
+  when: hashicorp_repo_source_list_check_result.stat.exists
+  ansible.builtin.copy:
+    src: "/etc/apt/sources.list.d/hashicorp.list"
+    dest: "/etc/apt/sources.list.d/bkp/hashicorp.list"
+    mode: "u=rw,go=r"
+
+- name: Deletes hashicorp repo source list file
+  become: true
+  # For Windows targets, use the ansible.windows.win_file module instead.
+  # Only run if the file exists
+  when: hashicorp_repo_source_list_check_result.stat.exists
+  ansible.builtin.file:
+    path: "/etc/apt/sources.list.d/hashicorp.list"
+    state: absent
+
+- name: Checks if hashicorp repo source list save exists
+  become: true
+  # For Windows targets, use the ansible.windows.win_stat module instead.
+  ansible.builtin.stat:
+    path: "/etc/apt/sources.list.d/hashicorp.list.save"
+  register: hashicorp_repo_source_list_save_check_result
+
+- name: Deletes hashicorp repo source list save file
+  become: true
+  # For Windows targets, use the ansible.windows.win_file module instead.
+  # Only run if the file exists, no need to backup this one
+  when: hashicorp_repo_source_list_save_check_result.stat.exists
+  ansible.builtin.file:
+    path: "/etc/apt/sources.list.d/hashicorp.list.save"
+    state: absent
+
+- name: Add hashicorp Repository
+  become: true
+  ansible.builtin.deb822_repository:
+    name: hashicorp
+    types: [deb]
+    signed_by: "https://apt.releases.hashicorp.com/gpg"
+    uris: "https://apt.releases.hashicorp.com"
+    suites: ["{{ distribution_codename }}"]
+    components: ["main"]
+    state: present
+    enabled: true
+
+- name: Install terraform, vagrant, vault, packer
+  become: true
+  ansible.builtin.package:
+    name:
+      - terraform
+      - vagrant
+      - vault
+      - packer
+    update_cache: true
+    state: present

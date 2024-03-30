@@ -2,7 +2,7 @@
 - name: Install and configure wezterm
   ansible.builtin.import_tasks: wezterm.yaml
 
-- name: Install gh
+- name: Install and configure gh
   ansible.builtin.import_tasks: gh.yaml
 
 - name: Install and configure kubectl
@@ -14,7 +14,9 @@
 - name: Install and configure k9s
   ansible.builtin.import_tasks: k9s.yaml
 
-# terraform
+- name: Install and configure terraform, vault, vagrant, packer
+  ansible.builtin.import_tasks: hashicorp.yaml
+
 # awscliv2
 # docker
 # docker-compose

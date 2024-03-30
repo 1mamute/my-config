@@ -37,6 +37,15 @@
         name: github3.py
         state: present
 
+    - name: Get distribution codename
+      ansible.builtin.command: lsb_release -cs
+      changed_when: false
+      register: distribution_codename
+
+    - name: Set distribution codename as fact
+      ansible.builtin.set_fact:
+        distribution_codename: "{{ distribution_codename.stdout.strip() }}"
+
   roles:
     - editors
     - shell

@@ -48,7 +48,7 @@
     return_content: true
   register: k8s_stable_version
 
-- name: Extrair a versão minor do Kubernetes
+- name: Extract minor version from stable version.
   ansible.builtin.set_fact:
     k8s_stable_version_minor: "{{ k8s_stable_version.content | regex_search('^(v\\d+\\.\\d+)') }}"
 
