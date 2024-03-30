@@ -11,7 +11,9 @@
 - name: Install and configure kubectx
   ansible.builtin.import_tasks: kubectx.yaml
 
-# k9s
+- name: Install and configure k9s
+  ansible.builtin.import_tasks: k9s.yaml
+
 # terraform
 # awscliv2
 # docker

@@ -1,0 +1,36 @@
+---
+- name: Check k9s installed version
+  ansible.builtin.command: k9s --version
+  ignore_errors: true
+  changed_when: false
+  register: k9s_check_result
+
+- name: Get latest release of k9s public repo
+  when: k9s_check_result.rc != 0
+  community.general.github_release:
+    user: derailed
+    repo: k9s
+    action: latest_release
+  register: k9s_latest_release
+
+- name: Get k9s deb package
+  when: k9s_check_result.rc != 0
+  ansible.builtin.get_url:
+    url: "https://github.com/derailed/k9s/releases/download/{{ k9s_latest_release.tag }}/k9s_linux_amd64.deb"
+    dest: /tmp/k9s_linux_amd64.deb
+    mode: "u=rw,go=r"
+
+- name: Install k9s .deb package
+  when: k9s_check_result.rc != 0
+  become: true
+  ansible.builtin.apt:
+    deb: "/tmp/k9s_linux_amd64.deb"
+  notify:
+    - Remove k9s .deb package
+
+- name: Install or update k9s package
+  become: true
+  ansible.builtin.package:
+    name: k9s
+    state: present
+    update_cache: true

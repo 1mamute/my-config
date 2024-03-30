@@ -117,11 +117,12 @@
   notify:
     - Remove ripgrep .deb package
 
-- name: Update ripgrep package
+- name: Install or update ripgrep package
   become: true
   ansible.builtin.package:
     name: ripgrep
     state: present
+    update_cache: true
 
 - name: Checks if nvim config directory exists
   # For Windows targets, use the ansible.windows.win_stat module instead.
