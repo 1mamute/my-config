@@ -1,20 +1,57 @@
 ---
-- name: Download microsoft gpg key
+- name: Checks if VS Code repo source list exists
   become: true
-  ansible.builtin.get_url:
-    url: "https://packages.microsoft.com/keys/microsoft.asc"
-    dest: /etc/apt/keyrings/microsoft.asc
-    mode: "u=rw,go=r"
-    force: true
+  # For Windows targets, use the ansible.windows.win_stat module instead.
+  ansible.builtin.stat:
+    path: "/etc/apt/sources.list.d/vscode.list"
+  register: vscode_repo_source_list_check_result
 
-- name: Install VS Code repo (apt)
+- name: Makes a backup of VS Code repo source list file
   become: true
-  ansible.builtin.apt_repository:
-    repo: >-
-      deb [arch=amd64 trusted=true signed-by=/etc/apt/keyrings/microsoft.asc]
-      https://packages.microsoft.com/repos/code stable main
-    filename: vscode
+  # For Windows targets, use the ansible.windows.win_copy module instead.
+  # Only run if the file exists
+  when: vscode_repo_source_list_check_result.stat.exists
+  ansible.builtin.copy:
+    src: "/etc/apt/sources.list.d/vscode.list"
+    dest: "/etc/apt/sources.list.d/bkp/vscode.list"
+    mode: "u=rw,go=r"
+
+- name: Deletes VS Code repo source list file
+  become: true
+  # For Windows targets, use the ansible.windows.win_file module instead.
+  # Only run if the file exists
+  when: vscode_repo_source_list_check_result.stat.exists
+  ansible.builtin.file:
+    path: "/etc/apt/sources.list.d/vscode.list"
+    state: absent
+
+- name: Checks if VS Code repo source list save exists
+  become: true
+  # For Windows targets, use the ansible.windows.win_stat module instead.
+  ansible.builtin.stat:
+    path: "/etc/apt/sources.list.d/vscode.list.save"
+  register: vscode_repo_source_list_save_check_result
+
+- name: Deletes VS Code repo source list save file
+  become: true
+  # For Windows targets, use the ansible.windows.win_file module instead.
+  # Only run if the file exists, no need to backup this one
+  when: vscode_repo_source_list_save_check_result.stat.exists
+  ansible.builtin.file:
+    path: "/etc/apt/sources.list.d/vscode.list.save"
+    state: absent
+
+- name: Add VS Code Repository
+  become: true
+  ansible.builtin.deb822_repository:
+    name: vscode
+    types: [deb]
+    signed_by: "https://packages.microsoft.com/keys/microsoft.asc"
+    uris: "https://packages.microsoft.com/repos/code"
+    suites: ["stable"]
+    components: ["main"]
     state: present
+    enabled: true
 
 - name: Install VS Code
   become: true
