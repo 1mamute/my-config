@@ -1,0 +1,71 @@
+---
+- name: Checks if kubernetes repo source list exists
+  become: true
+  # For Windows targets, use the ansible.windows.win_stat module instead.
+  ansible.builtin.stat:
+    path: "/etc/apt/sources.list.d/kubernetes.list"
+  register: kubernetes_repo_source_list_check_result
+
+- name: Makes a backup of kubernetes repo source list file
+  become: true
+  # For Windows targets, use the ansible.windows.win_copy module instead.
+  # Only run if the file exists
+  when: kubernetes_repo_source_list_check_result.stat.exists
+  ansible.builtin.copy:
+    src: "/etc/apt/sources.list.d/kubernetes.list"
+    dest: "/etc/apt/sources.list.d/bkp/kubernetes.list"
+    mode: "u=rw,go=r"
+
+- name: Deletes kubernetes repo source list file
+  become: true
+  # For Windows targets, use the ansible.windows.win_file module instead.
+  # Only run if the file exists
+  when: kubernetes_repo_source_list_check_result.stat.exists
+  ansible.builtin.file:
+    path: "/etc/apt/sources.list.d/kubernetes.list"
+    state: absent
+
+- name: Checks if kubernetes repo source list save exists
+  become: true
+  # For Windows targets, use the ansible.windows.win_stat module instead.
+  ansible.builtin.stat:
+    path: "/etc/apt/sources.list.d/kubernetes.list.save"
+  register: kubernetes_repo_source_list_save_check_result
+
+- name: Deletes kubernetes repo source list save file
+  become: true
+  # For Windows targets, use the ansible.windows.win_file module instead.
+  # Only run if the file exists, no need to backup this one
+  when: kubernetes_repo_source_list_save_check_result.stat.exists
+  ansible.builtin.file:
+    path: "/etc/apt/sources.list.d/kubernetes.list.save"
+    state: absent
+
+- name: Get the latest stable version of Kubernetes.
+  ansible.builtin.uri:
+    url: https://dl.k8s.io/release/stable.txt
+    method: GET
+    return_content: true
+  register: k8s_stable_version
+
+- name: Extrair a versão minor do Kubernetes
+  ansible.builtin.set_fact:
+    k8s_stable_version_minor: "{{ k8s_stable_version.content | regex_search('^(v\\d+\\.\\d+)') }}"
+
+- name: Add kubernetes Repository
+  become: true
+  ansible.builtin.deb822_repository:
+    name: kubernetes
+    types: [deb]
+    signed_by: "https://pkgs.k8s.io/core:/stable:/{{ k8s_stable_version_minor }}/deb/Release.key"
+    uris: "https://pkgs.k8s.io/core:/stable:/{{ k8s_stable_version_minor }}/deb/"
+    suites: ["/"]
+    state: present
+    enabled: true
+
+- name: Install kubectl
+  become: true
+  ansible.builtin.package:
+    name: kubectl
+    update_cache: true
+    state: present

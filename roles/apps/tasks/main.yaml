@@ -1,9 +1,12 @@
 ---
-- name: Install and configuring wezterm
+- name: Install and configure wezterm
   ansible.builtin.import_tasks: wezterm.yaml
 
 - name: Install gh
   ansible.builtin.import_tasks: gh.yaml
+
+- name: Install and configure kubectl
+  ansible.builtin.import_tasks: kubectl.yaml
 
 # kubectl
 # kubectx
