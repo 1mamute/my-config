@@ -8,7 +8,7 @@ local config = wezterm.config_builder()
 config.color_scheme = 'OneDark (base16)'
 
 -- Title bar
-config.window_decorations = "RESIZE"
+config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
 
 -- Padding
 config.window_padding = {
@@ -18,9 +18,11 @@ config.window_padding = {
   bottom = 0,
 }
 
--- Tabs
-config.hide_tab_bar_if_only_one_tab = true
-config.use_fancy_tab_bar = true -- already the default
+-- Dim inactive panes to make it easier to see which pane is active
+config.inactive_pane_hsb = {
+  saturation = 0.9,
+  brightness = 0.8,
+}
 
 -- Fonts
 config.font = wezterm.font_with_fallback {
@@ -111,14 +113,14 @@ config.key_tables = {
     { key = 'RightArrow', action = act.ActivatePaneDirection 'Right' },
     { key = 'LeftArrow', action = act.ActivatePaneDirection 'Left' },
     -- vim bindings and arrow keys to split panes
-    { key = 'k', mods = 'ALT', action = act.SplitPane { direction = 'Up' } },
-    { key = 'j', mods = 'ALT', action = act.SplitPane { direction = 'Down' } },
-    { key = 'l', mods = 'ALT', action = act.SplitPane { direction = 'Right' } },
-    { key = 'h', mods = 'ALT', action = act.SplitPane { direction = 'Left' } },
-    { key = 'UpArrow', mods = 'ALT', action = act.SplitPane { direction = 'Up' } },
-    { key = 'DownArrow', mods = 'ALT', action = act.SplitPane { direction = 'Down' } },
-    { key = 'RightArrow', mods = 'ALT', action = act.SplitPane { direction = 'Right' } },
-    { key = 'LeftArrow', mods = 'ALT', action = act.SplitPane { direction = 'Left' } },
+    { key = 'k', mods = 'CTRL', action = act.SplitPane { direction = 'Up' } },
+    { key = 'j', mods = 'CTRL', action = act.SplitPane { direction = 'Down' } },
+    { key = 'l', mods = 'CTRL', action = act.SplitPane { direction = 'Right' } },
+    { key = 'h', mods = 'CTRL', action = act.SplitPane { direction = 'Left' } },
+    { key = 'UpArrow', mods = 'CTRL', action = act.SplitPane { direction = 'Up' } },
+    { key = 'DownArrow', mods = 'CTRL', action = act.SplitPane { direction = 'Down' } },
+    { key = 'RightArrow', mods = 'CTRL', action = act.SplitPane { direction = 'Right' } },
+    { key = 'LeftArrow', mods = 'CTRL', action = act.SplitPane { direction = 'Left' } },
   },
 }
 
