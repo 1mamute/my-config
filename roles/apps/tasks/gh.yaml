@@ -1,0 +1,61 @@
+---
+- name: Checks if gh repo source list exists
+  become: true
+  # For Windows targets, use the ansible.windows.win_stat module instead.
+  ansible.builtin.stat:
+    path: "/etc/apt/sources.list.d/github-cli.list"
+  register: gh_repo_source_list_check_result
+
+- name: Makes a backup of gh repo source list file
+  become: true
+  # For Windows targets, use the ansible.windows.win_copy module instead.
+  # Only run if the file exists
+  when: gh_repo_source_list_check_result.stat.exists
+  ansible.builtin.copy:
+    src: "/etc/apt/sources.list.d/github-cli.list"
+    dest: "/etc/apt/sources.list.d/bkp/github-cli.list"
+    mode: "u=rw,go=r"
+
+- name: Deletes gh repo source list file
+  become: true
+  # For Windows targets, use the ansible.windows.win_file module instead.
+  # Only run if the file exists
+  when: gh_repo_source_list_check_result.stat.exists
+  ansible.builtin.file:
+    path: "/etc/apt/sources.list.d/github-cli.list"
+    state: absent
+
+- name: Checks if gh repo source list save exists
+  become: true
+  # For Windows targets, use the ansible.windows.win_stat module instead.
+  ansible.builtin.stat:
+    path: "/etc/apt/sources.list.d/github-cli.list.save"
+  register: gh_repo_source_list_save_check_result
+
+- name: Deletes gh repo source list save file
+  become: true
+  # For Windows targets, use the ansible.windows.win_file module instead.
+  # Only run if the file exists, no need to backup this one
+  when: gh_repo_source_list_save_check_result.stat.exists
+  ansible.builtin.file:
+    path: "/etc/apt/sources.list.d/github-cli.list.save"
+    state: absent
+
+- name: Add gh Repository
+  become: true
+  ansible.builtin.deb822_repository:
+    name: github-cli
+    types: [deb]
+    signed_by: "https://cli.github.com/packages/githubcli-archive-keyring.gpg"
+    uris: "https://cli.github.com/packages"
+    suites: ["stable"]
+    components: ["main"]
+    state: present
+    enabled: true
+
+- name: Install gh
+  become: true
+  ansible.builtin.package:
+    name: gh
+    update_cache: true
+    state: present

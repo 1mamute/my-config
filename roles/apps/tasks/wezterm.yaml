@@ -1,4 +1,46 @@
 ---
+- name: Checks if wezterm repo source list exists
+  become: true
+  # For Windows targets, use the ansible.windows.win_stat module instead.
+  ansible.builtin.stat:
+    path: "/etc/apt/sources.list.d/wezterm.list"
+  register: wezterm_repo_source_list_check_result
+
+- name: Makes a backup of wezterm repo source list file
+  become: true
+  # For Windows targets, use the ansible.windows.win_copy module instead.
+  # Only run if the file exists
+  when: wezterm_repo_source_list_check_result.stat.exists
+  ansible.builtin.copy:
+    src: "/etc/apt/sources.list.d/wezterm.list"
+    dest: "/etc/apt/sources.list.d/bkp/wezterm.list"
+    mode: "u=rw,go=r"
+
+- name: Deletes wezterm repo source list file
+  become: true
+  # For Windows targets, use the ansible.windows.win_file module instead.
+  # Only run if the file exists
+  when: wezterm_repo_source_list_check_result.stat.exists
+  ansible.builtin.file:
+    path: "/etc/apt/sources.list.d/wezterm.list"
+    state: absent
+
+- name: Checks if wezterm repo source list save exists
+  become: true
+  # For Windows targets, use the ansible.windows.win_stat module instead.
+  ansible.builtin.stat:
+    path: "/etc/apt/sources.list.d/wezterm.list.save"
+  register: wezterm_repo_source_list_save_check_result
+
+- name: Deletes wezterm repo source list save file
+  become: true
+  # For Windows targets, use the ansible.windows.win_file module instead.
+  # Only run if the file exists, no need to backup this one
+  when: wezterm_repo_source_list_save_check_result.stat.exists
+  ansible.builtin.file:
+    path: "/etc/apt/sources.list.d/wezterm.list.save"
+    state: absent
+
 - name: Add Wezterm Repository
   become: true
   ansible.builtin.deb822_repository:

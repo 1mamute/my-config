@@ -24,6 +24,13 @@
         state: directory
         mode: "u=rwx,go=rx"
 
+    - name: Create backup APT sources list dir if it doesn't exist
+      become: true
+      ansible.builtin.file:
+        path: /etc/apt/sources.list.d/bkp/
+        state: directory
+        mode: "u=rwx,go=rx"
+
     - name: Install github3.py python package
       # Necessary to run the module community.general.github_release which is used several times during the playbook
       ansible.builtin.pip:

@@ -2,3 +2,15 @@
 - name: Install and configuring wezterm
   ansible.builtin.import_tasks: wezterm.yaml
 
+- name: Install gh
+  ansible.builtin.import_tasks: gh.yaml
+
+# kubectl
+# kubectx
+# kubens
+# helm
+# k9s
+# terraform
+# awscliv2
+# docker
+# docker-compose
