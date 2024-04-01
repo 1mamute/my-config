@@ -32,5 +32,21 @@
 - name: Install and configure obs studio
   ansible.builtin.import_tasks: obs.yaml
 
+- name: Install and configure bottom
+  ansible.builtin.import_tasks: bottom.yaml
+
+# - name: Install and configure wireshark
+  # ansible.builtin.import_tasks: wireshark.yaml
+
+# - name: Install and configure neofetch
+  # ansible.builtin.import_tasks: neofetch.yaml
+
+# - name: Install and configure insomnia
+  # ansible.builtin.import_tasks: insomnia.yaml
+
+# - name: Install and configure cudatoolkit
+  # ansible.builtin.import_tasks: cudatoolkit.yaml
+
+
 # docker
 # docker-compose

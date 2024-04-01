@@ -1,0 +1,36 @@
+---
+- name: Check bottom installed version
+  ansible.builtin.shell: btm --version
+  ignore_errors: true
+  changed_when: false
+  register: bottom_check_result
+
+- name: Get latest release of bottom public repo
+  when: bottom_check_result.rc != 0
+  community.general.github_release:
+    user: ClementTsang
+    repo: bottom
+    action: latest_release
+  register: bottom_latest_release
+
+- name: Get bottom deb package
+  when: bottom_check_result.rc != 0
+  ansible.builtin.get_url:
+    url: "https://github.com/ClementTsang/bottom/releases/download/{{ bottom_latest_release.tag }}/bottom_{{ bottom_latest_release.tag }}_amd64.deb"
+    dest: /tmp/bottom_amd64.deb
+    mode: "u=rw,go=r"
+
+- name: Install bottom .deb package
+  when: bottom_check_result.rc != 0
+  become: true
+  ansible.builtin.apt:
+    deb: "/tmp/bottom_amd64.deb"
+  notify:
+    - Remove bottom .deb package
+
+- name: Install or update bottom package
+  become: true
+  ansible.builtin.package:
+    name: bottom
+    state: latest
+    update_cache: true
