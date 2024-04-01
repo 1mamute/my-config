@@ -1,0 +1,89 @@
+---
+- name: Checks if nvidia-container-toolkit repo source list exists
+  become: true
+  # For Windows targets, use the ansible.windows.win_stat module instead.
+  ansible.builtin.stat:
+    path: "/etc/apt/sources.list.d/nvidia-container-toolkit.list"
+  register: nvidia_container_toolkit_repo_source_list_check_result
+
+- name: Makes a backup of nvidia-container-toolkit repo source list file
+  become: true
+  # For Windows targets, use the ansible.windows.win_copy module instead.
+  # Only run if the file exists
+  when: nvidia_container_toolkit_repo_source_list_check_result.stat.exists
+  ansible.builtin.copy:
+    src: "/etc/apt/sources.list.d/nvidia-container-toolkit.list"
+    dest: "/etc/apt/sources.list.d/bkp/nvidia-container-toolkit.list"
+    mode: "u=rw,go=r"
+
+- name: Deletes hashicorp repo source list file
+  become: true
+  # For Windows targets, use the ansible.windows.win_file module instead.
+  # Only run if the file exists
+  when: nvidia_container_toolkit_repo_source_list_check_result.stat.exists
+  ansible.builtin.file:
+    path: "/etc/apt/sources.list.d/nvidia-container-toolkit.list"
+    state: absent
+
+- name: Checks if nvidia-container-toolkit repo source list save exists
+  become: true
+  # For Windows targets, use the ansible.windows.win_stat module instead.
+  ansible.builtin.stat:
+    path: "/etc/apt/sources.list.d/nvidia-container-toolkit.list.save"
+  register: nvidia_container_toolkit_repo_source_list_save_check_result
+
+- name: Deletes nvidia-container-toolkit repo source list save file
+  become: true
+  # For Windows targets, use the ansible.windows.win_file module instead.
+  # Only run if the file exists, no need to backup this one
+  when: nvidia_container_toolkit_repo_source_list_save_check_result.stat.exists
+  ansible.builtin.file:
+    path: "/etc/apt/sources.list.d/nvidia-container-toolkit.list.save"
+    state: absent
+
+- name: Add nvidia-container-toolkit Repository
+  become: true
+  ansible.builtin.deb822_repository:
+    name: nvidia-container-toolkit
+    types: [deb]
+    signed_by: "https://nvidia.github.io/libnvidia-container/gpgkey"
+    uris: "https://nvidia.github.io/libnvidia-container/stable/deb/$(ARCH)"
+    suites: ["/"]
+    state: present
+    enabled: true
+
+- name: Install nvidia-container-toolkit
+  become: true
+  ansible.builtin.package:
+    name: nvidia-container-toolkit
+    update_cache: true
+    state: latest
+
+# Used so that Docker can use the NVIDIA Container Runtime.
+# Same as running: sudo nvidia-ctk runtime configure --runtime=docker
+- name: Creating a docker daemon json file for NVIDIA Container Runtime
+  become: true
+  ansible.builtin.copy:
+    dest: "/etc/docker/daemon.json"
+    mode: "u=rw,g=r,o=r"
+    content: |
+      {
+          "runtimes": {
+              "nvidia": {
+                  "args": [],
+                  "path": "nvidia-container-runtime"
+              }
+          }
+      }
+
+- name: Restart service docker
+  become: true
+  ansible.builtin.systemd_service:
+    name: docker
+    state: restarted
+
+- name: Restart service containerd
+  become: true
+  ansible.builtin.systemd_service:
+    name: containerd
+    state: restarted

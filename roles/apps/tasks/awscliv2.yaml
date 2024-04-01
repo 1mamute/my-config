@@ -12,6 +12,7 @@
     mode: "u=rw,go=r"
 
 - name: Create temporary awscliv2 folder
+  changed_when: false
   ansible.builtin.file:
     path: /tmp/awscliv2/
     state: directory
@@ -39,6 +40,7 @@
 
 - name: Remove awscliv2 temporary folder
   become: true
+  changed_when: false
   ansible.builtin.file:
     path: /tmp/awscliv2/
     state: absent
