@@ -1,0 +1,6 @@
+---
+- name: Install neofetch
+  become: true
+  ansible.builtin.package:
+    name: neofetch
+    state: latest
