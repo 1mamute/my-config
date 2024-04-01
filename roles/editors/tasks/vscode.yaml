@@ -58,7 +58,7 @@
   ansible.builtin.package:
     name: code
     update_cache: true
-    state: present
+    state: latest
 
 - name: Set code as the default handler for text/plain
   community.general.gio_mime:

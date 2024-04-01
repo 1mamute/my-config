@@ -1,0 +1,18 @@
+---
+- name: Check if obs studio is installed
+  ansible.builtin.shell: "obs --version"
+  ignore_errors: true
+  changed_when: false
+  register: obs_check_result
+
+- name: Add obs repository from PPA
+  when: obs_check_result.rc != 0
+  ansible.builtin.apt_repository:
+    repo: ppa:obsproject/obs-studio
+
+- name: Install or update obs studio package
+  become: true
+  ansible.builtin.package:
+    name: obs-studio
+    state: latest
+    update_cache: true

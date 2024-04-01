@@ -26,5 +26,11 @@
 - name: Install and configure flameshot
   ansible.builtin.import_tasks: flameshot.yaml
 
+- name: Install and configure chrome
+  ansible.builtin.import_tasks: chrome.yaml
+
+- name: Install and configure obs studio
+  ansible.builtin.import_tasks: obs.yaml
+
 # docker
 # docker-compose

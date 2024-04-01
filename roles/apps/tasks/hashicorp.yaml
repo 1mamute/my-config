@@ -62,4 +62,4 @@
       - vault
       - packer
     update_cache: true
-    state: present
+    state: latest

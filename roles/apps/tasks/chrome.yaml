@@ -1,0 +1,28 @@
+---
+- name: Check if google chrome is installed
+  ansible.builtin.shell: "google-chrome --version"
+  ignore_errors: true
+  changed_when: false
+  register: google_chrome_check_result
+
+- name: Get google chrome latest deb package
+  when: google_chrome_check_result.rc != 0
+  ansible.builtin.get_url:
+    url: "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+    dest: /tmp/google-chrome-stable_current_amd64.deb
+    mode: "u=rw,go=r"
+
+- name: Install google chrome .deb package
+  when: google_chrome_check_result.rc != 0
+  become: true
+  ansible.builtin.apt:
+    deb: "/tmp/google-chrome-stable_current_amd64.deb"
+  notify:
+    - Remove google chrome .deb package
+
+- name: Install or update google chrome package
+  become: true
+  ansible.builtin.package:
+    name: google-chrome-stable
+    state: latest
+    update_cache: true

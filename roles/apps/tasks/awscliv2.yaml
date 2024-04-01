@@ -5,7 +5,7 @@
   changed_when: false
   register: awscliv2_check_result
 
-- name: Get aswcliv2 archive
+- name: Get awscliv2 archive
   ansible.builtin.get_url:
     url: "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
     dest: /tmp/awscliv2.zip

@@ -3,7 +3,7 @@
   become: true
   ansible.builtin.package:
     name: rofi
-    state: present
+    state: latest
 
 - name: Add papirus Repository
   become: true
@@ -22,7 +22,7 @@
   ansible.builtin.package:
     name: papirus-icon-theme
     update_cache: true
-    state: present
+    state: latest
 
 - name: Checks if config.rasi file exists
   # For Windows targets, use the ansible.windows.win_stat module instead.

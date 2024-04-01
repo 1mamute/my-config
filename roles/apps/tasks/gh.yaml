@@ -58,4 +58,4 @@
   ansible.builtin.package:
     name: gh
     update_cache: true
-    state: present
+    state: latest

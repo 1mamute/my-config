@@ -14,7 +14,7 @@
           - software-properties-common
           - gnupg
           - python3-apt
-        state: present
+        state: latest
         update_cache: true
 
     - name: Create APT keyrings dir if it doesn't exist
@@ -35,7 +35,7 @@
       # Necessary to run the module community.general.github_release which is used several times during the playbook
       ansible.builtin.pip:
         name: github3.py
-        state: present
+        state: latest
 
     - name: Get distribution codename
       ansible.builtin.command: lsb_release -cs

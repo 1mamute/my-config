@@ -68,4 +68,4 @@
   ansible.builtin.package:
     name: kubectl
     update_cache: true
-    state: present
+    state: latest

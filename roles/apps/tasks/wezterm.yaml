@@ -58,7 +58,7 @@
   ansible.builtin.package:
     name: wezterm
     update_cache: true
-    state: present
+    state: latest
 
 - name: Checks if wezterm.lua file exists
   # For Windows targets, use the ansible.windows.win_stat module instead.

@@ -19,4 +19,4 @@
   ansible.builtin.package:
     name: nodejs
     update_cache: true
-    state: present
+    state: latest
