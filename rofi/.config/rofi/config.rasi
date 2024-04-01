@@ -1,0 +1,342 @@
+configuration {
+  modi:                       "combi";
+  show-icons:                 true;
+  icon-theme:                 "Papirus";
+  display-drun:               "";
+  display-run:                "";
+  display-filebrowser:        "";
+  display-window:             "";
+	drun-display-format:        "{name} [<span weight='light' size='small'><i>({generic})</i></span>]";
+	window-format:              "{w} · {c} · {t}";
+  combi-modi:                 "window,drun,filebrowser";
+	font:                       "Fira Code 12";
+  timeout {
+      action: "kb-cancel";
+      delay:  0;
+  }
+  filebrowser {
+      directories-first: true;
+      sorting-method:    "name";
+  }
+}
+
+/**
+ * Base16 OneDark ROFI Color theme
+ *
+ * Authors
+ *  Scheme: Lalit Magant (http://github.com/tilal6991)
+ *  Template: Tinted Theming (https://github.com/tinted-theming)
+ */
+
+* {
+    red:                         rgba ( 224, 108, 117, 100 % );
+    blue:                        rgba ( 97, 175, 239, 100 % );
+    lightfg:                     rgba ( 182, 189, 202, 100 % );
+    lightbg:                     rgba ( 53, 59, 69, 100 % );
+    foreground:                  rgba ( 171, 178, 191, 100 % );
+    background:                  rgba ( 40, 44, 52, 100 % );
+    background-color:            rgba ( 40, 44, 52, 0 % );
+    separatorcolor:              @foreground;
+    border-color:                @foreground;
+    selected-normal-foreground:  @lightbg;
+    selected-normal-background:  @lightfg;
+    selected-active-foreground:  @background;
+    selected-active-background:  @blue;
+    selected-urgent-foreground:  @background;
+    selected-urgent-background:  @red;
+    normal-foreground:           @foreground;
+    normal-background:           @background;
+    active-foreground:           @blue;
+    active-background:           @background;
+    urgent-foreground:           @red;
+    urgent-background:           @background;
+    alternate-normal-foreground: @foreground;
+    alternate-normal-background: @lightbg;
+    alternate-active-foreground: @blue;
+    alternate-active-background: @lightbg;
+    alternate-urgent-foreground: @red;
+    alternate-urgent-background: @lightbg;
+    spacing:                     2;
+}
+// window {
+//     background-color: @background;
+//     border:           1;
+//     padding:          5;
+// }
+window {
+    /* properties for window widget */
+    transparency:                "real";
+    location:                    center;
+    anchor:                      center;
+    fullscreen:                  false;
+    width:                       800px;
+    x-offset:                    0px;
+    y-offset:                    0px;
+
+    /* properties for all widgets */
+    enabled:                     true;
+    margin:                      0px;
+    padding:                     0px;
+    border:                      1px solid;
+    border-radius:               0px;
+    border-color:                @border-color;
+    cursor:                      "default";
+    background-color:            @background;
+}
+// mainbox {
+//     border:           0;
+//     padding:          0;
+// }
+mainbox {
+    enabled:                     true;
+    spacing:                     10px;
+    margin:                      0px;
+    padding:                     30px;
+    border:                      0px solid;
+    border-radius:               0px 0px 0px 0px;
+    border-color:                @border-color;
+    background-color:            transparent;
+    // children:                    [ "inputbar", "listview" ];
+}
+// message {
+//     border:           1px dash 0px 0px ;
+//     border-color:     @separatorcolor;
+//     padding:          1px ;
+// }
+message {
+    enabled:                     true;
+    margin:                      0px;
+    padding:                     0px;
+    border:                      0px solid;
+    border-radius:               0px 0px 0px 0px;
+    border-color:                @border-color;
+    background-color:            transparent;
+    text-color:                  @foreground;
+}
+error-message {
+    padding:                     10px;
+    border:                      0px solid;
+    border-radius:               0px;
+    border-color:                @border-color;
+    background-color:            @background-color;
+    text-color:                  @foreground;
+}
+
+// textbox {
+//     text-color:       @foreground;
+// }
+textbox {
+    padding:                     10px;
+    border:                      0px solid;
+    border-radius:               0px;
+    border-color:                @border-color;
+    background-color:            @background-color; //alternate-background;
+    text-color:                  @foreground;
+    vertical-align:              0.5;
+    horizontal-align:            0.0;
+    highlight:                   none;
+    placeholder-color:           @foreground;
+    blink:                       true;
+    markup:                      true;
+}
+// listview {
+//     fixed-height:     0;
+//     border:           2px dash 0px 0px ;
+//     border-color:     @separatorcolor;
+//     spacing:          2px ;
+//     scrollbar:        true;
+//     padding:          2px 0px 0px ;
+// }
+listview {
+    enabled:                     true;
+    columns:                     1;
+    lines:                       12;
+    cycle:                       true;
+    dynamic:                     true;
+    scrollbar:                   false;
+    layout:                      vertical;
+    reverse:                     false;
+    fixed-height:                true;
+    fixed-columns:               true;
+
+    spacing:                     0px;
+    margin:                      0px;
+    padding:                     0px;
+    border:                      0px solid;
+    border-radius:               0px;
+    border-color:                @border-color;
+    background-color:            transparent;
+    text-color:                  @foreground;
+    cursor:                      "default";
+}
+element-text, element-icon {
+    background-color: inherit;
+    text-color:       inherit;
+}
+// element {
+//     border:           0;
+//     padding:          1px ;
+// }
+element {
+    enabled:                     true;
+    spacing:                     10px;
+    margin:                      0px;
+    padding:                     5px;
+    border:                      0px solid;
+    border-radius:               0px;
+    border-color:                @border-color;
+    background-color:            transparent;
+    text-color:                  @foreground;
+    cursor:                      pointer;
+}
+element normal.normal {
+    background-color: @normal-background;
+    text-color:       @normal-foreground;
+}
+element normal.urgent {
+    background-color: @urgent-background;
+    text-color:       @urgent-foreground;
+}
+element normal.active {
+    background-color: @active-background;
+    text-color:       @active-foreground;
+}
+element selected.normal {
+    background-color: @selected-normal-background;
+    text-color:       @selected-normal-foreground;
+}
+element selected.urgent {
+    background-color: @selected-urgent-background;
+    text-color:       @selected-urgent-foreground;
+}
+element selected.active {
+    background-color: @selected-active-background;
+    text-color:       @selected-active-foreground;
+}
+element alternate.normal {
+    background-color: @alternate-normal-background;
+    text-color:       @alternate-normal-foreground;
+}
+element alternate.urgent {
+    background-color: @alternate-urgent-background;
+    text-color:       @alternate-urgent-foreground;
+}
+element alternate.active {
+    background-color: @alternate-active-background;
+    text-color:       @alternate-active-foreground;
+}
+element-icon { //copiado
+    background-color:            transparent;
+    text-color:                  inherit;
+    size:                        24px;
+    cursor:                      inherit;
+}
+element-text { //copiado
+    background-color:            transparent;
+    text-color:                  inherit;
+    highlight:                   inherit;
+    cursor:                      inherit;
+    vertical-align:              0.5;
+    horizontal-align:            0.0;
+}
+// scrollbar {
+//     width:            4px ;
+//     border:           0;
+//     handle-color:     @normal-foreground;
+//     handle-width:     8px ;
+//     padding:          0;
+// }
+scrollbar {
+    handle-width:                5px ;
+    handle-color:                @handle-color;
+    border-radius:               0px;
+    background-color:            @foreground; //alternate-background;
+}
+sidebar {
+    border:           2px dash 0px 0px ;
+    border-color:     @separatorcolor;
+}
+// button {
+//     spacing:          0;
+//     text-color:       @normal-foreground;
+// }
+button {
+    padding:                     10px;
+    border:                      0px solid;
+    border-radius:               0px;
+    border-color:                @border-color;
+    background-color:            @foreground; //alternate-background;
+    text-color:                  inherit;
+    cursor:                      pointer;
+}
+button selected {
+    background-color: @selected-normal-background;
+    text-color:       @selected-normal-foreground;
+}
+// inputbar {
+//     spacing:          0px;
+//     text-color:       @normal-foreground;
+//     padding:          1px ;
+//     children:         [ prompt,textbox-prompt-colon,entry,case-indicator ];
+// }
+inputbar {
+    enabled:                     true;
+    spacing:                     10px;
+    margin:                      0px;
+    padding:                     0px 0px 10px 10px;
+    border:                      0px;
+    border-radius:               0px;
+    border-color:                @border-color;
+    background-color:            @background-color;
+    text-color:                  @foreground;
+    children:                    [ "prompt", "entry" ];
+}
+case-indicator {
+    spacing:          0;
+    text-color:       @normal-foreground;
+}
+// entry {
+//     spacing:          0;
+//     text-color:       @normal-foreground;
+// }
+entry {
+    enabled:                     true;
+    background-color:            inherit;
+    text-color:                  inherit;
+    cursor:                      text;
+    placeholder:                 "";
+    placeholder-color:           inherit;
+}
+// prompt {
+//     spacing:          0;
+//     text-color:       @normal-foreground;
+// }
+prompt {
+    enabled:                     true;
+    background-color:            inherit;
+    text-color:                  inherit;
+}
+// textbox-prompt-colon {
+//     expand:           false;
+//     str:              ":";
+//     margin:           0px 0.3000em 0.0000em 0.0000em ;
+//     text-color:       inherit;
+// }
+textbox-prompt-colon {
+    enabled:                     true;
+    expand:                      false;
+    str:                         "::";
+    background-color:            inherit;
+    text-color:                  inherit;
+}
+mode-switcher{ // copiado
+    enabled:                     true;
+    spacing:                     10px;
+    margin:                      0px;
+    padding:                     0px;
+    border:                      0px solid;
+    border-radius:               0px;
+    border-color:                @border-color;
+    background-color:            transparent;
+    text-color:                  @foreground;
+}

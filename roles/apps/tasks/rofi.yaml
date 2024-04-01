@@ -1,0 +1,57 @@
+---
+- name: Install rofi
+  become: true
+  ansible.builtin.package:
+    name: rofi
+    state: present
+
+- name: Add papirus Repository
+  become: true
+  ansible.builtin.deb822_repository:
+    name: papirus-ppa
+    types: [deb]
+    signed_by: "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x9461999446FAF0DF770BFC9AE58A9D36647CAE7F"
+    uris: "http://ppa.launchpad.net/papirus/papirus/ubuntu"
+    suites: ["{{ distribution_codename }}"]
+    components: ["main"]
+    state: present
+    enabled: true
+
+- name: Install papirus theme
+  become: true
+  ansible.builtin.package:
+    name: papirus-icon-theme
+    update_cache: true
+    state: present
+
+- name: Checks if config.rasi file exists
+  # For Windows targets, use the ansible.windows.win_stat module instead.
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.config/rofi/config.rasi"
+  register: config_rasi_file_check_result
+
+- name: Makes a backup of config.rasi file
+  # For Windows targets, use the ansible.windows.win_copy module instead.
+  # Only run if the file exists and is not a symlink
+  when: >-
+    config_rasi_file_check_result.stat.exists
+    and ((config_rasi_file_check_result.stat.islnk is defined and not config_rasi_file_check_result.stat.islnk)
+    or (config_rasi_file_check_result.stat.islnk is not defined))
+  ansible.builtin.copy:
+    src: "{{ ansible_env.HOME }}/.config/rofi/config.rasi"
+    dest: "{{ ansible_env.HOME }}/.config/rofi/config.rasi-backup"
+    mode: "u=rw,go=r"
+
+- name: Create a symbolic link to home from the config.rasi file
+  # For Windows targets, use the ansible.windows.win_file module instead.
+  # Only run if the file doesn't exist or exists and is not a symlink
+  when: >-
+    not config_rasi_file_check_result.stat.exists
+    or config_rasi_file_check_result.stat.exists and
+    ((config_rasi_file_check_result.stat.islnk is defined and not config_rasi_file_check_result.stat.islnk)
+    or (config_rasi_file_check_result.stat.islnk is not defined))
+  ansible.builtin.file:
+    src: "{{ playbook_dir }}/rofi/.config/rofi/config.rasi"
+    dest: "{{ ansible_env.HOME }}/.config/rofi/config.rasi"
+    state: link
+    force: true

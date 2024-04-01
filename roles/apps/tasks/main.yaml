@@ -17,11 +17,12 @@
 - name: Install and configure terraform, vault, vagrant, packer
   ansible.builtin.import_tasks: hashicorp.yaml
 
-- name: Install and awscliv2
+- name: Install and configure awscliv2
   ansible.builtin.import_tasks: awscliv2.yaml
 
-# awscliv2
+- name: Install and configure rofi
+  ansible.builtin.import_tasks: rofi.yaml
+
+# flameshot
 # docker
 # docker-compose
-# rofi
-# flameshot
