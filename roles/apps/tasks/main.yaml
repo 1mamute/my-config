@@ -23,6 +23,8 @@
 - name: Install and configure rofi
   ansible.builtin.import_tasks: rofi.yaml
 
-# flameshot
+- name: Install and configure flameshot
+  ansible.builtin.import_tasks: flameshot.yaml
+
 # docker
 # docker-compose
