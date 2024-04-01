@@ -1,0 +1,7 @@
+---
+- name: Install gnome-tweaks
+  become: true
+  ansible.builtin.package:
+    name: gnome-tweaks
+    update_cache: true
+    state: latest
