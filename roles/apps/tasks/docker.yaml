@@ -1,0 +1,104 @@
+---
+- name: Checks if docker repo source list exists
+  become: true
+  # For Windows targets, use the ansible.windows.win_stat module instead.
+  ansible.builtin.stat:
+    path: "/etc/apt/sources.list.d/docker.list"
+  register: docker_repo_source_list_check_result
+
+- name: Makes a backup of docker repo source list file
+  become: true
+  # For Windows targets, use the ansible.windows.win_copy module instead.
+  # Only run if the file exists
+  when: docker_repo_source_list_check_result.stat.exists
+  ansible.builtin.copy:
+    src: "/etc/apt/sources.list.d/docker.list"
+    dest: "/etc/apt/sources.list.d/bkp/docker.list"
+    mode: "u=rw,go=r"
+
+- name: Deletes hashicorp repo source list file
+  become: true
+  # For Windows targets, use the ansible.windows.win_file module instead.
+  # Only run if the file exists
+  when: docker_repo_source_list_check_result.stat.exists
+  ansible.builtin.file:
+    path: "/etc/apt/sources.list.d/docker.list"
+    state: absent
+
+- name: Checks if docker repo source list save exists
+  become: true
+  # For Windows targets, use the ansible.windows.win_stat module instead.
+  ansible.builtin.stat:
+    path: "/etc/apt/sources.list.d/docker.list.save"
+  register: docker_repo_source_list_save_check_result
+
+- name: Deletes docker repo source list save file
+  become: true
+  # For Windows targets, use the ansible.windows.win_file module instead.
+  # Only run if the file exists, no need to backup this one
+  when: docker_repo_source_list_save_check_result.stat.exists
+  ansible.builtin.file:
+    path: "/etc/apt/sources.list.d/docker.list.save"
+    state: absent
+
+- name: Add docker Repository
+  become: true
+  ansible.builtin.deb822_repository:
+    name: docker
+    types: [deb]
+    signed_by: "https://download.docker.com/linux/ubuntu/gpg"
+    uris: "https://download.docker.com/linux/ubuntu"
+    suites: ["{{ ansible_distribution_release }}"]
+    components: ["stable"]
+    state: present
+    enabled: true
+
+- name: Install docker and docker-compose
+  become: true
+  ansible.builtin.package:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    update_cache: true
+    state: latest
+
+- name: Ensure group "docker" exists
+  become: true
+  # Use ansible.windows.win_group for windows
+  ansible.builtin.group:
+    name: docker
+    state: present
+
+- name: Append the group 'docker' to the user's groups
+  become: true
+  # Use ansible.windows.win_user for windows
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    groups: docker
+    append: true
+
+- name: Create .docker dir if it doesn't exist with the correct permissions
+  become: true
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.docker"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    mode: "u=rwx,go=rx"
+
+# Configure Docker to start on boot with systemd
+- name: Enable service docker
+  become: true
+  ansible.builtin.systemd_service:
+    name: docker
+    state: started
+    enabled: true
+
+- name: Enable service containerd
+  become: true
+  ansible.builtin.systemd_service:
+    name: containerd
+    state: started
+    enabled: true
