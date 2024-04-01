@@ -11,7 +11,6 @@ fi
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -132,6 +131,12 @@ fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
+
+setopt noflowcontrol # disable flow control
+setopt appendhistory # append to history like bash
+setopt automenu      # trigger completion menu on second tab like bash
+setopt correct       # try to correct spelling of commands
+setopt listpacked    # try to make the list smaller by printing matches in columns with differente widths
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
