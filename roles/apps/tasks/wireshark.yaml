@@ -1,0 +1,6 @@
+---
+- name: Install wireshark
+  become: true
+  ansible.builtin.package:
+    name: wireshark
+    state: latest

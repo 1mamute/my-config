@@ -41,8 +41,8 @@
 - name: Install and configure insomnia
   ansible.builtin.import_tasks: insomnia.yaml
 
-# - name: Install and configure wireshark
-  # ansible.builtin.import_tasks: wireshark.yaml
+- name: Install and configure wireshark
+  ansible.builtin.import_tasks: wireshark.yaml
 
 # - name: Install and configure cudatoolkit
   # ansible.builtin.import_tasks: cudatoolkit.yaml

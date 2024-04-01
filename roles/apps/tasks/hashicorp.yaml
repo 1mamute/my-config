@@ -48,7 +48,7 @@
     types: [deb]
     signed_by: "https://apt.releases.hashicorp.com/gpg"
     uris: "https://apt.releases.hashicorp.com"
-    suites: ["{{ distribution_codename }}"]
+    suites: ["{{ ansible_distribution_release }}"]
     components: ["main"]
     state: present
     enabled: true

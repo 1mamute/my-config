@@ -48,7 +48,7 @@
     types: [deb]
     signed_by: "https://packages.konghq.com/public/insomnia/gpg.474B9148D779222B.key"
     uris: "https://packages.konghq.com/public/insomnia/deb/ubuntu"
-    suites: ["{{ distribution_codename }}"]
+    suites: ["{{ ansible_distribution_release }}"]
     components: ["main"]
     state: present
     enabled: true
