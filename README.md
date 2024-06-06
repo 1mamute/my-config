@@ -13,6 +13,8 @@ Nord theme blue
 # Flameshot
 ```flameshot gui```
 
+#TODO:
+adicionar virtual box
 
 # inspiration
 https://github.com/pmorim/.dotfiles/tree/main
