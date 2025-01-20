@@ -16,7 +16,7 @@
     dest: "/etc/apt/sources.list.d/bkp/docker.list"
     mode: "u=rw,go=r"
 
-- name: Deletes hashicorp repo source list file
+- name: Deletes docker repo source list file
   become: true
   # For Windows targets, use the ansible.windows.win_file module instead.
   # Only run if the file exists

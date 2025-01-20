@@ -2,8 +2,9 @@
 - name: Install and configure zsh and its dependencies
   ansible.builtin.import_tasks: zsh.yaml
 
+- name: Install and configure omz
+  ansible.builtin.import_tasks: omz.yaml
+
 - name: Install and configure p10k
   ansible.builtin.import_tasks: p10k.yaml
 
-- name: Install and configure omz
-  ansible.builtin.import_tasks: omz.yaml

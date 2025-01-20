@@ -1,61 +1,40 @@
 ---
-- name: Checks if kong-insomnia repo source list exists
-  become: true
-  # For Windows targets, use the ansible.windows.win_stat module instead.
-  ansible.builtin.stat:
-    path: "/etc/apt/sources.list.d/kong-insomnia.list"
-  register: kong_insomnia_repo_source_list_check_result
+- name: Check insomnia installed version
+  ansible.builtin.shell: insomnia --version
+  ignore_errors: true
+  changed_when: false
+  register: insomnia_check_result
 
-- name: Makes a backup of kong-insomnia repo source list file
-  become: true
-  # For Windows targets, use the ansible.windows.win_copy module instead.
-  # Only run if the file exists
-  when: kong_insomnia_repo_source_list_check_result.stat.exists
-  ansible.builtin.copy:
-    src: "/etc/apt/sources.list.d/kong-insomnia.list"
-    dest: "/etc/apt/sources.list.d/bkp/kong-insomnia.list"
+- name: Get latest release of insomnia public repo
+  when: insomnia_check_result.rc != 0
+  community.general.github_release:
+    user: Kong
+    repo: insomnia
+    action: latest_release
+  register: insomnia_latest_release
+
+- name: Extract version using regex_replace
+  set_fact:
+    insomnia_latest_release_tag: "{{ insomnia_latest_release.tag | regex_replace('^.*@', '') }}"
+
+- name: Get insomnia deb package
+  when: insomnia_check_result.rc != 0
+  ansible.builtin.get_url:
+    url: "https://github.com/Kong/insomnia/releases/download/{{ insomnia_latest_release.tag }}/Insomnia.Core-{{ insomnia_latest_release_tag }}.deb"
+    dest: /tmp/insomnia_amd64.deb
     mode: "u=rw,go=r"
 
-- name: Deletes hashicorp repo source list file
+- name: Install insomnia .deb package
+  when: insomnia_check_result.rc != 0
   become: true
-  # For Windows targets, use the ansible.windows.win_file module instead.
-  # Only run if the file exists
-  when: kong_insomnia_repo_source_list_check_result.stat.exists
-  ansible.builtin.file:
-    path: "/etc/apt/sources.list.d/kong-insomnia.list"
-    state: absent
+  ansible.builtin.apt:
+    deb: "/tmp/insomnia_amd64.deb"
+  notify:
+    - Remove insomnia .deb package
 
-- name: Checks if kong-insomnia repo source list save exists
-  become: true
-  # For Windows targets, use the ansible.windows.win_stat module instead.
-  ansible.builtin.stat:
-    path: "/etc/apt/sources.list.d/kong-insomnia.list.save"
-  register: kong_insomnia_repo_source_list_save_check_result
-
-- name: Deletes kong-insomnia repo source list save file
-  become: true
-  # For Windows targets, use the ansible.windows.win_file module instead.
-  # Only run if the file exists, no need to backup this one
-  when: kong_insomnia_repo_source_list_save_check_result.stat.exists
-  ansible.builtin.file:
-    path: "/etc/apt/sources.list.d/kong-insomnia.list.save"
-    state: absent
-
-- name: Add kong-insomnia Repository
-  become: true
-  ansible.builtin.deb822_repository:
-    name: kong-insomnia
-    types: [deb]
-    signed_by: "https://packages.konghq.com/public/insomnia/gpg.474B9148D779222B.key"
-    uris: "https://packages.konghq.com/public/insomnia/deb/ubuntu"
-    suites: ["{{ ansible_distribution_release }}"]
-    components: ["main"]
-    state: present
-    enabled: true
-
-- name: Install insomnia
+- name: Install or update insomnia package
   become: true
   ansible.builtin.package:
     name: insomnia
-    update_cache: true
     state: latest
+    update_cache: true

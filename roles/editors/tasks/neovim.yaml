@@ -37,6 +37,7 @@
     state: link
 
 - name: Install python3-neovim package
+  become: true
   ansible.builtin.package:
     name: python3-neovim
     state: latest
@@ -87,30 +88,23 @@
   changed_when: false
   register: rg_check_result
 
-- name: Set fact for installed ripgrep version
-  ansible.builtin.set_fact:
-    ripgrep_version: "{{ rg_check_result.stdout_lines | first | regex_search('ripgrep v?(\\d+\\.\\d+\\.\\d+)', '\\1') | first }}"
-
 - name: Get latest release of ripgrep public repo
+  when: rg_check_result.rc != 0
   community.general.github_release:
     user: BurntSushi
     repo: ripgrep
     action: latest_release
   register: ripgrep_latest_release
 
-- name: Set fact for latest ripgrep version
-  ansible.builtin.set_fact:
-    new_ripgrep_version: "{{ ripgrep_latest_release.tag | string }}"
-
 - name: Get ripgrep latest release .deb package
-  when: rg_check_result.rc != 0 or (ripgrep_version is version(new_ripgrep_version, "<"))
+  when: rg_check_result.rc != 0
   ansible.builtin.get_url:
     url: "https://github.com/BurntSushi/ripgrep/releases/download/{{ ripgrep_latest_release.tag }}/ripgrep_{{ ripgrep_latest_release.tag }}-1_amd64.deb"
     dest: "/tmp/ripgrep_amd64.deb"
     mode: "u=rw,go=r"
 
 - name: Install ripgrep .deb package
-  when: rg_check_result.rc != 0 or (ripgrep_version is version(new_ripgrep_version, "<"))
+  when: rg_check_result.rc != 0
   become: true
   ansible.builtin.apt:
     deb: "/tmp/ripgrep_amd64.deb"

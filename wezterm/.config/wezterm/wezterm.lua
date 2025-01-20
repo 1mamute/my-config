@@ -27,13 +27,6 @@ config.inactive_pane_hsb = {
 -- Fonts
 config.font = wezterm.font_with_fallback {
   {
-    family = 'Fira Code',
-    harfbuzz_features = {
-      'calt=0', 'clig=0', 'liga=0', -- no ligatures
-      'cv02',                       -- change the g
-    },
-  },
-  {
     family = 'FiraCode Nerd Font Mono',
     harfbuzz_features = {
       'calt=0', 'clig=0', 'liga=0', -- no ligatures

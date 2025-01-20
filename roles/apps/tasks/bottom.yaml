@@ -16,7 +16,7 @@
 - name: Get bottom deb package
   when: bottom_check_result.rc != 0
   ansible.builtin.get_url:
-    url: "https://github.com/ClementTsang/bottom/releases/download/{{ bottom_latest_release.tag }}/bottom_{{ bottom_latest_release.tag }}_amd64.deb"
+    url: "https://github.com/ClementTsang/bottom/releases/download/{{ bottom_latest_release.tag }}/bottom_{{ bottom_latest_release.tag }}-1_amd64.deb"
     dest: /tmp/bottom_amd64.deb
     mode: "u=rw,go=r"
 

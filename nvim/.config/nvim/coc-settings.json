@@ -17,4 +17,5 @@
       "handlers/*.yaml"
     ]
   },
+  "http.proxyStrictSSL": false
 }

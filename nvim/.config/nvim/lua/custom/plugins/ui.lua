@@ -24,6 +24,26 @@ local onedarkpro = {
   end
 }
 
+local mini_icons = {
+  "echasnovski/mini.icons",
+  lazy = true,
+  opts = {
+    file = {
+      [".keep"] = { glyph = "󰊢", hl = "MiniIconsGrey" },
+      ["devcontainer.json"] = { glyph = "", hl = "MiniIconsAzure" },
+    },
+    filetype = {
+      dotenv = { glyph = "", hl = "MiniIconsYellow" },
+    },
+  },
+  init = function()
+    package.preload["nvim-web-devicons"] = function()
+      require("mini.icons").mock_nvim_web_devicons()
+      return package.loaded["nvim-web-devicons"]
+    end
+  end,
+}
+
 local nvim_web_devicons = {
   "nvim-tree/nvim-web-devicons",
   branch = "master",
@@ -255,17 +275,17 @@ local which_key = {
     require('which-key').setup(opts)
 
     -- Document existing key chains
-    require('which-key').register({
-      ["z"] = { name = "+fold" },
-      ["g"] = { name = "+[g]oto" },
-      ["]"] = { name = "+next" },
-      ["["] = { name = "+prev" },
-      ["<leader>b"] = { name = "+[b]uffer" },
-      ["<leader>g"] = { name = "+[g]it" },
-      ["<leader>h"] = { name = "+[h]unks" },
-      ["<leader>s"] = { name = "+[s]earch" },
-      ["<leader>t"] = { name = "+[t]oggles" },
-    })
+    require('which-key').add({
+    { "<leader>b", group = "[b]uffer" },
+    { "<leader>g", group = "[g]it" },
+    { "<leader>h", group = "[h]unks" },
+    { "<leader>s", group = "[s]earch" },
+    { "<leader>t", group = "[t]oggles" },
+    { "[", group = "prev" },
+    { "]", group = "next" },
+    { "g", group = "[g]oto" },
+    { "z", group = "fold" },
+  })
   end,
 }
 
@@ -315,6 +335,7 @@ local indent_blankline = {
 
 local plugins = {
   onedarkpro,
+  mini_icons,
   nvim_web_devicons,
   lualine,
   bufferline,

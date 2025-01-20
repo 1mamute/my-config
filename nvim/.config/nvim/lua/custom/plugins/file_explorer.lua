@@ -93,7 +93,7 @@ local neo_tree = {
 local vim_symlink = {
   'aymericbeaumet/vim-symlink',
   dependencies = { 'moll/vim-bbye' },
-  event = { "VeryLazy " },
+  event = { "VeryLazy" },
   lazy = false,
   cond = function()
     -- Only load the plugin if the current opened file in the buffer is a symlink

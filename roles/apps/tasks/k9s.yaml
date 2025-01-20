@@ -1,6 +1,6 @@
 ---
 - name: Check k9s installed version
-  ansible.builtin.shell: k9s version -s | head -1 | awk '{print $2}'
+  ansible.builtin.shell: k9s version -s
   ignore_errors: true
   changed_when: false
   register: k9s_check_result
@@ -52,6 +52,14 @@
     src: "{{ ansible_env.HOME }}/.config/k9s/config.yaml"
     dest: "{{ ansible_env.HOME }}/.config/k9s/config.yaml-backup"
     mode: "u=rw,go=r"
+
+- name: Create the config folder if it doesn't exist
+  # For Windows targets, use the ansible.windows.win_file module instead.
+  # Only run if the file doesn't exist or exists
+  when: not k9s_config_file_check_result.stat.exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/k9s"
+    state: directory
 
 - name: Create a symbolic link to home from the config.yaml file
   # For Windows targets, use the ansible.windows.win_file module instead.
